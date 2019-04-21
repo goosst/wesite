@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="Vaillant automation part II">
+<meta itemprop="description" content="Intro In this part we&rsquo;ll send commands through the interface of Home Assistant.
+There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.
+Preparing the Raspberry pi  Follow the Hassbian installation instructions: https://www.home-assistant.io/docs/installation/hassbian/installation/
+ Additional installations beside the normal updating, upgrading, setting the time-zone:">
+
+
+<meta itemprop="datePublished" content="2019-04-20T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-20T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="103">
+
+
+
+<meta itemprop="keywords" content="" />
+<meta property="og:title" content="Vaillant automation part II" />
+<meta property="og:description" content="Intro In this part we&rsquo;ll send commands through the interface of Home Assistant.
+There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.
+Preparing the Raspberry pi  Follow the Hassbian installation instructions: https://www.home-assistant.io/docs/installation/hassbian/installation/
+ Additional installations beside the normal updating, upgrading, setting the time-zone:" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://users.telenet.be/goosst/posts/homeautomation_partii/" /><meta property="article:published_time" content="2019-04-20T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-20T00:00:00&#43;00:00"/><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Vaillant automation part II"/>
+<meta name="twitter:description" content="Intro In this part we&rsquo;ll send commands through the interface of Home Assistant.
+There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.
+Preparing the Raspberry pi  Follow the Hassbian installation instructions: https://www.home-assistant.io/docs/installation/hassbian/installation/
+ Additional installations beside the normal updating, upgrading, setting the time-zone:"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/goosst/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/goosst/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/goosst/favicon-16x16.png">
+	<link rel="manifest" href="/goosst/site.webmanifest">
+	<link rel="mask-icon" href="/goosst/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/goosst/favicon.ico">
+
+	<title>Vaillant automation part II</title>
+	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.e81f50049998463da8cdbf0f848b77d9797f27f249581a236a3161d386f310db.css" integrity="sha256-6B9QBJmYRj2ozb8PhIt32Xl/J/JJWBojajFh04bzENs=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="http://users.telenet.be/goosst">Goosst blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="http://users.telenet.be/goosst/posts/">Posts</a>
+					<a href="http://users.telenet.be/goosst/about-hugo/">About</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/goosst" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+			<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=288&l=ez&f=ifr&linkID=8e0370935cd8bd0e3a8f7eb4cbc24956&t=goosst-21&tracking_id=goosst-21" width="320" height="50" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="http://users.telenet.be/goosst/posts/">Posts</a></li>
+			<li><a href="http://users.telenet.be/goosst/about-hugo/">About</a></li>
+		</ul>
+		<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=288&l=ez&f=ifr&linkID=8e0370935cd8bd0e3a8f7eb4cbc24956&t=goosst-21&tracking_id=goosst-21" width="320" height="50" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Apr 20, 2019</span></div>
+				<h1>Vaillant automation part II</h1>
+			</header>
+			<div class="content">
+				
+
+<h1 id="intro">Intro<a href="#intro" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>In this part we&rsquo;ll send commands through the interface of Home Assistant.</p>
+
+<p>There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.</p>
+
+<h1 id="preparing-the-raspberry-pi">Preparing the Raspberry pi<a href="#preparing-the-raspberry-pi" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<ul>
+<li><p>Follow the Hassbian installation instructions: <a href="https://www.home-assistant.io/docs/installation/hassbian/installation/">https://www.home-assistant.io/docs/installation/hassbian/installation/</a></p></li>
+
+<li><p>Additional installations beside the normal updating, upgrading, setting the time-zone:</p></li>
+</ul>
+
+<pre><code>sudo apt-get install net-tools nmap
+sudo hassbian-config install mosquitto
+sudo hassbian-config install samba
+</code></pre>
+
+<p>An overview of other helper scripts can be found at: <a href="https://github.com/home-assistant/hassbian-scripts">https://github.com/home-assistant/hassbian-scripts</a></p>
+
+<p>To be continued</p>
+
+<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=48&l=ur1&category=electronics&banner=0MNQ6KCCWY32BF4PH5G2&f=ifr&linkID=17a86ac5c29a5d7ba74c9e25d42d63d7&t=goosst-21&tracking_id=goosst-21" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>103 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-04-20 02:00 &#43;0200</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="prev-post" href="http://users.telenet.be/goosst/posts/homeautomation_parti/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Vaillant automation ebus</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="http://users.telenet.be/goosst">Goosst</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="http://users.telenet.be/goosst/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="http://users.telenet.be/goosst/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js" integrity="sha256-eEQX9YRxUfhIwznPCssToGy7ZIsUg0NaKO1FVsTq1ps="></script>
+
+</body>
+
+</html>

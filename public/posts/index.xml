@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Posts on Goosst blog</title>
+		<link>http://users.telenet.be/goosst/posts/</link>
+		<description>Recent content in Posts on Goosst blog</description>
+		<generator>Hugo -- gohugo.io</generator>
+		<language>en-us</language>
+		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+		<lastBuildDate>Sat, 20 Apr 2019 00:00:00 +0000</lastBuildDate>
+		<atom:link href="http://users.telenet.be/goosst/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Vaillant automation part II</title>
+			<link>http://users.telenet.be/goosst/posts/homeautomation_partii/</link>
+			<pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/homeautomation_partii/</guid>
+			<description>Intro In this part we&amp;rsquo;ll send commands through the interface of Home Assistant.
+There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, it&amp;rsquo;s not confusing at all :). I&amp;rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&amp;rsquo;m not familiar with docker (hass.io) and its limitations.
+Preparing the Raspberry pi  Follow the Hassbian installation instructions: https://www.home-assistant.io/docs/installation/hassbian/installation/
+ Additional installations beside the normal updating, upgrading, setting the time-zone:</description>
+			<content type="html"><![CDATA[
+
+<h1 id="intro">Intro</h1>
+
+<p>In this part we&rsquo;ll send commands through the interface of Home Assistant.</p>
+
+<p>There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.</p>
+
+<h1 id="preparing-the-raspberry-pi">Preparing the Raspberry pi</h1>
+
+<ul>
+<li><p>Follow the Hassbian installation instructions: <a href="https://www.home-assistant.io/docs/installation/hassbian/installation/">https://www.home-assistant.io/docs/installation/hassbian/installation/</a></p></li>
+
+<li><p>Additional installations beside the normal updating, upgrading, setting the time-zone:</p></li>
+</ul>
+
+<pre><code>sudo apt-get install net-tools nmap
+sudo hassbian-config install mosquitto
+sudo hassbian-config install samba
+</code></pre>
+
+<p>An overview of other helper scripts can be found at: <a href="https://github.com/home-assistant/hassbian-scripts">https://github.com/home-assistant/hassbian-scripts</a></p>
+
+<p>To be continued</p>
+
+<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=48&l=ur1&category=electronics&banner=0MNQ6KCCWY32BF4PH5G2&f=ifr&linkID=17a86ac5c29a5d7ba74c9e25d42d63d7&t=goosst-21&tracking_id=goosst-21" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+
+]]></content>
+		</item>
+		
+		<item>
+			<title>Vaillant automation ebus</title>
+			<link>http://users.telenet.be/goosst/posts/homeautomation_parti/</link>
+			<pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/homeautomation_parti/</guid>
+			<description>Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a rapsberry pi (in general, the instructions below work with any computer using debian/ubuntu).
+Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&amp;rsquo;m not going to write down all the details, since I can just refer to them:</description>
+			<content type="html"><![CDATA[
+
+<h1 id="intro">Intro</h1>
+
+<p>In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a rapsberry pi (in general, the instructions below work with any computer using debian/ubuntu).</p>
+
+<h1 id="hardware">Hardware</h1>
+
+<h2 id="ebus-adapter">Ebus adapter</h2>
+
+<p>We need an ebus adapter for the raspberry to interface with our heater. I&rsquo;m not going to write down all the details, since I can just refer to them:</p>
+
+<ul>
+<li>start reading here for more background: <a href="https://ebus.github.io/adapter/index.en.html">https://ebus.github.io/adapter/index.en.html</a></li>
+<li>I&rsquo;m using the base board version 2.2, there might be better options to use directly with a raspberry pi, but when I ordered it looked like the most flexible solution.</li>
+<li>Adapter was ordered on the fhem forum. They will send you a pcb with a set of components, you have to solder yourself (or pay a bit extra): <a href="https://forum.fhem.de/index.php/topic,93190.msg857894.html#msg857894">https://forum.fhem.de/index.php/topic,93190.msg857894.html#msg857894</a>. If you&rsquo;ve read the first link you will also know there are commercial options in case you don&rsquo;t want this.</li>
+<li>Put it in a box so there is no chance on touching electrical connections etc. .
+
+<ul>
+<li>You could consider placing the adapter inside the heater (plenty of space), I just didn&rsquo;t want to put custom electronics inside &hellip; .</li>
+</ul></li>
+</ul>
+
+
+<figure>
+    
+        <img src="/goosst/pictures/ebus_adapter.jpg" width="250" />
+    
+    
+    <figcaption>
+        <h4>ebus adapter v2.2</h4>
+        
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="raspberry-pi">Raspberry pi</h2>
+
+<p>Please use a decent power supply (it causes a lot of strange problems) and 32Gb size SD card (recommended by Home Assistant).</p>
+
+<h2 id="my-setup">My setup</h2>
+
+
+<figure>
+    
+        <img src="/goosst/pictures/IMG_20190420_092754.jpg" width="350" />
+    
+    
+    <figcaption>
+        <h4>Raspberry pi and ebus adapter mounted on heater</h4>
+        
+    </figcaption>
+    
+</figure>
+
+
+<ul>
+<li>Pi and ebus-adapter are mounted against the heater by using velco strips</li>
+<li>Case specific for raspberry pi is used</li>
+<li>the white and purple wire are the ebus, they are connected inside the heater (ebusd protocol has no polarity, so you can swap the wires)</li>
+<li>pi and ebusd-adapter are connected through USB</li>
+</ul>
+
+<h1 id="software">Software</h1>
+
+<h2 id="preparing-the-raspberry-pi">Preparing the Raspberry pi</h2>
+
+<p>If you have a pi with raspbian already on it, you can jump to next section and install hassbian later. If you have a new sd card, just set it right from the first time.</p>
+
+<p>We&rsquo;ll be using Home Assistant for our interface and home automation.
+I chose Home Assistant because it&rsquo;s fully python based. I prefer to learn python over learning Java, Perl, &hellip; which is used by the alternative open source domotica programs.</p>
+
+<p>To use Home Assistant, there is hassbian, hass.io, homme-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi.</p>
+
+<p>Additional installations beside the normal updating and upgrading:</p>
+
+<pre><code>sudo apt-get install net-tools nmap
+sudo hassbian-config install mosquitto
+sudo hassbian-config install samba
+</code></pre>
+
+<h2 id="install-and-use-ebusd">install and use ebusd</h2>
+
+<p>It&rsquo;s an awesome tool, it&rsquo;s however a challenge to find out how to efficiently use it :).</p>
+
+<ul>
+<li>go to your raspberry pi by ssh&rsquo;ing to it</li>
+<li>follow these instructions: <a href="https://github.com/john30/ebusd-debian/blob/master/README.md">https://github.com/john30/ebusd-debian/blob/master/README.md</a></li>
+<li>I&rsquo;ve had some weird issues that magically got resolved, I still think it&rsquo;s linked to a strange power supply : <a href="https://github.com/john30/ebusd/issues/276">https://github.com/john30/ebusd/issues/276</a></li>
+<li>check on the raspberry with the command: <code>dmesg | grep cp210</code> if the adpater is added to ttUSB0 (only relevant if you&rsquo;re using cp210 as uart device of course, this is the blue thingy in the picture of the adapter)
+output should look something like this:</li>
+</ul>
+
+<pre><code>pi@raspberrypi:/ $ dmesg | grep cp210
+[    3.826051] usbcore: registered new interface driver cp210x
+[    3.826168] usbserial: USB Serial support registered for cp210x
+[    3.834271] cp210x 1-1.3:1.0: cp210x converter detected
+[    3.856013] usb 1-1.3: cp210x converter now attached to ttyUSB0
+
+</code></pre>
+
+<ul>
+<li><p>The magic ebusd command is: <code>ebusd -f --scanconfig</code>, ebusd should find your connected devices (a wireless thermostat and a vaillant heater in my case), output looks something like the one below. If you don&rsquo;t see any read messages something is wrong and you need to start debugging.</p>
+
+<pre><code>pi@raspberrypi:/ $ ebusd -f --scanconfig
+2019-03-31 13:30:47.528 [main notice] ebusd 3.3.v3.3 started with auto scan
+2019-03-31 13:30:47.875 [bus notice] bus started with own address 31/36
+2019-03-31 13:30:47.897 [bus notice] signal acquired
+2019-03-31 13:30:48.146 [bus notice] new master 03, master count 2
+2019-03-31 13:30:53.347 [bus notice] new master 10, master count 3
+2019-03-31 13:30:53.410 [update notice] received unknown MS cmd: 1008b5110101 / 093d3c008033390000ff
+2019-03-31 13:30:54.523 [update notice] received unknown MS cmd: 1008b5040100 / 0a00ffffffffffffff0080
+2019-03-31 13:30:55.347 [update notice] received unknown BC cmd: 10feb51603010000
+2019-03-31 13:30:57.436 [update notice] received unknown MS cmd: 1008b51009000000ffffff45ff00 / 0101
+2019-03-31 13:30:58.038 [bus notice] scan 08: ;Vaillant;BAI00;0202;9602
+2019-03-31 13:30:58.039 [update notice] store 08 ident: done
+2019-03-31 13:30:58.039 [update notice] sent scan-read scan.08  QQ=31: Vaillant;BAI00;0202;9602
+2019-03-31 13:30:58.039 [bus notice] scan 08: ;Vaillant;BAI00;0202;9602
+2019-03-31 13:30:58.565 [main notice] read common config file vaillant/scan.csv
+2019-03-31 13:30:58.780 [main notice] read common config file vaillant/general.csv
+2019-03-31 13:30:58.918 [main notice] read common config file vaillant/broadcast.csv
+2019-03-31 13:30:59.001 [main notice] read scan config file vaillant/08.bai.csv for ID &quot;bai00&quot;, SW0202, HW9602
+2019-03-31 13:30:59.576 [update notice] sent scan-read scan.08 id QQ=31: 
+2019-03-31 13:30:59.756 [update notice] sent scan-read scan.08 id QQ=31: 
+2019-03-31 13:30:59.936 [update notice] sent scan-read scan.08 id QQ=31: 
+2019-03-31 13:31:00.117 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
+2019-03-31 13:31:00.478 [main notice] found messages: 198 (2 conditional on 24 conditions, 0 poll, 9 update)
+2019-03-31 13:31:00.645 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
+2019-03-31 13:31:00.827 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
+2019-03-31 13:31:01.010 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
+2019-03-31 13:31:01.189 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
+2019-03-31 13:31:01.190 [bus notice] scan 08: ;21;17;09;0010011632;1300;378112;N5
+2019-03-31 13:31:03.350 [bus notice] scan 15: ;Vaillant;F3700;0114;6102
+2019-03-31 13:31:03.350 [update notice] store 15 ident: done
+2019-03-31 13:31:03.350 [update notice] sent scan-read scan.15  QQ=31: Vaillant;F3700;0114;6102
+2019-03-31 13:31:03.350 [bus notice] scan 15: ;Vaillant;F3700;0114;6102
+2019-03-31 13:31:03.581 [update notice] sent unknown MS cmd: 3115b5090124 / 09013231313732323030
+2019-03-31 13:31:03.761 [update notice] sent scan-read scan.15 id QQ=31: 
+2019-03-31 13:31:03.941 [update notice] sent scan-read scan.15 id QQ=31: 
+2019-03-31 13:31:04.002 [bus notice] max. symbols per second: 114
+2019-03-31 13:31:04.120 [update notice] sent scan-read scan.15 id QQ=31: 21;17;22;0020108149;0082;006391;N9
+2019-03-31 13:31:04.120 [bus notice] scan 15: ;21;17;22;0020108149;0082;006391;N9
+2019-03-31 13:31:04.518 [main notice] read scan config file vaillant/15.f37.csv for ID &quot;f3700&quot;, SW0114, HW6102
+2019-03-31 13:31:04.858 [main notice] found messages: 345 (2 conditional on 24 conditions, 0 poll, 9 update)
+2019-03-31 13:31:05.428 [update notice] received read bai Status02 QQ=10: on;60;75.0;70;65.0
+2019-03-31 13:31:07.472 [update notice] received update-write bai SetMode QQ=10: auto;0.0;-;-;1;0;1;0;0;0
+2019-03-31 13:31:13.444 [update notice] received read bai Status01 QQ=10: 30.5;30.0;-;25.5;28.5;off
+2019-03-31 13:31:17.474 [update notice] received update-write bai SetMode QQ=10: auto;0.0;-;-;1;0;1;0;0;0
+</code></pre></li>
+
+<li><p>make sure ebusd starts up when the raspberry boots: <a href="https://github.com/john30/ebusd/wiki/2.-Run">https://github.com/john30/ebusd/wiki/2.-Run</a></p></li>
+
+<li><p>in parallel commands with ebusctl can be queried</p>
+
+<pre><code>pi@raspberrypi:~ $ ebusctl info
+version: ebusd 3.3.v3.3
+signal: acquired
+symbol rate: 23
+max symbol rate: 114
+min arbitration micros: 3217
+max arbitration micros: 3341
+min symbol latency: 4
+max symbol latency: 5
+reconnects: 0
+masters: 3
+messages: 345
+conditional: 2
+poll: 0
+update: 9
+address 03: master #11
+address 08: slave #11, scanned &quot;MF=Vaillant;ID=BAI00;SW=0202;HW=9602&quot;, loaded &quot;vaillant/bai.0010015600.inc&quot; ([HW=9602]), &quot;vaillant/08.bai.csv&quot;
+address 10: master #2
+address 15: slave #2, scanned &quot;MF=Vaillant;ID=F3700;SW=0114;HW=6102&quot;, loaded &quot;vaillant/15.f37.csv&quot;
+address 31: master #8, ebusd
+address 36: slave #8, ebusd
+</code></pre>
+
+<p>here you can find the names f37 and bai for the devicenames needed for further usage in ebusd.</p></li>
+
+<li><p>you have to look up the mentioned csv files (e.g. 15.f37.csv) to see which parameters are available. Which parameters have read permission &reg;, which have write permissions (w), &hellip; the configuration files are stored on another github site from john30:  <a href="https://github.com/john30/ebusd-configuration/tree/master/ebusd-2.1.x/en/vaillant">https://github.com/john30/ebusd-configuration/tree/master/ebusd-2.1.x/en/vaillant</a></p></li>
+
+<li><p>once ebus is running open a second terminal and read and write all the things you want to do:</p>
+
+<ul>
+<li>Read example, here we read the time reported by the thermostat:</li>
+</ul></li>
+</ul>
+
+<pre><code>ebusctl read Time
+14:30:30
+</code></pre>
+
+<ul>
+<li>Write example, writing the time to the thermostat:</li>
+</ul>
+
+<pre><code>pi@raspberrypi:~ $ ebusctl write -c f37 Time 14:00:00
+done
+
+pi@raspberrypi:~ $ ebusctl read Time
+14:00:02
+</code></pre>
+
+<ul>
+<li>play around with other relevant parameters from the .csv sheet:
+
+<ul>
+<li><code>ebusctl read Hc1DayTemp</code>, read and write your temperature setpoint during day time</li>
+<li><code>ebusctl read Hc1NightTemp</code>, read and write your temperature setpoint during night time</li>
+<li><code>ebusctl read RoomTemp</code>, read the temperature measured by the thermostat</li>
+<li>and a whole bunch of others &hellip;</li>
+</ul></li>
+</ul>
+
+<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=48&l=ur1&category=electronics&banner=0MNQ6KCCWY32BF4PH5G2&f=ifr&linkID=17a86ac5c29a5d7ba74c9e25d42d63d7&t=goosst-21&tracking_id=goosst-21" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+
+]]></content>
+		</item>
+		
+		<item>
+			<title>Heating automation - intro</title>
+			<link>http://users.telenet.be/goosst/posts/homeautomation_intro/</link>
+			<pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/homeautomation_intro/</guid>
+			<description>Intro I think we all want a more intelligent control over our heating than what the standard thermostat and their time-based settings offer. e.g. Automatically turning the heating off when leaving your home, schedulling the heating to turn on sooner when it&amp;rsquo;s cold, &amp;hellip; .
+Disregarding privacy concerns, commercial solutions like Google Nest only seem to support on/off control of the heating. If we want to use proportional/modulated heating for more comfort, at the time of writing the amount of solutions seems very limited.</description>
+			<content type="html"><![CDATA[
+
+<h1 id="intro">Intro</h1>
+
+<p>I think we all want a more intelligent control over our heating than what the standard thermostat and their time-based settings offer. e.g. Automatically turning the heating off when leaving your home, schedulling the heating to turn on sooner when it&rsquo;s cold, &hellip; .</p>
+
+<p>Disregarding privacy concerns, commercial solutions like Google Nest only seem to support on/off control of the heating. If we want to use proportional/modulated heating for more comfort, at the time of writing the amount of solutions seems very limited.</p>
+
+<p>Luckily, the open-source world seems to have done a massive amount of work related to home automation and understanding the protocols used by commercial heating systems. Despite all this work, it is a learning curve to find your way through all the different tools / programs and how to use them + when my system ever breaks down I want to have some documentation how I did everything again &hellip; .</p>
+
+<p>If your goal is to remove your thermostat completely, that&rsquo;s not going to happen in this blog.
+The posts provide guidance how to have such a system up and running, it&rsquo;s not a detailed step-by-step guide.</p>
+
+<h1 id="tools">Tools</h1>
+
+<p>We&rsquo;ll be using the following hardware and software:</p>
+
+<ol>
+<li>Raspberry pi 3b</li>
+<li>ebus adapter: <a href="https://ebus.github.io/adapter/index.en.html">https://ebus.github.io/adapter/index.en.html</a></li>
+<li>ebusd software: <a href="https://github.com/john30/ebusd">https://github.com/john30/ebusd</a></li>
+<li>Home Assistant: <a href="https://www.home-assistant.io/">https://www.home-assistant.io/</a></li>
+</ol>
+
+<p>Ebus is the communication protocol used by a lot of heating systems, we&rsquo;ll have to tap into this communication system to help our thermostat become more intelligent.</p>
+
+<p>It&rsquo;s fair to say without the ebusd software this project would never have happened.</p>
+
+<h1 id="setup">Setup</h1>
+
+<p>My setup is rather simple:</p>
+
+<ol>
+<li>Vaillant ecotec plus: heats one room</li>
+<li>Wireless thermostat, Calormatic 370f</li>
+</ol>
+
+<p>
+<figure>
+    
+        <img src="/goosst/pictures/IMG_20190420_091458.jpg" width="350" />
+    
+    
+    <figcaption>
+        <h4>Vaillant ecotec plus</h4>
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure>
+    
+        <img src="/goosst/pictures/IMG_20190420_112454.jpg" width="350" />
+    
+    
+    <figcaption>
+        <h4>Vaillant wireless thermostat, Calormatic 370f</h4>
+        
+    </figcaption>
+    
+</figure>
+</p>
+]]></content>
+		</item>
+		
+	</channel>
+</rss>
