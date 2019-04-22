@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Goosst blog</title>
-    <link>http://users.telenet.be/goosst/</link>
-    <description>Recent content on Goosst blog</description>
+    <title>Ebus on Goosst blog</title>
+    <link>http://users.telenet.be/goosst/tags/ebus/</link>
+    <description>Recent content in Ebus on Goosst blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
     <lastBuildDate>Mon, 22 Apr 2019 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="http://users.telenet.be/goosst/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://users.telenet.be/goosst/tags/ebus/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -54,27 +54,6 @@ Again: in this way we can focus on making all the ebus related items running in 
       <guid>http://users.telenet.be/goosst/posts/homeautomation_parti/</guid>
       <description>Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a rapsberry pi (in general, the instructions below work with any computer using debian/ubuntu).
 Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&amp;rsquo;m not going to write down all the details, since I can just refer to them:</description>
-    </item>
-    
-    <item>
-      <title>Heating automation - intro</title>
-      <link>http://users.telenet.be/goosst/posts/homeautomation_intro/</link>
-      <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://users.telenet.be/goosst/posts/homeautomation_intro/</guid>
-      <description>Intro I think we all want a more intelligent control over our heating than what the standard thermostat and their time-based settings offer. e.g. Automatically turning the heating off when leaving your home, schedulling the heating to turn on sooner when it&amp;rsquo;s cold, &amp;hellip; .
-Disregarding privacy concerns, commercial solutions like Google Nest only seem to support on/off control of the heating. If we want to use proportional/modulated heating for more comfort, at the time of writing the amount of solutions seems very limited.</description>
-    </item>
-    
-    <item>
-      <title>About Hugo</title>
-      <link>http://users.telenet.be/goosst/about-hugo/</link>
-      <pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate>
-      
-      <guid>http://users.telenet.be/goosst/about-hugo/</guid>
-      <description>Hugo is the world’s fastest framework for building websites. It is written in Go.
-It makes use of a variety of open source projects including:
- https://github.com/russross/blackfriday https://github.com/alecthomas/chroma https://github.com/muesli/smartcrop https://github.com/spf13/cobra https://github.com/spf13/viper  Learn more and contribute on GitHub.</description>
     </item>
     
   </channel>

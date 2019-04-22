@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="Heating automation - read information">
+<meta itemprop="description" content="Intro In this part we&rsquo;ll read commands through the interface of Home Assistant and plot them in the UI.
+Concept We&rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.
+Again: in this way we can focus on making all the ebus related items running in python and we don&rsquo;t have to deal with a custom Home Assistant syntax.">
+
+
+<meta itemprop="datePublished" content="2019-04-21T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-21T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="535">
+
+
+
+<meta itemprop="keywords" content="vaillant,ecotec plus,ebus,home assistant,raspberry pi," />
+<meta property="og:title" content="Heating automation - read information" />
+<meta property="og:description" content="Intro In this part we&rsquo;ll read commands through the interface of Home Assistant and plot them in the UI.
+Concept We&rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.
+Again: in this way we can focus on making all the ebus related items running in python and we don&rsquo;t have to deal with a custom Home Assistant syntax." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://users.telenet.be/goosst/posts/homeautomation_partiii/" /><meta property="article:published_time" content="2019-04-21T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-21T00:00:00&#43;00:00"/><meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Heating automation - read information"/>
+<meta name="twitter:description" content="Intro In this part we&rsquo;ll read commands through the interface of Home Assistant and plot them in the UI.
+Concept We&rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.
+Again: in this way we can focus on making all the ebus related items running in python and we don&rsquo;t have to deal with a custom Home Assistant syntax."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/goosst/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/goosst/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/goosst/favicon-16x16.png">
+	<link rel="manifest" href="/goosst/site.webmanifest">
+	<link rel="mask-icon" href="/goosst/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/goosst/favicon.ico">
+
+	<title>Heating automation - read information</title>
+	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.e81f50049998463da8cdbf0f848b77d9797f27f249581a236a3161d386f310db.css" integrity="sha256-6B9QBJmYRj2ozb8PhIt32Xl/J/JJWBojajFh04bzENs=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="http://users.telenet.be/goosst">Goosst blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="http://users.telenet.be/goosst/posts/">Posts</a>
+					<a href="http://users.telenet.be/goosst/about-hugo/">About</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/goosst" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+			<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=288&l=ez&f=ifr&linkID=8e0370935cd8bd0e3a8f7eb4cbc24956&t=goosst-21&tracking_id=goosst-21" width="320" height="50" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="http://users.telenet.be/goosst/posts/">Posts</a></li>
+			<li><a href="http://users.telenet.be/goosst/about-hugo/">About</a></li>
+		</ul>
+		<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=288&l=ez&f=ifr&linkID=8e0370935cd8bd0e3a8f7eb4cbc24956&t=goosst-21&tracking_id=goosst-21" width="320" height="50" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Apr 21, 2019</span></div>
+				<h1>Heating automation - read information</h1>
+			</header>
+			<div class="content">
+				
+
+<h1 id="intro">Intro<a href="#intro" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>In this part we&rsquo;ll read commands through the interface of Home Assistant and plot them in the UI.</p>
+
+<h1 id="concept">Concept<a href="#concept" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>We&rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.</p>
+
+<p>Again: in this way we can focus on making all the ebus related items running in python and we don&rsquo;t have to deal with a custom Home Assistant syntax. I personally prefer spending time learning python over learning a custom program specific language/syntax.</p>
+
+<h2 id="python-script">python script<a href="#python-script" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>script below:</p>
+
+<ul>
+<li>queries the ebus for certain parameters (three temperatures in this example)</li>
+<li>broadcasts them as an mqtt message, pay attention the messages generated in the python scripts (e.g. <code>sensor/thermostat/temperature</code>) match with the <code>state_topic</code> defined in the sensors (see next section)</li>
+<li>store the script again in <code>/home/homeassistant/.homeassistant/python_scripts/</code></li>
+</ul>
+
+<pre><code>import subprocess
+#import time
+
+#read temperature measured by thermostat
+cp = subprocess.run([&quot;ebusctl read RoomTemp&quot;],shell=True,stdout=subprocess.PIPE)
+cp_string=cp.stdout.decode('utf-8')
+busread=cp_string[0:5]
+msg1=&quot;mosquitto_pub -h localhost -t sensor/thermostat/temperature -u stijn -P mqtt -m &quot;
+cp = subprocess.run([msg1+busread],shell=True,stdout=subprocess.PIPE)
+
+# read temperature setpoint
+cp = subprocess.run([&quot;ebusctl read DisplayedHc1RoomTempDesired&quot;],shell=True,stdout=subprocess.PIPE)
+cp_string=cp.stdout.decode('utf-8')
+#print(cp_string)
+busread=cp_string[0:4]
+#print(busread)
+msg1=&quot;mosquitto_pub -h localhost -t sensor/thermostat/temperature_set -u stijn -P mqtt -m &quot;
+cp = subprocess.run([msg1+busread],shell=True,stdout=subprocess.PIPE)
+
+# read temperature flow heating
+cp = subprocess.run([&quot;ebusctl read Hc1ActualFlowTempDesired&quot;],shell=True,stdout=subprocess.PIPE)
+cp_string=cp.stdout.decode('utf-8')
+#print(cp_string)
+busread=cp_string[0:4]
+#print(busread)
+msg1=&quot;mosquitto_pub -h localhost -t sensor/thermostat/temperature_flowtemp -u stijn -P mqtt -m &quot;
+cp = subprocess.run([msg1+busread],shell=True,stdout=subprocess.PIPE)
+
+
+# read time
+#cp = subprocess.run([&quot;ebusctl read Time&quot;],shell=True,stdout=subprocess.PIPE)
+#cp_string=cp.stdout.decode('utf-8')
+#time_read=cp_string[0:8]
+#msg1=&quot;mosquitto_pub -h localhost -t sensor/thermostat/fubar -u stijn -P mqtt -m &quot;
+#print(time_read)
+#cp = subprocess.run([msg1+time_read],shell=True,stdout=subprocess.PIPE)
+</code></pre>
+
+<h2 id="home-assistant">Home assistant<a href="#home-assistant" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>Add the following mqtt sensors to <code>configuration.yaml</code>. This contains a username and password for the mqtt configuration (stored in <code>secrets.yaml</code>), for initial debugging you could consider removing username and password.</p>
+
+<pre><code>mqtt:
+  broker: 127.0.0.1
+  username: stijn
+  password: !secret pass_mqtt
+  discovery: true
+
+sensor:
+  - platform: mqtt
+    name: &quot;Temperature living&quot;
+    state_topic: sensor/thermostat/temperature
+    unit_of_measurement: &quot;°C&quot;
+  - platform: mqtt
+    name: &quot;Temperature setpoint living&quot;
+    state_topic: sensor/thermostat/temperature_set
+    unit_of_measurement: &quot;°C&quot;
+  - platform: mqtt
+    name: &quot;Temperature flow radiator&quot;
+    state_topic: sensor/thermostat/temperature_flowtemp
+    unit_of_measurement: &quot;°C&quot;
+</code></pre>
+
+<p>We&rsquo;ll create a <code>shell_command</code> to be able to call the python script above to read out the parameters on the ebus, we&rsquo;ll add a third item called <code>read_ebus</code> (<code>readtime_thermostat.py</code> is the script mentioned above).</p>
+
+<p>In <code>configuration.yaml</code> it looks like this:</p>
+
+<pre><code>shell_command:
+  set_temp_high: python3 /home/homeassistant/.homeassistant/python_scripts/set_temperature_on.py
+  set_temp_low: python3 /home/homeassistant/.homeassistant/python_scripts/set_temperature_off.py
+  read_ebus: python3 /home/homeassistant/.homeassistant/python_scripts/readtime_thermostat.py
+</code></pre>
+
+<p>Now we will use a first automation to trigger a periodic reading of the ebus (if you don&rsquo;t want to do this in Home Assistant you could do this in python as well). Here we&rsquo;ll trigger a new reading every 7 minutes.</p>
+
+<p>add to <code>configuration.yaml</code>:</p>
+
+<pre><code>automation ebusreading:
+  alias: read ebus
+  trigger:
+    platform: time_pattern
+    minutes: '/7'
+  action:
+    service: shell_command.read_ebus
+    data:
+      message: &quot;thermostat reading&quot;
+</code></pre>
+
+<h2 id="home-assistant-ui">Home assistant UI<a href="#home-assistant-ui" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>You can see the three sensor values defined and reading out its value :).</p>
+
+
+<figure>
+    
+        <img src="/goosst/pictures/sensorvalues2.png" width="760" />
+    
+    
+    <figcaption>
+        <h4>Sensors from the thermostat and heater read through the ebus</h4>
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>To put it in some nice graphs so we can see data over a longer period we need to add this to <code>configuration.yaml</code>:</p>
+
+<pre><code>history_graph:
+  gr1:
+    name: temperature living
+    entities:
+      - sensor.temperature_setpoint_living
+      - sensor.temperature_living
+    hours_to_show: 72
+    refresh: 600
+  gr2:
+    name: temperature heater
+    entities:
+      - sensor.temperature_flow_radiator
+    hours_to_show: 72
+    refresh: 600
+</code></pre>
+
+<p>This results in something like this (pending how you arrange it):
+
+<figure>
+    
+        <img src="/goosst/pictures/historygraph.png" width="760" />
+    
+    
+    <figcaption>
+        <h4>Sensor values in a graph</h4>
+        
+    </figcaption>
+    
+</figure>
+</p>
+
+<SCRIPT charset="utf-8"
+  type="text/javascript"
+  src="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8005%2F255f510d-9dba-4465-94c2-3e7baad54509">
+</SCRIPT>
+
+<NOSCRIPT>
+  <A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8005%2F255f510d-9dba-4465-94c2-3e7baad54509&Operation=NoScript">Amazon.de Widgets</A>
+</NOSCRIPT>
+
+
+<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=48&l=ur1&category=electronics&banner=0MNQ6KCCWY32BF4PH5G2&f=ifr&linkID=17a86ac5c29a5d7ba74c9e25d42d63d7&t=goosst-21&tracking_id=goosst-21" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://users.telenet.be/goosst/tags/vaillant">vaillant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ecotec-plus">ecotec plus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ebus">ebus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/home-assistant">home assistant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/raspberry-pi">raspberry pi</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>535 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-04-21 02:00 &#43;0200</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="http://users.telenet.be/goosst/posts/homeautomation_partiiii/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Heating automation - device tracking</span>
+			</a>
+			<a class="prev-post" href="http://users.telenet.be/goosst/posts/homeautomation_partii/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Heating automation - set temperatures</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="http://users.telenet.be/goosst">Goosst</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="http://users.telenet.be/goosst/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="http://users.telenet.be/goosst/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js" integrity="sha256-eEQX9YRxUfhIwznPCssToGy7ZIsUg0NaKO1FVsTq1ps="></script>
+
+</body>
+
+</html>

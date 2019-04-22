@@ -7,33 +7,368 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Sat, 20 Apr 2019 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Mon, 22 Apr 2019 00:00:00 +0000</lastBuildDate>
 		<atom:link href="http://users.telenet.be/goosst/posts/index.xml" rel="self" type="application/rss+xml" />
 		
 		<item>
-			<title>Vaillant automation part II</title>
-			<link>http://users.telenet.be/goosst/posts/homeautomation_partii/</link>
-			<pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate>
+			<title>Heating automation - device tracking</title>
+			<link>http://users.telenet.be/goosst/posts/homeautomation_partiiii/</link>
+			<pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
 			
-			<guid>http://users.telenet.be/goosst/posts/homeautomation_partii/</guid>
-			<description>Intro In this part we&amp;rsquo;ll send commands through the interface of Home Assistant.
-There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, it&amp;rsquo;s not confusing at all :). I&amp;rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&amp;rsquo;m not familiar with docker (hass.io) and its limitations.
-Preparing the Raspberry pi  Follow the Hassbian installation instructions: https://www.home-assistant.io/docs/installation/hassbian/installation/
- Additional installations beside the normal updating, upgrading, setting the time-zone:</description>
+			<guid>http://users.telenet.be/goosst/posts/homeautomation_partiiii/</guid>
+			<description>Intro In this part we&amp;rsquo;ll turn our heating off when we leave the house (by detecting presence of our mobile phone).
+Concept We&amp;rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&amp;rsquo;ll do a simple scheduling of our heating.
+Home assistant No python scripts this time, only activity is done in Home Assistant.
+Device tracking Example below will use the component device_tracker and the nmap program to scan the network.</description>
 			<content type="html"><![CDATA[
 
 <h1 id="intro">Intro</h1>
 
-<p>In this part we&rsquo;ll send commands through the interface of Home Assistant.</p>
+<p>In this part we&rsquo;ll turn our heating off when we leave the house (by detecting presence of our mobile phone).</p>
 
-<p>There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.</p>
+<h1 id="concept">Concept</h1>
+
+<p>We&rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&rsquo;ll do a simple scheduling of our heating.</p>
+
+<h1 id="home-assistant">Home assistant</h1>
+
+<p>No python scripts this time, only activity is done in Home Assistant.</p>
+
+<h2 id="device-tracking">Device tracking</h2>
+
+<p>Example below will use the component <code>device_tracker</code> and the nmap program to scan the network.</p>
+
+<pre><code>#NMAP is unreliable without scan_options
+device_tracker:
+  - platform: nmap_tracker
+    hosts: 192.168.0.1-254
+    consider_home: 600
+    interval_seconds: 180
+    scan_options: &quot; -min-rtt-timeout 3s &quot; #scan_options: &quot; -min-rtt-timeout 3s --privileged -sP &quot;
+</code></pre>
+
+<ul>
+<li>it will scan all ip-addresses 192.168.0.x</li>
+<li>an additional scan option has been added to increase the minimum timeout, detection on my wireless network does not seem to work reliably without this option.</li>
+<li>starts a scan every 180 seconds</li>
+</ul>
+
+<h2 id="identify-phone">Identify phone</h2>
+
+<p>When Home Assistant starts scanning:</p>
+
+<ul>
+<li>automatically new devices will start popping up in your user interface, easiest way is to go to the states overview:
+
+<figure>
+    
+        <img src="/goosst/pictures/devicetracker.png" width="760" />
+    
+    
+    <figcaption>
+        <h4>States device tracker</h4>
+        
+    </figcaption>
+    
+</figure>
+</li>
+<li>to check which ip address your phone has, you can look it up on the phone
+
+<ul>
+<li>in Android: Settings -&gt; About phone -&gt; Status</li>
+<li>or disable and enable the wifi on your phone and see which ones gets the status away in your home assistant interface (requires more patience)</li>
+</ul></li>
+<li>in your folder <code>/home/homeassistant/.homeassistant</code> a file <code>known_devices.yaml</code> will list all discovered devices</li>
+<li>give a more decent name to the address linked to your phone (e.g. phone Jane)</li>
+</ul>
+
+<pre><code>5c_35_3b_70_05_29:
+  hide_if_away: false
+  icon:
+  mac: 5C:35:3B:70:05:29
+  name: phone Jane
+  picture:
+  track: true
+</code></pre>
+
+<ul>
+<li>You should disable tracking (<code>track:false</code>) for the devices you are not interested in</li>
+</ul>
+
+<h2 id="turn-off-heating-when-leaving">turn off heating when leaving</h2>
+
+<p>Examples below</p>
+
+<ul>
+<li>Set temperature setpoint low when phone went from home to not home:</li>
+</ul>
+
+<pre><code>automation leaving_house:
+  alias: set temp low when leaving house
+  trigger:
+    platform: state
+    entity_id: device_tracker.5c_35_3b_70_05_29
+    from: 'home'
+    to: 'not_home'
+  action:
+    service: shell_command.set_temp_low
+    data:
+      message: &quot;Jane left house: heating low&quot;
+</code></pre>
+
+<ul>
+<li>Set temperature setpoint high when phone is present and it&rsquo;s between 6:30 and 22:30.
+Every five minutes a new check on the home status is done.</li>
+</ul>
+
+<pre><code>automation at_home:
+  alias: set temp high when being home
+  trigger:
+    platform: time_pattern
+    minutes: '/5'
+  condition:
+    condition: and
+    conditions:
+      - condition: time
+        after: '06:30:00'
+        before: '22:30:00'
+      - condition: state
+        entity_id: device_tracker.5c_35_3b_70_05_29
+        state: 'home'
+  action:
+    service: shell_command.set_temp_high
+    data:
+      message: &quot;Jane is home: heating high&quot;
+</code></pre>
+
+<SCRIPT charset="utf-8"
+  type="text/javascript"
+  src="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8005%2F255f510d-9dba-4465-94c2-3e7baad54509">
+</SCRIPT>
+
+<NOSCRIPT>
+  <A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8005%2F255f510d-9dba-4465-94c2-3e7baad54509&Operation=NoScript">Amazon.de Widgets</A>
+</NOSCRIPT>
+
+
+<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=48&l=ur1&category=electronics&banner=0MNQ6KCCWY32BF4PH5G2&f=ifr&linkID=17a86ac5c29a5d7ba74c9e25d42d63d7&t=goosst-21&tracking_id=goosst-21" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+
+]]></content>
+		</item>
+		
+		<item>
+			<title>Heating automation - read information</title>
+			<link>http://users.telenet.be/goosst/posts/homeautomation_partiii/</link>
+			<pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/homeautomation_partiii/</guid>
+			<description>Intro In this part we&amp;rsquo;ll read commands through the interface of Home Assistant and plot them in the UI.
+Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.
+Again: in this way we can focus on making all the ebus related items running in python and we don&amp;rsquo;t have to deal with a custom Home Assistant syntax.</description>
+			<content type="html"><![CDATA[
+
+<h1 id="intro">Intro</h1>
+
+<p>In this part we&rsquo;ll read commands through the interface of Home Assistant and plot them in the UI.</p>
+
+<h1 id="concept">Concept</h1>
+
+<p>We&rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.</p>
+
+<p>Again: in this way we can focus on making all the ebus related items running in python and we don&rsquo;t have to deal with a custom Home Assistant syntax. I personally prefer spending time learning python over learning a custom program specific language/syntax.</p>
+
+<h2 id="python-script">python script</h2>
+
+<p>script below:</p>
+
+<ul>
+<li>queries the ebus for certain parameters (three temperatures in this example)</li>
+<li>broadcasts them as an mqtt message, pay attention the messages generated in the python scripts (e.g. <code>sensor/thermostat/temperature</code>) match with the <code>state_topic</code> defined in the sensors (see next section)</li>
+<li>store the script again in <code>/home/homeassistant/.homeassistant/python_scripts/</code></li>
+</ul>
+
+<pre><code>import subprocess
+#import time
+
+#read temperature measured by thermostat
+cp = subprocess.run([&quot;ebusctl read RoomTemp&quot;],shell=True,stdout=subprocess.PIPE)
+cp_string=cp.stdout.decode('utf-8')
+busread=cp_string[0:5]
+msg1=&quot;mosquitto_pub -h localhost -t sensor/thermostat/temperature -u stijn -P mqtt -m &quot;
+cp = subprocess.run([msg1+busread],shell=True,stdout=subprocess.PIPE)
+
+# read temperature setpoint
+cp = subprocess.run([&quot;ebusctl read DisplayedHc1RoomTempDesired&quot;],shell=True,stdout=subprocess.PIPE)
+cp_string=cp.stdout.decode('utf-8')
+#print(cp_string)
+busread=cp_string[0:4]
+#print(busread)
+msg1=&quot;mosquitto_pub -h localhost -t sensor/thermostat/temperature_set -u stijn -P mqtt -m &quot;
+cp = subprocess.run([msg1+busread],shell=True,stdout=subprocess.PIPE)
+
+# read temperature flow heating
+cp = subprocess.run([&quot;ebusctl read Hc1ActualFlowTempDesired&quot;],shell=True,stdout=subprocess.PIPE)
+cp_string=cp.stdout.decode('utf-8')
+#print(cp_string)
+busread=cp_string[0:4]
+#print(busread)
+msg1=&quot;mosquitto_pub -h localhost -t sensor/thermostat/temperature_flowtemp -u stijn -P mqtt -m &quot;
+cp = subprocess.run([msg1+busread],shell=True,stdout=subprocess.PIPE)
+
+
+# read time
+#cp = subprocess.run([&quot;ebusctl read Time&quot;],shell=True,stdout=subprocess.PIPE)
+#cp_string=cp.stdout.decode('utf-8')
+#time_read=cp_string[0:8]
+#msg1=&quot;mosquitto_pub -h localhost -t sensor/thermostat/fubar -u stijn -P mqtt -m &quot;
+#print(time_read)
+#cp = subprocess.run([msg1+time_read],shell=True,stdout=subprocess.PIPE)
+</code></pre>
+
+<h2 id="home-assistant">Home assistant</h2>
+
+<p>Add the following mqtt sensors to <code>configuration.yaml</code>. This contains a username and password for the mqtt configuration (stored in <code>secrets.yaml</code>), for initial debugging you could consider removing username and password.</p>
+
+<pre><code>mqtt:
+  broker: 127.0.0.1
+  username: stijn
+  password: !secret pass_mqtt
+  discovery: true
+
+sensor:
+  - platform: mqtt
+    name: &quot;Temperature living&quot;
+    state_topic: sensor/thermostat/temperature
+    unit_of_measurement: &quot;°C&quot;
+  - platform: mqtt
+    name: &quot;Temperature setpoint living&quot;
+    state_topic: sensor/thermostat/temperature_set
+    unit_of_measurement: &quot;°C&quot;
+  - platform: mqtt
+    name: &quot;Temperature flow radiator&quot;
+    state_topic: sensor/thermostat/temperature_flowtemp
+    unit_of_measurement: &quot;°C&quot;
+</code></pre>
+
+<p>We&rsquo;ll create a <code>shell_command</code> to be able to call the python script above to read out the parameters on the ebus, we&rsquo;ll add a third item called <code>read_ebus</code> (<code>readtime_thermostat.py</code> is the script mentioned above).</p>
+
+<p>In <code>configuration.yaml</code> it looks like this:</p>
+
+<pre><code>shell_command:
+  set_temp_high: python3 /home/homeassistant/.homeassistant/python_scripts/set_temperature_on.py
+  set_temp_low: python3 /home/homeassistant/.homeassistant/python_scripts/set_temperature_off.py
+  read_ebus: python3 /home/homeassistant/.homeassistant/python_scripts/readtime_thermostat.py
+</code></pre>
+
+<p>Now we will use a first automation to trigger a periodic reading of the ebus (if you don&rsquo;t want to do this in Home Assistant you could do this in python as well). Here we&rsquo;ll trigger a new reading every 7 minutes.</p>
+
+<p>add to <code>configuration.yaml</code>:</p>
+
+<pre><code>automation ebusreading:
+  alias: read ebus
+  trigger:
+    platform: time_pattern
+    minutes: '/7'
+  action:
+    service: shell_command.read_ebus
+    data:
+      message: &quot;thermostat reading&quot;
+</code></pre>
+
+<h2 id="home-assistant-ui">Home assistant UI</h2>
+
+<p>You can see the three sensor values defined and reading out its value :).</p>
+
+
+<figure>
+    
+        <img src="/goosst/pictures/sensorvalues2.png" width="760" />
+    
+    
+    <figcaption>
+        <h4>Sensors from the thermostat and heater read through the ebus</h4>
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>To put it in some nice graphs so we can see data over a longer period we need to add this to <code>configuration.yaml</code>:</p>
+
+<pre><code>history_graph:
+  gr1:
+    name: temperature living
+    entities:
+      - sensor.temperature_setpoint_living
+      - sensor.temperature_living
+    hours_to_show: 72
+    refresh: 600
+  gr2:
+    name: temperature heater
+    entities:
+      - sensor.temperature_flow_radiator
+    hours_to_show: 72
+    refresh: 600
+</code></pre>
+
+<p>This results in something like this (pending how you arrange it):
+
+<figure>
+    
+        <img src="/goosst/pictures/historygraph.png" width="760" />
+    
+    
+    <figcaption>
+        <h4>Sensor values in a graph</h4>
+        
+    </figcaption>
+    
+</figure>
+</p>
+
+<SCRIPT charset="utf-8"
+  type="text/javascript"
+  src="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8005%2F255f510d-9dba-4465-94c2-3e7baad54509">
+</SCRIPT>
+
+<NOSCRIPT>
+  <A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8005%2F255f510d-9dba-4465-94c2-3e7baad54509&Operation=NoScript">Amazon.de Widgets</A>
+</NOSCRIPT>
+
+
+<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=48&l=ur1&category=electronics&banner=0MNQ6KCCWY32BF4PH5G2&f=ifr&linkID=17a86ac5c29a5d7ba74c9e25d42d63d7&t=goosst-21&tracking_id=goosst-21" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+
+]]></content>
+		</item>
+		
+		<item>
+			<title>Heating automation - set temperatures</title>
+			<link>http://users.telenet.be/goosst/posts/homeautomation_partii/</link>
+			<pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/homeautomation_partii/</guid>
+			<description>Intro In this part we&amp;rsquo;ll:
+ install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, not confusing at all :). I&amp;rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&amp;rsquo;m not familiar with docker (hass.io) and its limitations.
+ Follow the Hassbian installation instructions: https://www.</description>
+			<content type="html"><![CDATA[
+
+<h1 id="intro">Intro</h1>
+
+<p>In this part we&rsquo;ll:</p>
+
+<ul>
+<li>install hassbian</li>
+<li>set our requested room temperature through the interface of Home Assistant.</li>
+</ul>
 
 <h1 id="preparing-the-raspberry-pi">Preparing the Raspberry pi</h1>
 
-<ul>
-<li><p>Follow the Hassbian installation instructions: <a href="https://www.home-assistant.io/docs/installation/hassbian/installation/">https://www.home-assistant.io/docs/installation/hassbian/installation/</a></p></li>
+<p>There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.</p>
 
-<li><p>Additional installations beside the normal updating, upgrading, setting the time-zone:</p></li>
+<ul>
+<li>Follow the Hassbian installation instructions: <a href="https://www.home-assistant.io/docs/installation/hassbian/installation/">https://www.home-assistant.io/docs/installation/hassbian/installation/</a></li>
+<li>find your ip-address and have ssh enabled (plenty of sites which explain this)</li>
+<li>Additional installations beside the normal updating, upgrading, setting the time-zone:</li>
 </ul>
 
 <pre><code>sudo apt-get install net-tools nmap
@@ -43,7 +378,148 @@ sudo hassbian-config install samba
 
 <p>An overview of other helper scripts can be found at: <a href="https://github.com/home-assistant/hassbian-scripts">https://github.com/home-assistant/hassbian-scripts</a></p>
 
-<p>To be continued</p>
+<h1 id="home-assistant">Home Assistant</h1>
+
+<p>It&rsquo;s time to get our heater commanded through Home Assistant.
+In general it&rsquo;s good to:</p>
+
+<ul>
+<li>read a few intro&rsquo;s on Home Assistant before you jump in to it</li>
+<li>get Samba up and running so you can edit your home assistant files from your standard working computer (again enough other tutorials can be found)</li>
+</ul>
+
+<h2 id="concept">Concept</h2>
+
+<p>We&rsquo;ll be using python scripts to trigger actions from Home Assistant to ebus(d).
+In this way we can focus on making all the ebus related items running in python and we don&rsquo;t have to deal with the custom Home Assistant syntax. I personally prefer spending time learning python over learning a custom program specific language/syntax.</p>
+
+<h2 id="python-scripts">python scripts</h2>
+
+<p>We&rsquo;ll create a few python scripts to test if we can control our heater from python. On the Pi we will create a new folder <code>python_scripts</code> locate the scripts in <code>/home/homeassistant/.homeassistant/python_scripts</code>.</p>
+
+<ul>
+<li>The script below with the name <code>set_temperature_on.py</code> will set the day and night temperatures to 21C by calling the appropriate ebus commands directly from the command line (making use of the subprocess function). The second part of the script just does an additional check if it was really set correctly.</li>
+<li>create the same script with the name <code>set_temperature_off.py</code> where <code>msg2</code> in the script below has been changed to <code>msg2=15</code>. (Yes, I know this is a stupid way of working and we should give the temperature as an argument to the python script. But for initial testing/debugging this is good enough.)</li>
+</ul>
+
+<pre><code>import subprocess
+import time
+
+msg2=&quot;21&quot; #setpoint temperature degrees celsius
+
+msg1=&quot;ebusctl write -c f37 Hc1DayTemp &quot;
+cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+
+msg1=&quot;ebusctl write -c f37 Hc1NightTemp &quot;
+cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+
+#redundancy check if it is truly set
+time.sleep(60)
+
+cp = subprocess.run([&quot;ebusctl read Hc1DayTemp&quot;],shell=True,stdout=subprocess.PIPE)
+temp=cp.stdout
+if int(float(temp[0:4]))!=int(msg2):
+    # if not set correct
+    msg1=&quot;ebusctl write -c f37 Hc1DayTemp &quot;
+    cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+
+
+cp = subprocess.run([&quot;ebusctl read Hc1NightTemp&quot;],shell=True,stdout=subprocess.PIPE)
+temp=cp.stdout
+if int(float(temp[0:4]))!=int(msg2):
+    # if not set correct
+    msg1=&quot;ebusctl write -c f37 Hc1NightTemp &quot;
+    cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+else:
+    print(&quot;setting correct&quot;)
+</code></pre>
+
+<ul>
+<li>check if the scripts are really working by running the command from the raspberry pi terminal <code>python3 -i set_temperature_on.py</code>
+
+<ul>
+<li>as an additional check, on the thermostat you will see the temperature setting change
+
+<figure>
+    
+        <img src="/goosst/pictures/heating_on.jpg" width="250" />
+    
+    
+    <figcaption>
+        <h4>Python script has set temperature to 21 degrees!</h4>
+        
+    </figcaption>
+    
+</figure>
+</li>
+</ul></li>
+<li>do the same for the script <code>python3 -i set_temperature_off.py</code>
+
+<figure>
+    
+        <img src="/goosst/pictures/heating_off.jpg" width="250" />
+    
+    
+    <figcaption>
+        <h4>Python script has set temperature to 15 degrees!</h4>
+        
+    </figcaption>
+    
+</figure>
+
+Output in the terminal of the raspberry:</li>
+</ul>
+
+<pre><code>pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_on.py 
+setting correct
+&gt;&gt;&gt; quit()
+pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_off.py 
+setting correct
+&gt;&gt;&gt; 
+
+</code></pre>
+
+<h2 id="home-assistant-services">Home Assistant services</h2>
+
+<p>If you&rsquo;ve followed Home Assistant intro&rsquo;s, you know all magic happens in the <code>configuration.yaml</code> file(s).
+We&rsquo;ll be using the <code>shell_command</code> component which basically just executes a script in the terminal / command line of the raspberry.
+Add the following into <code>configuration.yaml</code> and reload/reboot home assistant.</p>
+
+<pre><code>shell_command:
+  set_temp_high: python3 /home/homeassistant/.homeassistant/python_scripts/set_temperature_on.py
+  set_temp_low: python3 /home/homeassistant/.homeassistant/python_scripts/set_temperature_off.py
+</code></pre>
+
+<p>From the Home Assistant interface:</p>
+
+<ul>
+<li>click on the services button in &ldquo;Developer tools&rdquo;</li>
+<li>check the shell_command services</li>
+<li>if you select the <code>set_temp_low</code> and <code>set_temp_high</code> and press &ldquo;call service&rdquo; the temperature will be set to 15 and 21 degrees :)</li>
+</ul>
+
+
+<figure>
+    
+        <img src="/goosst/pictures/HA_services2.png" width="500" />
+    
+    
+    <figcaption>
+        <h4>Service becomes available in Home Assistant</h4>
+        
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="next-steps">Next steps</h2>
+
+<p>Next steps will be to:</p>
+
+<ul>
+<li>provide the temperature as an argument form Home Assistant to the python script instead of having hardcoded values</li>
+<li>make it part of automation routines</li>
+</ul>
 
 <iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=48&l=ur1&category=electronics&banner=0MNQ6KCCWY32BF4PH5G2&f=ifr&linkID=17a86ac5c29a5d7ba74c9e25d42d63d7&t=goosst-21&tracking_id=goosst-21" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
 
@@ -51,7 +527,7 @@ sudo hassbian-config install samba
 		</item>
 		
 		<item>
-			<title>Vaillant automation ebus</title>
+			<title>Heating automation - ebus</title>
 			<link>http://users.telenet.be/goosst/posts/homeautomation_parti/</link>
 			<pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
 			

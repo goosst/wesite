@@ -8,33 +8,30 @@
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
 
-<meta itemprop="name" content="Vaillant automation part II">
-<meta itemprop="description" content="Intro In this part we&rsquo;ll send commands through the interface of Home Assistant.
-There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.
-Preparing the Raspberry pi  Follow the Hassbian installation instructions: https://www.home-assistant.io/docs/installation/hassbian/installation/
- Additional installations beside the normal updating, upgrading, setting the time-zone:">
+<meta itemprop="name" content="Heating automation - set temperatures">
+<meta itemprop="description" content="Intro In this part we&rsquo;ll:
+ install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.
+ Follow the Hassbian installation instructions: https://www.">
 
 
 <meta itemprop="datePublished" content="2019-04-20T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-04-20T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="103">
+<meta itemprop="wordCount" content="656">
 
 
 
-<meta itemprop="keywords" content="" />
-<meta property="og:title" content="Vaillant automation part II" />
-<meta property="og:description" content="Intro In this part we&rsquo;ll send commands through the interface of Home Assistant.
-There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.
-Preparing the Raspberry pi  Follow the Hassbian installation instructions: https://www.home-assistant.io/docs/installation/hassbian/installation/
- Additional installations beside the normal updating, upgrading, setting the time-zone:" />
+<meta itemprop="keywords" content="vaillant,ecotec plus,ebus,home assistant,raspberry pi," />
+<meta property="og:title" content="Heating automation - set temperatures" />
+<meta property="og:description" content="Intro In this part we&rsquo;ll:
+ install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.
+ Follow the Hassbian installation instructions: https://www." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://users.telenet.be/goosst/posts/homeautomation_partii/" /><meta property="article:published_time" content="2019-04-20T00:00:00&#43;00:00"/>
 <meta property="article:modified_time" content="2019-04-20T00:00:00&#43;00:00"/><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Vaillant automation part II"/>
-<meta name="twitter:description" content="Intro In this part we&rsquo;ll send commands through the interface of Home Assistant.
-There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.
-Preparing the Raspberry pi  Follow the Hassbian installation instructions: https://www.home-assistant.io/docs/installation/hassbian/installation/
- Additional installations beside the normal updating, upgrading, setting the time-zone:"/>
+<meta name="twitter:title" content="Heating automation - set temperatures"/>
+<meta name="twitter:description" content="Intro In this part we&rsquo;ll:
+ install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.
+ Follow the Hassbian installation instructions: https://www."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/goosst/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/goosst/favicon-32x32.png">
@@ -43,7 +40,7 @@ Preparing the Raspberry pi  Follow the Hassbian installation instructions: https
 	<link rel="mask-icon" href="/goosst/safari-pinned-tab.svg" color="">
 	<link rel="shortcut icon" href="/goosst/favicon.ico">
 
-	<title>Vaillant automation part II</title>
+	<title>Heating automation - set temperatures</title>
 	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.e81f50049998463da8cdbf0f848b77d9797f27f249581a236a3161d386f310db.css" integrity="sha256-6B9QBJmYRj2ozb8PhIt32Xl/J/JJWBojajFh04bzENs=">
 	
 </head>
@@ -80,23 +77,28 @@ Preparing the Raspberry pi  Follow the Hassbian installation instructions: https
 		<article class="thin">
 			<header class="post-header">
 				<div class="post-meta"><span>Apr 20, 2019</span></div>
-				<h1>Vaillant automation part II</h1>
+				<h1>Heating automation - set temperatures</h1>
 			</header>
 			<div class="content">
 				
 
 <h1 id="intro">Intro<a href="#intro" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
-<p>In this part we&rsquo;ll send commands through the interface of Home Assistant.</p>
+<p>In this part we&rsquo;ll:</p>
 
-<p>There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.</p>
+<ul>
+<li>install hassbian</li>
+<li>set our requested room temperature through the interface of Home Assistant.</li>
+</ul>
 
 <h1 id="preparing-the-raspberry-pi">Preparing the Raspberry pi<a href="#preparing-the-raspberry-pi" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
-<ul>
-<li><p>Follow the Hassbian installation instructions: <a href="https://www.home-assistant.io/docs/installation/hassbian/installation/">https://www.home-assistant.io/docs/installation/hassbian/installation/</a></p></li>
+<p>There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.</p>
 
-<li><p>Additional installations beside the normal updating, upgrading, setting the time-zone:</p></li>
+<ul>
+<li>Follow the Hassbian installation instructions: <a href="https://www.home-assistant.io/docs/installation/hassbian/installation/">https://www.home-assistant.io/docs/installation/hassbian/installation/</a></li>
+<li>find your ip-address and have ssh enabled (plenty of sites which explain this)</li>
+<li>Additional installations beside the normal updating, upgrading, setting the time-zone:</li>
 </ul>
 
 <pre><code>sudo apt-get install net-tools nmap
@@ -106,7 +108,148 @@ sudo hassbian-config install samba
 
 <p>An overview of other helper scripts can be found at: <a href="https://github.com/home-assistant/hassbian-scripts">https://github.com/home-assistant/hassbian-scripts</a></p>
 
-<p>To be continued</p>
+<h1 id="home-assistant">Home Assistant<a href="#home-assistant" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>It&rsquo;s time to get our heater commanded through Home Assistant.
+In general it&rsquo;s good to:</p>
+
+<ul>
+<li>read a few intro&rsquo;s on Home Assistant before you jump in to it</li>
+<li>get Samba up and running so you can edit your home assistant files from your standard working computer (again enough other tutorials can be found)</li>
+</ul>
+
+<h2 id="concept">Concept<a href="#concept" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>We&rsquo;ll be using python scripts to trigger actions from Home Assistant to ebus(d).
+In this way we can focus on making all the ebus related items running in python and we don&rsquo;t have to deal with the custom Home Assistant syntax. I personally prefer spending time learning python over learning a custom program specific language/syntax.</p>
+
+<h2 id="python-scripts">python scripts<a href="#python-scripts" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>We&rsquo;ll create a few python scripts to test if we can control our heater from python. On the Pi we will create a new folder <code>python_scripts</code> locate the scripts in <code>/home/homeassistant/.homeassistant/python_scripts</code>.</p>
+
+<ul>
+<li>The script below with the name <code>set_temperature_on.py</code> will set the day and night temperatures to 21C by calling the appropriate ebus commands directly from the command line (making use of the subprocess function). The second part of the script just does an additional check if it was really set correctly.</li>
+<li>create the same script with the name <code>set_temperature_off.py</code> where <code>msg2</code> in the script below has been changed to <code>msg2=15</code>. (Yes, I know this is a stupid way of working and we should give the temperature as an argument to the python script. But for initial testing/debugging this is good enough.)</li>
+</ul>
+
+<pre><code>import subprocess
+import time
+
+msg2=&quot;21&quot; #setpoint temperature degrees celsius
+
+msg1=&quot;ebusctl write -c f37 Hc1DayTemp &quot;
+cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+
+msg1=&quot;ebusctl write -c f37 Hc1NightTemp &quot;
+cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+
+#redundancy check if it is truly set
+time.sleep(60)
+
+cp = subprocess.run([&quot;ebusctl read Hc1DayTemp&quot;],shell=True,stdout=subprocess.PIPE)
+temp=cp.stdout
+if int(float(temp[0:4]))!=int(msg2):
+    # if not set correct
+    msg1=&quot;ebusctl write -c f37 Hc1DayTemp &quot;
+    cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+
+
+cp = subprocess.run([&quot;ebusctl read Hc1NightTemp&quot;],shell=True,stdout=subprocess.PIPE)
+temp=cp.stdout
+if int(float(temp[0:4]))!=int(msg2):
+    # if not set correct
+    msg1=&quot;ebusctl write -c f37 Hc1NightTemp &quot;
+    cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+else:
+    print(&quot;setting correct&quot;)
+</code></pre>
+
+<ul>
+<li>check if the scripts are really working by running the command from the raspberry pi terminal <code>python3 -i set_temperature_on.py</code>
+
+<ul>
+<li>as an additional check, on the thermostat you will see the temperature setting change
+
+<figure>
+    
+        <img src="/goosst/pictures/heating_on.jpg" width="250" />
+    
+    
+    <figcaption>
+        <h4>Python script has set temperature to 21 degrees!</h4>
+        
+    </figcaption>
+    
+</figure>
+</li>
+</ul></li>
+<li>do the same for the script <code>python3 -i set_temperature_off.py</code>
+
+<figure>
+    
+        <img src="/goosst/pictures/heating_off.jpg" width="250" />
+    
+    
+    <figcaption>
+        <h4>Python script has set temperature to 15 degrees!</h4>
+        
+    </figcaption>
+    
+</figure>
+
+Output in the terminal of the raspberry:</li>
+</ul>
+
+<pre><code>pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_on.py 
+setting correct
+&gt;&gt;&gt; quit()
+pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_off.py 
+setting correct
+&gt;&gt;&gt; 
+
+</code></pre>
+
+<h2 id="home-assistant-services">Home Assistant services<a href="#home-assistant-services" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>If you&rsquo;ve followed Home Assistant intro&rsquo;s, you know all magic happens in the <code>configuration.yaml</code> file(s).
+We&rsquo;ll be using the <code>shell_command</code> component which basically just executes a script in the terminal / command line of the raspberry.
+Add the following into <code>configuration.yaml</code> and reload/reboot home assistant.</p>
+
+<pre><code>shell_command:
+  set_temp_high: python3 /home/homeassistant/.homeassistant/python_scripts/set_temperature_on.py
+  set_temp_low: python3 /home/homeassistant/.homeassistant/python_scripts/set_temperature_off.py
+</code></pre>
+
+<p>From the Home Assistant interface:</p>
+
+<ul>
+<li>click on the services button in &ldquo;Developer tools&rdquo;</li>
+<li>check the shell_command services</li>
+<li>if you select the <code>set_temp_low</code> and <code>set_temp_high</code> and press &ldquo;call service&rdquo; the temperature will be set to 15 and 21 degrees :)</li>
+</ul>
+
+
+<figure>
+    
+        <img src="/goosst/pictures/HA_services2.png" width="500" />
+    
+    
+    <figcaption>
+        <h4>Service becomes available in Home Assistant</h4>
+        
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="next-steps">Next steps<a href="#next-steps" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>Next steps will be to:</p>
+
+<ul>
+<li>provide the temperature as an argument form Home Assistant to the python script instead of having hardcoded values</li>
+<li>make it part of automation routines</li>
+</ul>
 
 <iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=48&l=ur1&category=electronics&banner=0MNQ6KCCWY32BF4PH5G2&f=ifr&linkID=17a86ac5c29a5d7ba74c9e25d42d63d7&t=goosst-21&tracking_id=goosst-21" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
 
@@ -114,13 +257,19 @@ sudo hassbian-config install samba
 			</div>
 			<hr class="post-end">
 			<footer class="post-info">
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>103 Words</p>
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://users.telenet.be/goosst/tags/vaillant">vaillant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ecotec-plus">ecotec plus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ebus">ebus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/home-assistant">home assistant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/raspberry-pi">raspberry pi</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>656 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-04-20 02:00 &#43;0200</p>
 			</footer>
 		</article>
 		<div class="post-nav thin">
+			<a class="next-post" href="http://users.telenet.be/goosst/posts/homeautomation_partiii/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Heating automation - read information</span>
+			</a>
 			<a class="prev-post" href="http://users.telenet.be/goosst/posts/homeautomation_parti/">
-				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Vaillant automation ebus</span>
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Heating automation - ebus</span>
 			</a>
 		</div>
 		<div id="comments" class="thin">

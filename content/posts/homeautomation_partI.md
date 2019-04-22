@@ -1,7 +1,13 @@
 ---
 author: "goosst"
 date: 2019-04-19
-title: Vaillant automation ebus
+title: Heating automation - ebus
+tags:
+ - vaillant
+ - ecotec plus
+ - ebus
+ - home assistant
+ - raspberry pi
 ---
 
 
