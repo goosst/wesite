@@ -33,7 +33,7 @@
     <item>
       <title>Home Assistant</title>
       <link>http://users.telenet.be/goosst/tags/home-assistant/</link>
-      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/tags/home-assistant/</guid>
       <description></description>
@@ -42,9 +42,27 @@
     <item>
       <title>Raspberry Pi</title>
       <link>http://users.telenet.be/goosst/tags/raspberry-pi/</link>
-      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/tags/raspberry-pi/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Sonoff</title>
+      <link>http://users.telenet.be/goosst/tags/sonoff/</link>
+      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/tags/sonoff/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Tasmota</title>
+      <link>http://users.telenet.be/goosst/tags/tasmota/</link>
+      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/tags/tasmota/</guid>
       <description></description>
     </item>
     
@@ -54,6 +72,15 @@
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/tags/vaillant/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Wemos D1</title>
+      <link>http://users.telenet.be/goosst/tags/wemos-d1/</link>
+      <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/tags/wemos-d1/</guid>
       <description></description>
     </item>
     

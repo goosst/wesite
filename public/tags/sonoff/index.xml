@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sonoff on Goosst blog</title>
+    <link>http://users.telenet.be/goosst/tags/sonoff/</link>
+    <description>Recent content in Sonoff on Goosst blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sat, 27 Apr 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://users.telenet.be/goosst/tags/sonoff/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Heating automation - electric heater</title>
+      <link>http://users.telenet.be/goosst/posts/homeautomation_el_heater/</link>
+      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/homeautomation_el_heater/</guid>
+      <description>Intro  Concept Configure MQTT Tasmota Home assistant UI     Intro We&amp;rsquo;ll be using one of the sonoff devices to turn on/off a wall-plugged electric heater. These devices are pretty cheap but since we&amp;rsquo;ll be hacking into them, use at your own risk.
+The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standpoint). But once it&amp;rsquo;s done, the S26 is more compact and looks slick :).</description>
+    </item>
+    
+  </channel>
+</rss>

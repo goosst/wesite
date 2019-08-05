@@ -8,27 +8,25 @@
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
 
-<meta itemprop="name" content="Heating automation - ebus">
-<meta itemprop="description" content="Intro In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a rapsberry pi (in general, the instructions below work with any computer using debian/ubuntu).
-Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&rsquo;m not going to write down all the details, since I can just refer to them:">
+<meta itemprop="name" content="Heating automation - setup hardware and ebus">
+<meta itemprop="description" content="Intro Hardware  Ebus adapter Raspberry pi My setup  Software  Preparing the Raspberry pi  Hassbian Static IP address  install and use ebusd     Intro In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).">
 
 
 <meta itemprop="datePublished" content="2019-04-19T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-04-19T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1296">
+<meta itemprop="wordCount" content="1364">
 
 
 
 <meta itemprop="keywords" content="vaillant,ecotec plus,ebus,home assistant,raspberry pi," />
-<meta property="og:title" content="Heating automation - ebus" />
-<meta property="og:description" content="Intro In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a rapsberry pi (in general, the instructions below work with any computer using debian/ubuntu).
-Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&rsquo;m not going to write down all the details, since I can just refer to them:" />
+<meta property="og:title" content="Heating automation - setup hardware and ebus" />
+<meta property="og:description" content="Intro Hardware  Ebus adapter Raspberry pi My setup  Software  Preparing the Raspberry pi  Hassbian Static IP address  install and use ebusd     Intro In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://users.telenet.be/goosst/posts/homeautomation_parti/" /><meta property="article:published_time" content="2019-04-19T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-04-19T00:00:00&#43;00:00"/><meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Heating automation - ebus"/>
-<meta name="twitter:description" content="Intro In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a rapsberry pi (in general, the instructions below work with any computer using debian/ubuntu).
-Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&rsquo;m not going to write down all the details, since I can just refer to them:"/>
+<meta property="article:modified_time" content="2019-04-19T00:00:00&#43;00:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Heating automation - setup hardware and ebus"/>
+<meta name="twitter:description" content="Intro Hardware  Ebus adapter Raspberry pi My setup  Software  Preparing the Raspberry pi  Hassbian Static IP address  install and use ebusd     Intro In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu)."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/goosst/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/goosst/favicon-32x32.png">
@@ -37,8 +35,8 @@ Hardware Ebus adapter We need an ebus adapter for the raspberry to interface wit
 	<link rel="mask-icon" href="/goosst/safari-pinned-tab.svg" color="">
 	<link rel="shortcut icon" href="/goosst/favicon.ico">
 
-	<title>Heating automation - ebus</title>
-	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.e81f50049998463da8cdbf0f848b77d9797f27f249581a236a3161d386f310db.css" integrity="sha256-6B9QBJmYRj2ozb8PhIt32Xl/J/JJWBojajFh04bzENs=">
+	<title>Heating automation - setup hardware and ebus</title>
+	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.278b9c3bdc083d1b9012627cf76538692336f6ea27add3755143eb4047e10d1d.css" integrity="sha256-J4ucO9wIPRuQEmJ892U4aSM29uonrdN1UUPrQEfhDR0=">
 	
 </head>
 
@@ -74,14 +72,38 @@ Hardware Ebus adapter We need an ebus adapter for the raspberry to interface wit
 		<article class="thin">
 			<header class="post-header">
 				<div class="post-meta"><span>Apr 19, 2019</span></div>
-				<h1>Heating automation - ebus</h1>
+				<h1>Heating automation - setup hardware and ebus</h1>
 			</header>
 			<div class="content">
 				
 
+<aside>
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#intro">Intro</a></li>
+<li><a href="#hardware">Hardware</a>
+<ul>
+<li><a href="#ebus-adapter">Ebus adapter</a></li>
+<li><a href="#raspberry-pi">Raspberry pi</a></li>
+<li><a href="#my-setup">My setup</a></li>
+</ul></li>
+<li><a href="#software">Software</a>
+<ul>
+<li><a href="#preparing-the-raspberry-pi">Preparing the Raspberry pi</a>
+<ul>
+<li><a href="#hassbian">Hassbian</a></li>
+<li><a href="#static-ip-address">Static IP address</a></li>
+</ul></li>
+<li><a href="#install-and-use-ebusd">install and use ebusd</a></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+
+
 <h1 id="intro">Intro<a href="#intro" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
-<p>In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a rapsberry pi (in general, the instructions below work with any computer using debian/ubuntu).</p>
+<p>In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).</p>
 
 <h1 id="hardware">Hardware<a href="#hardware" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
@@ -90,8 +112,8 @@ Hardware Ebus adapter We need an ebus adapter for the raspberry to interface wit
 <p>We need an ebus adapter for the raspberry to interface with our heater. I&rsquo;m not going to write down all the details, since I can just refer to them:</p>
 
 <ul>
-<li>start reading here for more background: <a href="https://ebus.github.io/adapter/index.en.html">https://ebus.github.io/adapter/index.en.html</a></li>
-<li>I&rsquo;m using the base board version 2.2, there might be better options to use directly with a raspberry pi, but when I ordered it looked like the most flexible solution.</li>
+<li>Start reading here for more background: <a href="https://ebus.github.io/adapter/index.en.html">https://ebus.github.io/adapter/index.en.html</a></li>
+<li>I&rsquo;m using the base board version 2.2, there might be better options to use directly with a raspberry pi. But when I ordered, it looked like the most flexible solution.</li>
 <li>Adapter was ordered on the fhem forum. They will send you a pcb with a set of components, you have to solder yourself (or pay a bit extra): <a href="https://forum.fhem.de/index.php/topic,93190.msg857894.html#msg857894">https://forum.fhem.de/index.php/topic,93190.msg857894.html#msg857894</a>. If you&rsquo;ve read the first link you will also know there are commercial options in case you don&rsquo;t want this.</li>
 <li>Put it in a box so there is no chance on touching electrical connections etc. .
 
@@ -100,17 +122,10 @@ Hardware Ebus adapter We need an ebus adapter for the raspberry to interface wit
 </ul></li>
 </ul>
 
-
 <figure>
-    
-        <img src="/goosst/pictures/ebus_adapter.jpg" width="250" />
-    
-    
-    <figcaption>
-        <h4>ebus adapter v2.2</h4>
-        
-    </figcaption>
-    
+    <img src="/goosst/pictures/ebus_adapter.jpg" width="250"/> <figcaption>
+            <h4>ebus adapter v2.2</h4>
+        </figcaption>
 </figure>
 
 
@@ -120,25 +135,18 @@ Hardware Ebus adapter We need an ebus adapter for the raspberry to interface wit
 
 <h2 id="my-setup">My setup<a href="#my-setup" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
-
 <figure>
-    
-        <img src="/goosst/pictures/IMG_20190420_092754.jpg" width="350" />
-    
-    
-    <figcaption>
-        <h4>Raspberry pi and ebus adapter mounted on heater</h4>
-        
-    </figcaption>
-    
+    <img src="/goosst/pictures/IMG_20190420_092754.jpg" width="350"/> <figcaption>
+            <h4>Raspberry pi and ebus adapter mounted on heater</h4>
+        </figcaption>
 </figure>
 
 
 <ul>
 <li>Pi and ebus-adapter are mounted against the heater by using velco strips</li>
-<li>Case specific for raspberry pi is used</li>
-<li>the white and purple wire are the ebus, they are connected inside the heater (ebusd protocol has no polarity, so you can swap the wires)</li>
-<li>pi and ebusd-adapter are connected through USB</li>
+<li>A case, specific for the raspberry pi is used</li>
+<li>The white and purple wire are the ebus, they are connected inside the heater (ebus protocol has no polarity, so you can swap the wires)</li>
+<li>ebus-adapter is connected through usb with the raspberry pi</li>
 </ul>
 
 <h1 id="software">Software<a href="#software" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
@@ -150,7 +158,9 @@ Hardware Ebus adapter We need an ebus adapter for the raspberry to interface wit
 <p>We&rsquo;ll be using Home Assistant for our interface and home automation.
 I chose Home Assistant because it&rsquo;s fully python based. I prefer to learn python over learning Java, Perl, &hellip; which is used by the alternative open source domotica programs.</p>
 
-<p>To use Home Assistant, there is hassbian, hass.io, homme-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi.</p>
+<h3 id="hassbian">Hassbian<a href="#hassbian" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>To use Home Assistant, there is hassbian, hass.io, home-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. (<a href="https://www.home-assistant.io/docs/installation/hassbian/installation/">https://www.home-assistant.io/docs/installation/hassbian/installation/</a>)</p>
 
 <p>Additional installations beside the normal updating and upgrading:</p>
 
@@ -159,17 +169,22 @@ sudo hassbian-config install mosquitto
 sudo hassbian-config install samba
 </code></pre>
 
+<h3 id="static-ip-address">Static IP address<a href="#static-ip-address" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+
+<p>Since we will be sending quite some messages from other devices through MQTT, a static IP address is rather convenient. I&rsquo;ve followed the steps from this link (my routher doesn&rsquo;t support fancy things)    :
+<a href="https://raspberrypi.stackexchange.com/questions/37920/how-do-i-set-up-networking-wifi-static-ip-address/74428#74428">https://raspberrypi.stackexchange.com/questions/37920/how-do-i-set-up-networking-wifi-static-ip-address/74428#74428</a></p>
+
 <h2 id="install-and-use-ebusd">install and use ebusd<a href="#install-and-use-ebusd" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
-<p>It&rsquo;s an awesome tool, it&rsquo;s however a challenge to find out how to efficiently use it :).</p>
+<p>Ebusd is an awesome tool, it&rsquo;s a challenge however to find out how to efficiently use it :).</p>
 
 <ul>
-<li>go to your raspberry pi by ssh&rsquo;ing to it</li>
-<li>follow these instructions: <a href="https://github.com/john30/ebusd-debian/blob/master/README.md">https://github.com/john30/ebusd-debian/blob/master/README.md</a></li>
+<li>Go to your raspberry pi by ssh&rsquo;ing to it</li>
+<li>Follow these instructions: <a href="https://github.com/john30/ebusd-debian/blob/master/README.md">https://github.com/john30/ebusd-debian/blob/master/README.md</a></li>
 <li>I&rsquo;ve had some weird issues that magically got resolved, I still think it&rsquo;s linked to a strange power supply : <a href="https://github.com/john30/ebusd/issues/276">https://github.com/john30/ebusd/issues/276</a></li>
-<li>check on the raspberry with the command: <code>dmesg | grep cp210</code> if the adpater is added to ttUSB0 (only relevant if you&rsquo;re using cp210 as uart device of course, this is the blue thingy in the picture of the adapter)
-output should look something like this:</li>
-</ul>
+
+<li><p>Check on the raspberry with the command: <code>dmesg | grep cp210</code> if the adpater is added to ttUSB0 (only relevant if you&rsquo;re using cp210 as uart device of course: <a target='_blank' href='https://www.banggood.com/CJMCU-CP2102-USB-To-TTLSerial-Module-UART-STC-Downloader-p-970993.html?p=ET150713234951201708&custlinkid=261938' title='' >CP2102 USB To TTL/Serial Module</a>)
+output should look something like this:</p>
 
 <pre><code>pi@raspberrypi:/ $ dmesg | grep cp210
 [    3.826051] usbcore: registered new interface driver cp210x
@@ -177,9 +192,8 @@ output should look something like this:</li>
 [    3.834271] cp210x 1-1.3:1.0: cp210x converter detected
 [    3.856013] usb 1-1.3: cp210x converter now attached to ttyUSB0
 
-</code></pre>
+</code></pre></li>
 
-<ul>
 <li><p>The magic ebusd command is: <code>ebusd -f --scanconfig</code>, ebusd should find your connected devices (a wireless thermostat and a vaillant heater in my case), output looks something like the one below. If you don&rsquo;t see any read messages something is wrong and you need to start debugging.</p>
 
 <pre><code>pi@raspberrypi:/ $ ebusd -f --scanconfig
@@ -228,9 +242,9 @@ output should look something like this:</li>
 2019-03-31 13:31:17.474 [update notice] received update-write bai SetMode QQ=10: auto;0.0;-;-;1;0;1;0;0;0
 </code></pre></li>
 
-<li><p>make sure ebusd starts up when the raspberry boots: <a href="https://github.com/john30/ebusd/wiki/2.-Run">https://github.com/john30/ebusd/wiki/2.-Run</a></p></li>
+<li><p>Make sure ebusd starts up when the raspberry boots: <a href="https://github.com/john30/ebusd/wiki/2.-Run">https://github.com/john30/ebusd/wiki/2.-Run</a></p></li>
 
-<li><p>in parallel commands with ebusctl can be queried</p>
+<li><p>In parallel commands with ebusctl can be queried</p>
 
 <pre><code>pi@raspberrypi:~ $ ebusctl info
 version: ebusd 3.3.v3.3
@@ -255,44 +269,43 @@ address 31: master #8, ebusd
 address 36: slave #8, ebusd
 </code></pre>
 
-<p>here you can find the names f37 and bai for the devicenames needed for further usage in ebusd.</p></li>
+<p>In this output you can find back the names f37 and bai, the devicenames needed for further usage in ebusd.</p></li>
 
-<li><p>you have to look up the mentioned csv files (e.g. 15.f37.csv) to see which parameters are available. Which parameters have read permission &reg;, which have write permissions (w), &hellip; the configuration files are stored on another github site from john30:  <a href="https://github.com/john30/ebusd-configuration/tree/master/ebusd-2.1.x/en/vaillant">https://github.com/john30/ebusd-configuration/tree/master/ebusd-2.1.x/en/vaillant</a></p></li>
+<li><p>You have to look up the mentioned csv files (e.g. 15.f37.csv) to see which parameters are available, which parameters have read permission &reg;, which have write permissions (w), &hellip; . The configuration files are stored on another github site from john30:  <a href="https://github.com/john30/ebusd-configuration/tree/master/ebusd-2.1.x/en/vaillant">https://github.com/john30/ebusd-configuration/tree/master/ebusd-2.1.x/en/vaillant</a></p></li>
 
-<li><p>once ebus is running open a second terminal and read and write all the things you want to do:</p>
+<li><p>Once ebus is running open a second terminal on the pi and read and write all the things you want to do:</p>
 
 <ul>
-<li>Read example, here we read the time reported by the thermostat:</li>
-</ul></li>
-</ul>
+<li><p>Read example, here we read the time reported by the thermostat:</p>
 
 <pre><code>ebusctl read Time
 14:30:30
-</code></pre>
+</code></pre></li>
 
-<ul>
-<li>Write example, writing the time to the thermostat:</li>
-</ul>
+<li><p>Write example, writing the time to the thermostat:</p>
 
 <pre><code>pi@raspberrypi:~ $ ebusctl write -c f37 Time 14:00:00
 done
 
 pi@raspberrypi:~ $ ebusctl read Time
 14:00:02
-</code></pre>
+</code></pre></li>
 
-<ul>
-<li>play around with other relevant parameters from the .csv sheet:
+<li><p>play around with other relevant parameters from the .csv sheet:</p></li>
 
-<ul>
-<li><code>ebusctl read Hc1DayTemp</code>, read and write your temperature setpoint during day time</li>
-<li><code>ebusctl read Hc1NightTemp</code>, read and write your temperature setpoint during night time</li>
-<li><code>ebusctl read RoomTemp</code>, read the temperature measured by the thermostat</li>
-<li>and a whole bunch of others &hellip;</li>
+<li><p><code>ebusctl read Hc1DayTemp</code>, read and write your temperature setpoint during day time</p></li>
+
+<li><p><code>ebusctl read Hc1NightTemp</code>, read and write your temperature setpoint during night time</p></li>
+
+<li><p><code>ebusctl read RoomTemp</code>, read the temperature measured by the thermostat</p></li>
+
+<li><p>and a whole bunch of others &hellip;</p></li>
 </ul></li>
 </ul>
 
-<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=48&l=ur1&category=electronics&banner=0MNQ6KCCWY32BF4PH5G2&f=ifr&linkID=17a86ac5c29a5d7ba74c9e25d42d63d7&t=goosst-21&tracking_id=goosst-21" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+<div align=center>
+<SCRIPT charset="utf-8" type="text/javascript" src="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218&Operation=NoScript">Amazon.de Widgets</A></NOSCRIPT>
+</div>
 
 
 			</div>
@@ -301,7 +314,7 @@ pi@raspberrypi:~ $ ebusctl read Time
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://users.telenet.be/goosst/tags/vaillant">vaillant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ecotec-plus">ecotec plus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ebus">ebus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/home-assistant">home assistant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/raspberry-pi">raspberry pi</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1296 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1364 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-04-19 02:00 &#43;0200</p>
 			</footer>
 		</article>

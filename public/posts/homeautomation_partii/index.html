@@ -9,29 +9,27 @@
 	<meta name="msapplication-TileColor" content="#494f5c">
 
 <meta itemprop="name" content="Heating automation - set temperatures">
-<meta itemprop="description" content="Intro In this part we&rsquo;ll:
- install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.
- Follow the Hassbian installation instructions: https://www.">
+<meta itemprop="description" content="Intro Preparing the Raspberry pi Initial temperature test using Home Assistant  Concept python scripts Home Assistant services  Clean up method  Adapt python scripts User interface Mutual exclusion     Intro In this part we&rsquo;ll:
+ install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :).">
 
 
 <meta itemprop="datePublished" content="2019-04-20T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-04-20T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="656">
+<meta itemprop="wordCount" content="1169">
 
 
 
 <meta itemprop="keywords" content="vaillant,ecotec plus,ebus,home assistant,raspberry pi," />
 <meta property="og:title" content="Heating automation - set temperatures" />
-<meta property="og:description" content="Intro In this part we&rsquo;ll:
- install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.
- Follow the Hassbian installation instructions: https://www." />
+<meta property="og:description" content="Intro Preparing the Raspberry pi Initial temperature test using Home Assistant  Concept python scripts Home Assistant services  Clean up method  Adapt python scripts User interface Mutual exclusion     Intro In this part we&rsquo;ll:
+ install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://users.telenet.be/goosst/posts/homeautomation_partii/" /><meta property="article:published_time" content="2019-04-20T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-04-20T00:00:00&#43;00:00"/><meta name="twitter:card" content="summary"/>
+<meta property="article:modified_time" content="2019-04-20T00:00:00&#43;00:00"/>
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Heating automation - set temperatures"/>
-<meta name="twitter:description" content="Intro In this part we&rsquo;ll:
- install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.
- Follow the Hassbian installation instructions: https://www."/>
+<meta name="twitter:description" content="Intro Preparing the Raspberry pi Initial temperature test using Home Assistant  Concept python scripts Home Assistant services  Clean up method  Adapt python scripts User interface Mutual exclusion     Intro In this part we&rsquo;ll:
+ install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :)."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/goosst/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/goosst/favicon-32x32.png">
@@ -41,7 +39,7 @@
 	<link rel="shortcut icon" href="/goosst/favicon.ico">
 
 	<title>Heating automation - set temperatures</title>
-	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.e81f50049998463da8cdbf0f848b77d9797f27f249581a236a3161d386f310db.css" integrity="sha256-6B9QBJmYRj2ozb8PhIt32Xl/J/JJWBojajFh04bzENs=">
+	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.278b9c3bdc083d1b9012627cf76538692336f6ea27add3755143eb4047e10d1d.css" integrity="sha256-J4ucO9wIPRuQEmJ892U4aSM29uonrdN1UUPrQEfhDR0=">
 	
 </head>
 
@@ -82,6 +80,28 @@
 			<div class="content">
 				
 
+<aside>
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#intro">Intro</a></li>
+<li><a href="#preparing-the-raspberry-pi">Preparing the Raspberry pi</a></li>
+<li><a href="#initial-temperature-test-using-home-assistant">Initial temperature test using Home Assistant</a>
+<ul>
+<li><a href="#concept">Concept</a></li>
+<li><a href="#python-scripts">python scripts</a></li>
+<li><a href="#home-assistant-services">Home Assistant services</a></li>
+</ul></li>
+<li><a href="#clean-up-method">Clean up method</a>
+<ul>
+<li><a href="#adapt-python-scripts">Adapt python scripts</a></li>
+<li><a href="#user-interface">User interface</a></li>
+<li><a href="#mutual-exclusion">Mutual exclusion</a></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+
+
 <h1 id="intro">Intro<a href="#intro" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
 <p>In this part we&rsquo;ll:</p>
@@ -98,17 +118,18 @@
 <ul>
 <li>Follow the Hassbian installation instructions: <a href="https://www.home-assistant.io/docs/installation/hassbian/installation/">https://www.home-assistant.io/docs/installation/hassbian/installation/</a></li>
 <li>find your ip-address and have ssh enabled (plenty of sites which explain this)</li>
-<li>Additional installations beside the normal updating, upgrading, setting the time-zone:</li>
-</ul>
+
+<li><p>Additional installations beside the normal updating, upgrading, setting the time-zone:</p>
 
 <pre><code>sudo apt-get install net-tools nmap
 sudo hassbian-config install mosquitto
 sudo hassbian-config install samba
-</code></pre>
+</code></pre></li>
+</ul>
 
 <p>An overview of other helper scripts can be found at: <a href="https://github.com/home-assistant/hassbian-scripts">https://github.com/home-assistant/hassbian-scripts</a></p>
 
-<h1 id="home-assistant">Home Assistant<a href="#home-assistant" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+<h1 id="initial-temperature-test-using-home-assistant">Initial temperature test using Home Assistant<a href="#initial-temperature-test-using-home-assistant" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
 <p>It&rsquo;s time to get our heater commanded through Home Assistant.
 In general it&rsquo;s good to:</p>
@@ -129,8 +150,8 @@ In this way we can focus on making all the ebus related items running in python 
 
 <ul>
 <li>The script below with the name <code>set_temperature_on.py</code> will set the day and night temperatures to 21C by calling the appropriate ebus commands directly from the command line (making use of the subprocess function). The second part of the script just does an additional check if it was really set correctly.</li>
-<li>create the same script with the name <code>set_temperature_off.py</code> where <code>msg2</code> in the script below has been changed to <code>msg2=15</code>. (Yes, I know this is a stupid way of working and we should give the temperature as an argument to the python script. But for initial testing/debugging this is good enough.)</li>
-</ul>
+
+<li><p>create the same script with the name <code>set_temperature_off.py</code> where <code>msg2</code> in the script below has been changed to <code>msg2=15</code>. (Yes, I know this is a stupid way of working and we should give the temperature as an argument to the python script. But for initial testing/debugging this is good enough.)</p>
 
 <pre><code>import subprocess
 import time
@@ -149,56 +170,41 @@ time.sleep(60)
 cp = subprocess.run([&quot;ebusctl read Hc1DayTemp&quot;],shell=True,stdout=subprocess.PIPE)
 temp=cp.stdout
 if int(float(temp[0:4]))!=int(msg2):
-    # if not set correct
-    msg1=&quot;ebusctl write -c f37 Hc1DayTemp &quot;
-    cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+# if not set correct
+msg1=&quot;ebusctl write -c f37 Hc1DayTemp &quot;
+cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
 
 
 cp = subprocess.run([&quot;ebusctl read Hc1NightTemp&quot;],shell=True,stdout=subprocess.PIPE)
 temp=cp.stdout
 if int(float(temp[0:4]))!=int(msg2):
-    # if not set correct
-    msg1=&quot;ebusctl write -c f37 Hc1NightTemp &quot;
-    cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+# if not set correct
+msg1=&quot;ebusctl write -c f37 Hc1NightTemp &quot;
+cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
 else:
-    print(&quot;setting correct&quot;)
-</code></pre>
+print(&quot;setting correct&quot;)
+</code></pre></li>
 
-<ul>
-<li>check if the scripts are really working by running the command from the raspberry pi terminal <code>python3 -i set_temperature_on.py</code>
+<li><p>check if the scripts are really working by running the command from the raspberry pi terminal <code>python3 -i set_temperature_on.py</code></p>
 
 <ul>
 <li>as an additional check, on the thermostat you will see the temperature setting change
-
 <figure>
-    
-        <img src="/goosst/pictures/heating_on.jpg" width="250" />
-    
-    
-    <figcaption>
-        <h4>Python script has set temperature to 21 degrees!</h4>
-        
-    </figcaption>
-    
+    <img src="/goosst/pictures/heating_on.jpg" width="450"/> <figcaption>
+            <h4>Python script has set temperature to 21 degrees!</h4>
+        </figcaption>
 </figure>
 </li>
 </ul></li>
-<li>do the same for the script <code>python3 -i set_temperature_off.py</code>
 
+<li><p>do the same for the script <code>python3 -i set_temperature_off.py</code>
 <figure>
-    
-        <img src="/goosst/pictures/heating_off.jpg" width="250" />
-    
-    
-    <figcaption>
-        <h4>Python script has set temperature to 15 degrees!</h4>
-        
-    </figcaption>
-    
+    <img src="/goosst/pictures/heating_off.jpg" width="450"/> <figcaption>
+            <h4>Python script has set temperature to 15 degrees!</h4>
+        </figcaption>
 </figure>
 
-Output in the terminal of the raspberry:</li>
-</ul>
+Output in the terminal of the raspberry:</p>
 
 <pre><code>pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_on.py 
 setting correct
@@ -207,11 +213,13 @@ pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_t
 setting correct
 &gt;&gt;&gt; 
 
-</code></pre>
+</code></pre></li>
+</ul>
 
 <h2 id="home-assistant-services">Home Assistant services<a href="#home-assistant-services" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
-<p>If you&rsquo;ve followed Home Assistant intro&rsquo;s, you know all magic happens in the <code>configuration.yaml</code> file(s).
+<p>Now this is working, we&rsquo;ll link it to Home Assistant.
+If you&rsquo;ve followed Home Assistant intro&rsquo;s, you know all magic happens in the <code>configuration.yaml</code> file(s).
 We&rsquo;ll be using the <code>shell_command</code> component which basically just executes a script in the terminal / command line of the raspberry.
 Add the following into <code>configuration.yaml</code> and reload/reboot home assistant.</p>
 
@@ -228,30 +236,173 @@ Add the following into <code>configuration.yaml</code> and reload/reboot home as
 <li>if you select the <code>set_temp_low</code> and <code>set_temp_high</code> and press &ldquo;call service&rdquo; the temperature will be set to 15 and 21 degrees :)</li>
 </ul>
 
-
 <figure>
-    
-        <img src="/goosst/pictures/HA_services2.png" width="500" />
-    
-    
-    <figcaption>
-        <h4>Service becomes available in Home Assistant</h4>
-        
-    </figcaption>
-    
+    <img src="/goosst/pictures/HA_services2.png" width="500"/> <figcaption>
+            <h4>Service becomes available in Home Assistant</h4>
+        </figcaption>
 </figure>
 
 
-<h2 id="next-steps">Next steps<a href="#next-steps" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h1 id="clean-up-method">Clean up method<a href="#clean-up-method" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
-<p>Next steps will be to:</p>
+<p>In the sections above, we&rsquo;ve demonstrated the basic functionallity of controlling the temperature requests. Next steps are:</p>
 
 <ul>
-<li>provide the temperature as an argument form Home Assistant to the python script instead of having hardcoded values</li>
-<li>make it part of automation routines</li>
+<li>to provide the temperature as an argument from Home Assistant to the python script (instead of the hardcoded values from above)</li>
+<li>get rid of seperate python scripts for each function (harder to maintain)</li>
+<li>make sure not multiple people write at the same moment to the ebus (don&rsquo;t want to confuse our system)</li>
 </ul>
 
-<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=48&l=ur1&category=electronics&banner=0MNQ6KCCWY32BF4PH5G2&f=ifr&linkID=17a86ac5c29a5d7ba74c9e25d42d63d7&t=goosst-21&tracking_id=goosst-21" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+<h2 id="adapt-python-scripts">Adapt python scripts<a href="#adapt-python-scripts" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>Starting with the python scripts:</p>
+
+<ul>
+<li>We want to provide the temperature as argument to our python script (have <code>msg2</code> as an external input in our script)</li>
+
+<li><p>We&rsquo;ll use the <code>getopt</code> module in python and parse the arguments to create a temp setpoint,</p>
+
+<pre><code>import getopt
+
+# check if passed options are valid
+try:
+options, args = getopt.getopt(sys.argv[1:], 't:',['temperature_setpoint='])
+print(options)
+print(args)
+except getopt.GetoptError:
+print(&quot;incorrect syntax&quot;)
+print(&quot;usage: python3 set_temperature.py -t &lt;value&gt;&quot;)
+print(&quot;default to 12 degrees&quot;)
+msg2=12
+sys.exit(2)
+for opt, value in options:
+if opt in ('-t','-T','--temperature_setpoint'):
+    msg2=value
+    print(&quot;successful argument&quot;)
+    print(msg2)
+</code></pre>
+
+<ul>
+<li>running the script in commandline becomes: <code>python3 /home/homeassistant/.homeassistant/python_scripts/set_temperature.py -t 20.5</code></li>
+</ul></li>
+</ul>
+
+<h2 id="user-interface">User interface<a href="#user-interface" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>In <code>configuration.yaml</code>, we&rsquo;ll define three input boxes for setting a temperature (night, day and an additional one for instant change of the heating).
+The critical part are the additional <code>{{}}</code> arguments in the <code>shell_command</code> definition. The exact name of the argument you need to find back in the <code>states</code> menu in the user interface.</p>
+
+<pre><code>
+input_number:
+  slider1:
+    name: Set Now
+    initial: 21
+    min: 5
+    max: 30
+    step: 0.25
+    unit_of_measurement: &quot;°C&quot;
+  slider_night:
+    name: Temp Night
+    initial: 15
+    min: 5
+    max: 23
+    step: 0.25
+    unit_of_measurement: &quot;°C&quot;
+  slider_day:
+    name: Temp Day
+    initial: 21
+    min: 5
+    max: 25
+    step: 0.25
+    unit_of_measurement: &quot;°C&quot;
+
+shell_command:
+  set_temp_high: 'python3 /home/homeassistant/.homeassistant/python_scripts/set_temperature.py -t {{ states.input_number.slider_day.state }}'
+  set_temp_low: 'python3 /home/homeassistant/.homeassistant/python_scripts/set_temperature.py -t {{ states.input_number.slider_night.state }}'
+  set_temp_living: 'python3 /home/homeassistant/.homeassistant/python_scripts/set_temperature.py -t {{ states.input_number.slider1.state }}'
+</code></pre>
+
+<p>In <code>ui-lovelace.yaml</code>, we&rsquo;ll define a card including our new three sliders.</p>
+
+<pre><code>  - title: Verwarming
+    cards:
+      - type: entities
+        title: temperaturen
+        entities:
+          - sensor.temperature_living
+          - sensor.temperature_setpoint_living
+          - input_number.slider_day
+          - input_number.slider_night
+          - input_number.slider1
+</code></pre>
+
+<h2 id="mutual-exclusion">Mutual exclusion<a href="#mutual-exclusion" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<ul>
+<li>We&rsquo;ll be using the python module <code>ilock</code> to make sure not multiple instances write/read at the same time to the ebus</li>
+<li>Installation <code>pi@hassbian:~ $ sudo pip3 install ilock</code>
+
+<ul>
+<li>the <code>sudo</code> here turns out to be important: <a href="https://community.home-assistant.io/t/shell-command-pi-versus-ha/114939/3">https://community.home-assistant.io/t/shell-command-pi-versus-ha/114939/3</a></li>
+</ul></li>
+</ul>
+
+<p>The working code of the pythong script becomes:</p>
+
+<pre><code>
+import subprocess
+import time
+import getopt
+import sys
+from ilock import ILock
+
+# check if passed options are valid
+try:
+    options, args = getopt.getopt(sys.argv[1:], 't:',['temperature_setpoint='])
+    print(options)
+    print(args)
+except getopt.GetoptError:
+    print(&quot;incorrect syntax&quot;)
+    print(&quot;usage: python3 set_temperature.py -t &lt;value&gt;&quot;)
+    print(&quot;default to 12 degrees&quot;)
+    msg2=12
+    sys.exit(2)
+for opt, value in options:
+    if opt in ('-t','-T','--temperature_setpoint'):
+        msg2=value
+        print(&quot;successful argument&quot;)
+        print(msg2)
+
+with ILock('ebus', timeout=200):
+	msg1=&quot;ebusctl write -c f37 Hc1DayTemp &quot;
+	cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+
+	msg1=&quot;ebusctl write -c f37 Hc1NightTemp &quot;
+	cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+
+	time.sleep(30)
+
+	#check if it is truly set
+	cp = subprocess.run([&quot;ebusctl read Hc1DayTemp&quot;],shell=True,stdout=subprocess.PIPE)
+	temp=cp.stdout
+	if int(float(temp[0:4]))!=int(float(msg2)):
+	    # if not set correct
+	    msg1=&quot;ebusctl write -c f37 Hc1DayTemp &quot;
+	    cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+
+	cp = subprocess.run([&quot;ebusctl read Hc1NightTemp&quot;],shell=True,stdout=subprocess.PIPE)
+	temp=cp.stdout
+	if int(float(temp[0:4]))!=int(float(msg2)):
+	    # if not set correct
+	    msg1=&quot;ebusctl write -c f37 Hc1NightTemp &quot;
+	    cp = subprocess.run([msg1+msg2],shell=True,stdout=subprocess.PIPE)
+	else:
+	    print(&quot;setting correct&quot;)
+</code></pre>
+
+<div align=center>
+<SCRIPT charset="utf-8" type="text/javascript" src="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218&Operation=NoScript">Amazon.de Widgets</A></NOSCRIPT>
+</div>
 
 
 			</div>
@@ -260,7 +411,7 @@ Add the following into <code>configuration.yaml</code> and reload/reboot home as
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://users.telenet.be/goosst/tags/vaillant">vaillant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ecotec-plus">ecotec plus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ebus">ebus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/home-assistant">home assistant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/raspberry-pi">raspberry pi</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>656 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1169 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-04-20 02:00 &#43;0200</p>
 			</footer>
 		</article>
@@ -269,7 +420,7 @@ Add the following into <code>configuration.yaml</code> and reload/reboot home as
 				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Heating automation - read information</span>
 			</a>
 			<a class="prev-post" href="http://users.telenet.be/goosst/posts/homeautomation_parti/">
-				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Heating automation - ebus</span>
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Heating automation - setup hardware and ebus</span>
 			</a>
 		</div>
 		<div id="comments" class="thin">

@@ -9,32 +9,27 @@
 	<meta name="msapplication-TileColor" content="#494f5c">
 
 <meta itemprop="name" content="Heating automation - device tracking">
-<meta itemprop="description" content="Intro In this part we&rsquo;ll turn our heating off when we leave the house (by detecting presence of our mobile phone).
-Concept We&rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&rsquo;ll do a simple scheduling of our heating.
-Home assistant No python scripts this time, only activity is done in Home Assistant.
-Device tracking Example below will use the component device_tracker and the nmap program to scan the network.">
+<meta itemprop="description" content="Intro Concept Home assistant  Device tracking Identify phone Automate heating based on presence     Intro In this part we&rsquo;ll turn our heating off and on when we leave the house (by detecting presence of our mobile phone).
+Concept We&rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&rsquo;ll do a simple scheduling of our heating.">
 
 
 <meta itemprop="datePublished" content="2019-04-22T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-04-22T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="391">
+<meta itemprop="wordCount" content="406">
 
 
 
 <meta itemprop="keywords" content="vaillant,ecotec plus,ebus,home assistant,raspberry pi," />
 <meta property="og:title" content="Heating automation - device tracking" />
-<meta property="og:description" content="Intro In this part we&rsquo;ll turn our heating off when we leave the house (by detecting presence of our mobile phone).
-Concept We&rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&rsquo;ll do a simple scheduling of our heating.
-Home assistant No python scripts this time, only activity is done in Home Assistant.
-Device tracking Example below will use the component device_tracker and the nmap program to scan the network." />
+<meta property="og:description" content="Intro Concept Home assistant  Device tracking Identify phone Automate heating based on presence     Intro In this part we&rsquo;ll turn our heating off and on when we leave the house (by detecting presence of our mobile phone).
+Concept We&rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&rsquo;ll do a simple scheduling of our heating." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://users.telenet.be/goosst/posts/homeautomation_partiiii/" /><meta property="article:published_time" content="2019-04-22T00:00:00&#43;00:00"/>
-<meta property="article:modified_time" content="2019-04-22T00:00:00&#43;00:00"/><meta name="twitter:card" content="summary"/>
+<meta property="article:modified_time" content="2019-04-22T00:00:00&#43;00:00"/>
+<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Heating automation - device tracking"/>
-<meta name="twitter:description" content="Intro In this part we&rsquo;ll turn our heating off when we leave the house (by detecting presence of our mobile phone).
-Concept We&rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&rsquo;ll do a simple scheduling of our heating.
-Home assistant No python scripts this time, only activity is done in Home Assistant.
-Device tracking Example below will use the component device_tracker and the nmap program to scan the network."/>
+<meta name="twitter:description" content="Intro Concept Home assistant  Device tracking Identify phone Automate heating based on presence     Intro In this part we&rsquo;ll turn our heating off and on when we leave the house (by detecting presence of our mobile phone).
+Concept We&rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&rsquo;ll do a simple scheduling of our heating."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/goosst/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/goosst/favicon-32x32.png">
@@ -44,7 +39,7 @@ Device tracking Example below will use the component device_tracker and the nmap
 	<link rel="shortcut icon" href="/goosst/favicon.ico">
 
 	<title>Heating automation - device tracking</title>
-	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.e81f50049998463da8cdbf0f848b77d9797f27f249581a236a3161d386f310db.css" integrity="sha256-6B9QBJmYRj2ozb8PhIt32Xl/J/JJWBojajFh04bzENs=">
+	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.278b9c3bdc083d1b9012627cf76538692336f6ea27add3755143eb4047e10d1d.css" integrity="sha256-J4ucO9wIPRuQEmJ892U4aSM29uonrdN1UUPrQEfhDR0=">
 	
 </head>
 
@@ -85,9 +80,25 @@ Device tracking Example below will use the component device_tracker and the nmap
 			<div class="content">
 				
 
+<aside>
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#intro">Intro</a></li>
+<li><a href="#concept">Concept</a></li>
+<li><a href="#home-assistant">Home assistant</a>
+<ul>
+<li><a href="#device-tracking">Device tracking</a></li>
+<li><a href="#identify-phone">Identify phone</a></li>
+<li><a href="#automate-heating-based-on-presence">Automate heating based on presence</a></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+
+
 <h1 id="intro">Intro<a href="#intro" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
-<p>In this part we&rsquo;ll turn our heating off when we leave the house (by detecting presence of our mobile phone).</p>
+<p>In this part we&rsquo;ll turn our heating off and on when we leave the house (by detecting presence of our mobile phone).</p>
 
 <h1 id="concept">Concept<a href="#concept" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
@@ -122,17 +133,10 @@ device_tracker:
 
 <ul>
 <li>automatically new devices will start popping up in your user interface, easiest way is to go to the states overview:
-
 <figure>
-    
-        <img src="/goosst/pictures/devicetracker.png" width="760" />
-    
-    
-    <figcaption>
-        <h4>States device tracker</h4>
-        
-    </figcaption>
-    
+    <img src="/goosst/pictures/devicetracker.png" width="760"/> <figcaption>
+            <h4>States device tracker</h4>
+        </figcaption>
 </figure>
 </li>
 <li>to check which ip address your phone has, you can look it up on the phone
@@ -142,79 +146,68 @@ device_tracker:
 <li>or disable and enable the wifi on your phone and see which ones gets the status away in your home assistant interface (requires more patience)</li>
 </ul></li>
 <li>in your folder <code>/home/homeassistant/.homeassistant</code> a file <code>known_devices.yaml</code> will list all discovered devices</li>
-<li>give a more decent name to the address linked to your phone (e.g. phone Jane)</li>
-</ul>
+
+<li><p>give a more decent name to the address linked to your phone (e.g. phone Jane)</p>
 
 <pre><code>5c_35_3b_70_05_29:
-  hide_if_away: false
-  icon:
-  mac: 5C:35:3B:70:05:29
-  name: phone Jane
-  picture:
-  track: true
-</code></pre>
+hide_if_away: false
+icon:
+mac: 5C:35:3B:70:05:29
+name: phone Jane
+picture:
+track: true
+</code></pre></li>
 
-<ul>
-<li>You should disable tracking (<code>track:false</code>) for the devices you are not interested in</li>
+<li><p>You should disable tracking (<code>track:false</code>) for the devices you are not interested in</p></li>
 </ul>
 
-<h2 id="turn-off-heating-when-leaving">turn off heating when leaving<a href="#turn-off-heating-when-leaving" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h2 id="automate-heating-based-on-presence">Automate heating based on presence<a href="#automate-heating-based-on-presence" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
 <p>Examples below</p>
 
 <ul>
-<li>Set temperature setpoint low when phone went from home to not home:</li>
-</ul>
+<li><p>Set temperature setpoint low when phone went from home to not home:</p>
 
 <pre><code>automation leaving_house:
-  alias: set temp low when leaving house
-  trigger:
-    platform: state
-    entity_id: device_tracker.5c_35_3b_70_05_29
-    from: 'home'
-    to: 'not_home'
-  action:
-    service: shell_command.set_temp_low
-    data:
-      message: &quot;Jane left house: heating low&quot;
-</code></pre>
+alias: set temp low when leaving house
+trigger:
+platform: state
+entity_id: device_tracker.5c_35_3b_70_05_29
+from: 'home'
+to: 'not_home'
+action:
+service: shell_command.set_temp_low
+data:
+  message: &quot;Jane left house: heating low&quot;
+</code></pre></li>
 
-<ul>
-<li>Set temperature setpoint high when phone is present and it&rsquo;s between 6:30 and 22:30.
-Every five minutes a new check on the home status is done.</li>
-</ul>
+<li><p>Set temperature setpoint high when phone is present and it&rsquo;s between 6:30 and 22:30.
+Every five minutes a new check on the home status is done.</p>
 
 <pre><code>automation at_home:
-  alias: set temp high when being home
-  trigger:
-    platform: time_pattern
-    minutes: '/5'
-  condition:
-    condition: and
-    conditions:
-      - condition: time
-        after: '06:30:00'
-        before: '22:30:00'
-      - condition: state
-        entity_id: device_tracker.5c_35_3b_70_05_29
-        state: 'home'
-  action:
-    service: shell_command.set_temp_high
-    data:
-      message: &quot;Jane is home: heating high&quot;
-</code></pre>
+alias: set temp high when being home
+trigger:
+platform: time_pattern
+minutes: '/5'
+condition:
+condition: and
+conditions:
+  - condition: time
+    after: '06:30:00'
+    before: '22:30:00'
+  - condition: state
+    entity_id: device_tracker.5c_35_3b_70_05_29
+    state: 'home'
+action:
+service: shell_command.set_temp_high
+data:
+  message: &quot;Jane is home: heating high&quot;
+</code></pre></li>
+</ul>
 
-<SCRIPT charset="utf-8"
-  type="text/javascript"
-  src="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8005%2F255f510d-9dba-4465-94c2-3e7baad54509">
-</SCRIPT>
-
-<NOSCRIPT>
-  <A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8005%2F255f510d-9dba-4465-94c2-3e7baad54509&Operation=NoScript">Amazon.de Widgets</A>
-</NOSCRIPT>
-
-
-<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=48&l=ur1&category=electronics&banner=0MNQ6KCCWY32BF4PH5G2&f=ifr&linkID=17a86ac5c29a5d7ba74c9e25d42d63d7&t=goosst-21&tracking_id=goosst-21" width="728" height="90" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+<div align=center>
+<SCRIPT charset="utf-8" type="text/javascript" src="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218&Operation=NoScript">Amazon.de Widgets</A></NOSCRIPT>
+</div>
 
 
 			</div>
@@ -223,11 +216,14 @@ Every five minutes a new check on the home status is done.</li>
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://users.telenet.be/goosst/tags/vaillant">vaillant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ecotec-plus">ecotec plus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ebus">ebus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/home-assistant">home assistant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/raspberry-pi">raspberry pi</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>391 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>406 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-04-22 02:00 &#43;0200</p>
 			</footer>
 		</article>
 		<div class="post-nav thin">
+			<a class="next-post" href="http://users.telenet.be/goosst/posts/homeautomation_el_heater/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Heating automation - electric heater</span>
+			</a>
 			<a class="prev-post" href="http://users.telenet.be/goosst/posts/homeautomation_partiii/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Heating automation - read information</span>
 			</a>

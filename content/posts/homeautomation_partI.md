@@ -1,7 +1,7 @@
 ---
 author: "goosst"
 date: 2019-04-19
-title: Heating automation - ebus
+title: Heating automation - setup hardware and ebus
 tags:
  - vaillant
  - ecotec plus
@@ -10,9 +10,10 @@ tags:
  - raspberry pi
 ---
 
+{{% toc %}}
 
 # Intro
-In this part we'll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a rapsberry pi (in general, the instructions below work with any computer using debian/ubuntu).
+In this part we'll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
 
 
 # Hardware
@@ -20,8 +21,8 @@ In this part we'll connect to the communication bus of the heater and read / wri
 ## Ebus adapter
 We need an ebus adapter for the raspberry to interface with our heater. I'm not going to write down all the details, since I can just refer to them:
 
-* start reading here for more background: https://ebus.github.io/adapter/index.en.html
-* I'm using the base board version 2.2, there might be better options to use directly with a raspberry pi, but when I ordered it looked like the most flexible solution.
+* Start reading here for more background: https://ebus.github.io/adapter/index.en.html
+* I'm using the base board version 2.2, there might be better options to use directly with a raspberry pi. But when I ordered, it looked like the most flexible solution.
 * Adapter was ordered on the fhem forum. They will send you a pcb with a set of components, you have to solder yourself (or pay a bit extra): https://forum.fhem.de/index.php/topic,93190.msg857894.html#msg857894. If you've read the first link you will also know there are commercial options in case you don't want this.
 * Put it in a box so there is no chance on touching electrical connections etc. . 
  * You could consider placing the adapter inside the heater (plenty of space), I just didn't want to put custom electronics inside ... . 
@@ -36,9 +37,9 @@ Please use a decent power supply (it causes a lot of strange problems) and 32Gb 
 {{< figure src="/goosst/pictures/IMG_20190420_092754.jpg" title="Raspberry pi and ebus adapter mounted on heater" width="350">}}
 
 * Pi and ebus-adapter are mounted against the heater by using velco strips
-* Case specific for raspberry pi is used
-* the white and purple wire are the ebus, they are connected inside the heater (ebusd protocol has no polarity, so you can swap the wires)
-* pi and ebusd-adapter are connected through USB
+* A case, specific for the raspberry pi is used
+* The white and purple wire are the ebus, they are connected inside the heater (ebus protocol has no polarity, so you can swap the wires)
+* ebus-adapter is connected through usb with the raspberry pi
 
 # Software
 
@@ -48,7 +49,8 @@ If you have a pi with raspbian already on it, you can jump to next section and i
 We'll be using Home Assistant for our interface and home automation.
 I chose Home Assistant because it's fully python based. I prefer to learn python over learning Java, Perl, ... which is used by the alternative open source domotica programs. 
 
-To use Home Assistant, there is hassbian, hass.io, homme-assistant itself, ... as you see, it's not confusing at all :). I'm using hassbian since at least I know ebusd works in a debian environment on the raspberry pi.
+### Hassbian 
+To use Home Assistant, there is hassbian, hass.io, home-assistant itself, ... as you see, it's not confusing at all :). I'm using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. (https://www.home-assistant.io/docs/installation/hassbian/installation/)
 
 Additional installations beside the normal updating and upgrading: 
 ```
@@ -57,14 +59,20 @@ sudo hassbian-config install mosquitto
 sudo hassbian-config install samba
 ```
 
+### Static IP address
+
+Since we will be sending quite some messages from other devices through MQTT, a static IP address is rather convenient. I've followed the steps from this link (my routher doesn't support fancy things)	: 
+https://raspberrypi.stackexchange.com/questions/37920/how-do-i-set-up-networking-wifi-static-ip-address/74428#74428
+
+
 ## install and use ebusd
 
-It's an awesome tool, it's however a challenge to find out how to efficiently use it :).
+Ebusd is an awesome tool, it's a challenge however to find out how to efficiently use it :).
 
-* go to your raspberry pi by ssh'ing to it
-* follow these instructions: https://github.com/john30/ebusd-debian/blob/master/README.md
+* Go to your raspberry pi by ssh'ing to it
+* Follow these instructions: https://github.com/john30/ebusd-debian/blob/master/README.md
 * I've had some weird issues that magically got resolved, I still think it's linked to a strange power supply : https://github.com/john30/ebusd/issues/276
-* check on the raspberry with the command: `dmesg | grep cp210` if the adpater is added to ttUSB0 (only relevant if you're using cp210 as uart device of course, this is the blue thingy in the picture of the adapter)
+* Check on the raspberry with the command: `dmesg | grep cp210` if the adpater is added to ttUSB0 (only relevant if you're using cp210 as uart device of course: <a target='_blank' href='https://www.banggood.com/CJMCU-CP2102-USB-To-TTLSerial-Module-UART-STC-Downloader-p-970993.html?p=ET150713234951201708&custlinkid=261938' title='' >CP2102 USB To TTL/Serial Module</a>) 
 output should look something like this:
 
 ```
@@ -123,8 +131,8 @@ pi@raspberrypi:/ $ ebusd -f --scanconfig
 2019-03-31 13:31:17.474 [update notice] received update-write bai SetMode QQ=10: auto;0.0;-;-;1;0;1;0;0;0
 ```
 
-* make sure ebusd starts up when the raspberry boots: https://github.com/john30/ebusd/wiki/2.-Run
-* in parallel commands with ebusctl can be queried
+* Make sure ebusd starts up when the raspberry boots: https://github.com/john30/ebusd/wiki/2.-Run
+* In parallel commands with ebusctl can be queried
 ```
 pi@raspberrypi:~ $ ebusctl info
 version: ebusd 3.3.v3.3
@@ -148,11 +156,11 @@ address 15: slave #2, scanned "MF=Vaillant;ID=F3700;SW=0114;HW=6102", loaded "va
 address 31: master #8, ebusd
 address 36: slave #8, ebusd
 ```
-here you can find the names f37 and bai for the devicenames needed for further usage in ebusd.
+In this output you can find back the names f37 and bai, the devicenames needed for further usage in ebusd.
 
-* you have to look up the mentioned csv files (e.g. 15.f37.csv) to see which parameters are available. Which parameters have read permission (r), which have write permissions (w), ... the configuration files are stored on another github site from john30:  https://github.com/john30/ebusd-configuration/tree/master/ebusd-2.1.x/en/vaillant
+* You have to look up the mentioned csv files (e.g. 15.f37.csv) to see which parameters are available, which parameters have read permission (r), which have write permissions (w), ... . The configuration files are stored on another github site from john30:  https://github.com/john30/ebusd-configuration/tree/master/ebusd-2.1.x/en/vaillant
 
-* once ebus is running open a second terminal and read and write all the things you want to do:
+* Once ebus is running open a second terminal on the pi and read and write all the things you want to do:
 
  * Read example, here we read the time reported by the thermostat:
 
@@ -176,4 +184,4 @@ pi@raspberrypi:~ $ ebusctl read Time
   * `ebusctl read RoomTemp`, read the temperature measured by the thermostat
   * and a whole bunch of others ... 
 
-{{< ama1 >}}
+{{< ama3 >}}

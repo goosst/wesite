@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wemos D1 on Goosst blog</title>
+    <link>http://users.telenet.be/goosst/tags/wemos-d1/</link>
+    <description>Recent content in Wemos D1 on Goosst blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Fri, 10 May 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://users.telenet.be/goosst/tags/wemos-d1/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Heating automation - alarm</title>
+      <link>http://users.telenet.be/goosst/posts/homeautomation_alarm/</link>
+      <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/homeautomation_alarm/</guid>
+      <description>Intro  Troubleshooting To do     Intro I&amp;rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
+We&amp;rsquo;ll use MQTT to send status of alarm to Home Assistant.
+Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk.</description>
+    </item>
+    
+  </channel>
+</rss>

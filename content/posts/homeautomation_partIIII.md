@@ -10,6 +10,8 @@ tags:
  - raspberry pi
 ---
 
+{{% toc %}}
+
 # Intro
 In this part we'll turn our heating off and on when we leave the house (by detecting presence of our mobile phone).
 
@@ -66,7 +68,7 @@ When Home Assistant starts scanning:
 * You should disable tracking (`track:false`) for the devices you are not interested in
 
 
-## turn off heating when leaving
+## Automate heating based on presence
 
 Examples below
 
@@ -113,7 +115,4 @@ automation at_home:
 
 
 
-{{< ama2 >}}
-
-{{< ama1 >}}
-
+{{< ama3 >}}

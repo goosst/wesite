@@ -10,8 +10,10 @@ tags:
  - raspberry pi
 ---
 
+{{% toc %}}
+
 # Intro
-In this part we'll read commands through the interface of Home Assistant and plot them in the UI.
+In this part we'll read parameters from our heater through the interface of Home Assistant and plot them in the UI.
 
 
 # Concept
@@ -21,7 +23,7 @@ We'll be (mis)using the mqtt protocol to send messages from the ebusd program to
 Again: in this way we can focus on making all the ebus related items running in python and we don't have to deal with a custom Home Assistant syntax. I personally prefer spending time learning python over learning a custom program specific language/syntax. 
 
 
-## python script
+## Python script
 
 script below:
 
@@ -154,7 +156,44 @@ history_graph:
 This results in something like this (pending how you arrange it):
 {{< figure src="/goosst/pictures/historygraph.png" title="Sensor values in a graph" width="760">}}
 
-{{< ama2 >}}
+## Tip
 
-{{< ama1 >}}
+I prefer to edit the user interface by code as well (easier to backup/restore), this can be done by adding the following in `configuration.yaml`
+
+```
+lovelace:
+  mode: yaml
+```
+
+and to create a file with the name `ui-lovelace.yaml` where you for example can add the following:
+
+```
+title: My Awesome Home
+views:
+  - title: Verwarming
+    cards:
+      - type: glance
+        title: temperaturen
+        entities:
+          - sensor.temperature_living
+          - sensor.temperature_setpoint_living
+      - type: history-graph
+        title: 'living temperature'
+        entities:
+          - sensor.temperature_setpoint_living
+          - sensor.temperature_living
+        hours_to_show: 72
+        refresh_interval: 600
+      - type: history-graph
+        title: 'heater setpunt'
+        entities:
+          - sensor.temperature_flow_radiator
+        hours_to_show: 72
+        refresh_interval: 600
+```
+
+Which results in:
+{{< figure src="/goosst/pictures/lovelace_ui.png" title="Interface define in ui-lovelace.yaml" width="760">}}
+
+{{< ama3 >}}
 

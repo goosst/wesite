@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+
+<meta itemprop="name" content="Heating automation - electric heater">
+<meta itemprop="description" content="Intro  Concept Configure MQTT Tasmota Home assistant UI     Intro We&rsquo;ll be using one of the sonoff devices to turn on/off a wall-plugged electric heater. These devices are pretty cheap but since we&rsquo;ll be hacking into them, use at your own risk.
+The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standpoint). But once it&rsquo;s done, the S26 is more compact and looks slick :).">
+
+
+<meta itemprop="datePublished" content="2019-04-27T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-04-27T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="476">
+
+
+
+<meta itemprop="keywords" content="sonoff,home assistant,Tasmota," />
+<meta property="og:title" content="Heating automation - electric heater" />
+<meta property="og:description" content="Intro  Concept Configure MQTT Tasmota Home assistant UI     Intro We&rsquo;ll be using one of the sonoff devices to turn on/off a wall-plugged electric heater. These devices are pretty cheap but since we&rsquo;ll be hacking into them, use at your own risk.
+The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standpoint). But once it&rsquo;s done, the S26 is more compact and looks slick :)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://users.telenet.be/goosst/posts/homeautomation_el_heater/" /><meta property="article:published_time" content="2019-04-27T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-04-27T00:00:00&#43;00:00"/>
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Heating automation - electric heater"/>
+<meta name="twitter:description" content="Intro  Concept Configure MQTT Tasmota Home assistant UI     Intro We&rsquo;ll be using one of the sonoff devices to turn on/off a wall-plugged electric heater. These devices are pretty cheap but since we&rsquo;ll be hacking into them, use at your own risk.
+The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standpoint). But once it&rsquo;s done, the S26 is more compact and looks slick :)."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/goosst/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/goosst/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/goosst/favicon-16x16.png">
+	<link rel="manifest" href="/goosst/site.webmanifest">
+	<link rel="mask-icon" href="/goosst/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/goosst/favicon.ico">
+
+	<title>Heating automation - electric heater</title>
+	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.278b9c3bdc083d1b9012627cf76538692336f6ea27add3755143eb4047e10d1d.css" integrity="sha256-J4ucO9wIPRuQEmJ892U4aSM29uonrdN1UUPrQEfhDR0=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="http://users.telenet.be/goosst">Goosst blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="http://users.telenet.be/goosst/posts/">Posts</a>
+					<a href="http://users.telenet.be/goosst/about-hugo/">About</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/goosst" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+			<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=288&l=ez&f=ifr&linkID=8e0370935cd8bd0e3a8f7eb4cbc24956&t=goosst-21&tracking_id=goosst-21" width="320" height="50" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="http://users.telenet.be/goosst/posts/">Posts</a></li>
+			<li><a href="http://users.telenet.be/goosst/about-hugo/">About</a></li>
+		</ul>
+		<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=288&l=ez&f=ifr&linkID=8e0370935cd8bd0e3a8f7eb4cbc24956&t=goosst-21&tracking_id=goosst-21" width="320" height="50" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Apr 27, 2019</span></div>
+				<h1>Heating automation - electric heater</h1>
+			</header>
+			<div class="content">
+				
+
+<aside>
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#intro">Intro</a>
+<ul>
+<li><a href="#concept">Concept</a></li>
+<li><a href="#configure-mqtt-tasmota">Configure MQTT Tasmota</a></li>
+<li><a href="#home-assistant">Home assistant</a></li>
+<li><a href="#ui">UI</a></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+
+
+<h1 id="intro">Intro<a href="#intro" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>We&rsquo;ll be using one of the sonoff devices to turn on/off a wall-plugged electric heater. These devices are pretty cheap but since we&rsquo;ll be hacking into them, use at your own risk.</p>
+
+<p>The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standpoint). But once it&rsquo;s done, the S26 is more compact and looks slick :). I&rsquo;ve used both in the meantime (and I&rsquo;m not a soldering guru by far).</p>
+
+  <a target='_blank' href='https://www.banggood.com/SONOFF-S26-10A-AC90V-250V-Smart-WIFI-Socket-USUKAUEU-Wireless-Plug-Power-Sockets-p-1308841.html?p=ET150713234951201708&custlinkid=257729'><img src='https://imgaz.staticbg.com/images/oaupload/banggood/images/75/01/bf9b7b7d-80b4-4e18-a1c6-6db816225de5.jpg' alt='' width="200"><center>S26</center></a>
+  <a target='_blank' href='https://www.banggood.com/SONOFF-S20-10A-2200W-Wifi-Wireless-Remote-Control-Socket-Smart-Timer-Plug-Smart-Home-Power-Socket-Support-Alexa-p-1142285.html?p=ET150713234951201708&custlinkid=257739'><img src='https://img.staticbg.com/images/oaupload/banggood/images/3E/30/4ca60816-90f6-401f-bdbc-4d41a4d01939.jpg' alt='' width="200"><center>S20</center></a>
+
+
+<h2 id="concept">Concept<a href="#concept" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<ul>
+<li>The sonoff devices will be flashed with the custom Tasmota firmware (cfr. the very complete documentation at <a href="https://github.com/arendst/Sonoff-Tasmota">https://github.com/arendst/Sonoff-Tasmota</a>).</li>
+<li>There are enough sites out there explaining the flashing procedure. I flash through the FTDI device below (can handle 3.3 and 5V based devices): <a target='_blank' href='https://www.banggood.com/FT232RL-FTDI-USB-To-TTL-Serial-Converter-Adapter-Module-For-Arduino-p-917226.html?p=ET150713234951201708&custlinkid=257737'><img src='https://img.staticbg.com/images/oaupload/banggood/images/4A/1F/72fb76d9-d3ad-45a4-9323-e9924a3d7805.jpg' alt='' width="150"></a>
+</li>
+<li>Once this is done, MQTT messages will be used to control and report the status through the interface of Home Assistant</li>
+</ul>
+
+<h2 id="configure-mqtt-tasmota">Configure MQTT Tasmota<a href="#configure-mqtt-tasmota" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>First, flash the Tasmota software.</p>
+
+<p>Then browse to the ip-address of your sonoff device and click further to do some limited MQTT configuration. Here you can define the names / passwords / username of your MQTT topics (see screenshot below). The full name of the MQTT can be double checked in <a href="http://IP_ADDRESS_OF_YOUR_SONOFF/in">http://IP_ADDRESS_OF_YOUR_SONOFF/in</a>.</p>
+
+<figure>
+    <img src="/goosst/pictures/Tasmota.png" width="450"/> <figcaption>
+            <h4>MQTT configuration in Tasmota</h4>
+        </figcaption>
+</figure>
+
+
+<p>The MQTT methods in the Tasmota software are very well documented (a bit overwhelming at first):</p>
+
+<ul>
+<li>list of useful topics: <a href="https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#mqtt">https://github.com/arendst/Sonoff-Tasmota/wiki/Commands#mqtt</a></li>
+<li>general explanation: <a href="https://github.com/arendst/Sonoff-Tasmota/wiki/MQTT-Overview">https://github.com/arendst/Sonoff-Tasmota/wiki/MQTT-Overview</a></li>
+</ul>
+
+<p>Two MQTT topics will be used for this application:</p>
+
+<ul>
+<li>one to report the status</li>
+<li>one to send the commands (this one doesn&rsquo;t need additional configuration)</li>
+</ul>
+
+<p>To monitor the status of the device, the tele-messages - continuously broadcasted by Tasmota - will be used. The update rate of the tele-message can be set with the TelePeriod command (see screenshot below).
+<figure>
+    <img src="/goosst/pictures/Tasmota_console.png" width="500"/> <figcaption>
+            <h4>Configure update rate of the tele-message to 60 seconds</h4>
+        </figcaption>
+</figure>
+</p>
+
+<h2 id="home-assistant">Home assistant<a href="#home-assistant" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>First check if the messages truly arrive on the host, by listening to them from the terminal on the host:</p>
+
+<pre><code>$ mosquitto_sub -v -h localhost -t tele/sonoff/#
+tele/sonoff/LWT Online
+tele/sonoff/STATE {&quot;Time&quot;:&quot;2019-08-02T18:32:57&quot;,&quot;Uptime&quot;:&quot;0T00:33:19&quot;,&quot;Vcc&quot;:3.178,&quot;SleepMode&quot;:&quot;Dynamic&quot;,&quot;Sleep&quot;:250,&quot;LoadAvg&quot;:24,&quot;POWER&quot;:&quot;OFF&quot;,&quot;Wifi&quot;:{&quot;AP&quot;:1,&quot;SSId&quot;:&quot;*****&quot;,&quot;BSSId&quot;:&quot;*****&quot;,&quot;Channel&quot;:6,&quot;RSSI&quot;:44,&quot;LinkCount&quot;:1,&quot;Downtime&quot;:&quot;0T00:00:06&quot;}}
+tele/sonoff/STATE {&quot;Time&quot;:&quot;2019-08-02T18:33:57&quot;,&quot;Uptime&quot;:&quot;0T00:34:19&quot;,&quot;Vcc&quot;:3.178,&quot;SleepMode&quot;:&quot;Dynamic&quot;,&quot;Sleep&quot;:250,&quot;LoadAvg&quot;:3,&quot;POWER&quot;:&quot;OFF&quot;,&quot;Wifi&quot;:{&quot;AP&quot;:1,&quot;SSId&quot;:&quot;*****&quot;,&quot;BSSId&quot;:&quot;*****&quot;,&quot;Channel&quot;:6,&quot;RSSI&quot;:44,&quot;LinkCount&quot;:1,&quot;Downtime&quot;:&quot;0T00:00:06&quot;}}
+tele/sonoff/STATE {&quot;Time&quot;:&quot;2019-08-02T18:34:57&quot;,&quot;Uptime&quot;:&quot;0T00:35:19&quot;,&quot;Vcc&quot;:3.190,&quot;SleepMode&quot;:&quot;Dynamic&quot;,&quot;Sleep&quot;:250,&quot;LoadAvg&quot;:9,&quot;POWER&quot;:&quot;OFF&quot;,&quot;Wifi&quot;:{&quot;AP&quot;:1,&quot;SSId&quot;:&quot;*****&quot;,&quot;BSSId&quot;:&quot;*****&quot;,&quot;Channel&quot;:6,&quot;RSSI&quot;:42,&quot;LinkCount&quot;:1,&quot;Downtime&quot;:&quot;0T00:00:06&quot;}}
+
+</code></pre>
+
+<p>All arriving, all good :).</p>
+
+<p>Now, define a binary sensor in <code>configuration.yaml</code> to monitor the on/off status of the device. Here the value_template needs to be used to filter the specific message we want (here on/off of the device).</p>
+
+<pre><code>binary_sensor:
+  - platform: mqtt
+    name: &quot;heater status&quot;
+    state_topic: 'tele/sonoff/STATE'
+    value_template: &quot;{{value_json.POWER}}&quot;
+</code></pre>
+
+<p>To command the sonoff to turn on and off we&rsquo;ll define a switch. This one uses the cmnd features of Tasmota:</p>
+
+<pre><code>switch:
+  - platform: mqtt
+    name: &quot;handdoekdroger control&quot;
+    command_topic: cmnd/sonoff/Power1
+    payload_on: &quot;ON&quot;
+    payload_off: &quot;OFF&quot;
+
+</code></pre>
+
+<h2 id="ui">UI<a href="#ui" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>In <code>ui-lovelace.yaml</code>, the following is defined:</p>
+
+<pre><code>      - type: entities
+        title: bathroom
+        entities:
+          - binary_sensor.heater_status
+          - switch.handdoekdroger_control
+</code></pre>
+
+<p>et voila, one can command and read the status of the sonoff device through Home Assitant:
+(of course there is a delay of maximum 60s in the status reporting due to the usage of the tele-message.)</p>
+
+<figure>
+    <img src="/goosst/pictures/HA_sonoff.png" width="350"/> <figcaption>
+            <h4>MQTT configuration in Tasmota</h4>
+        </figcaption>
+</figure>
+
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://users.telenet.be/goosst/tags/sonoff">sonoff</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/home-assistant">home assistant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/tasmota">Tasmota</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>476 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-04-27 02:00 &#43;0200</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="http://users.telenet.be/goosst/posts/homeautomation_alarm/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Heating automation - alarm</span>
+			</a>
+			<a class="prev-post" href="http://users.telenet.be/goosst/posts/homeautomation_partiiii/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Heating automation - device tracking</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="http://users.telenet.be/goosst">Goosst</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="http://users.telenet.be/goosst/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="http://users.telenet.be/goosst/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js" integrity="sha256-eEQX9YRxUfhIwznPCssToGy7ZIsUg0NaKO1FVsTq1ps="></script>
+
+</body>
+
+</html>
