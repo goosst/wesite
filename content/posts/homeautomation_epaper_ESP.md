@@ -23,7 +23,7 @@ In this part, a figure, living on the Home Assistant server, will be displayed o
 # Esp 32: pinout
 
 The SPI interface of the ESP32 will be used to control the display.
-The pins of SPI quickly gets confusing:
+The pins of SPI quickly get confusing:
 
 - Names of the different interfaces of SPI aren't very consistently used (MOSI, SPI D, SD0, SS, CS, SCK, CLK, SD1, ... ) + you have to pay attention to the difference between IO pins and GPIO pins in the ESP32 datasheet.
 - The ports labeled on the ESP-board with clk, SD0, SD1, ... are linked to an SPI bus. But one only used to flash the device, not used for communication with external devices ... .

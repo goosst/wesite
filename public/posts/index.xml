@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 	<channel>
 		<title>Posts on Goosst blog</title>
@@ -7,8 +6,472 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Fri, 10 May 2019 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Wed, 18 Sep 2019 00:00:00 +0000</lastBuildDate>
 		<atom:link href="http://users.telenet.be/goosst/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>epaper Home Assistant</title>
+			<link>http://users.telenet.be/goosst/posts/homeautomation_epaper_hass/</link>
+			<pubDate>Wed, 18 Sep 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/homeautomation_epaper_hass/</guid>
+			<description>Intro This is the part that will create the content out of home assistant and will get displayed on our e-paper. As an example I will display the expected commute time to work.
+Python scripts being defined as a shell_command in configuration.yaml will be used. A simple automation to trigger the python script will be used.
+Basis of script We want to make a plot that tells us the expected time of our commute with a graph of the last hour, to see how the time is trending.</description>
+			<content type="html"><![CDATA[
+
+<aside>
+    
+</aside>
+
+<h1 id="intro">Intro</h1>
+
+<p>This is the part that will create the content out of home assistant and will get displayed on our e-paper.
+As an example I will display the expected commute time to work.</p>
+
+<p>Python scripts being defined as a shell_command in configuration.yaml will be used. A simple automation to trigger the python script will be used.</p>
+
+<h1 id="basis-of-script">Basis of script</h1>
+
+<p>We want to make a plot that tells us the expected time of our commute with a graph of the last hour, to see how the time is trending.</p>
+
+<p>The component <a href="https://www.home-assistant.io/components/waze_travel_time/">waze travel time</a>, will be used to estimate our commuting time (with the name sensor.commute). Setting this up is not described in further detail.</p>
+
+<pre><code>sensor:
+- platform: waze_travel_time
+  name: &quot;commute&quot;
+  origin: zone.home
+  destination: zone.work
+</code></pre>
+
+<p>You should create a <a href="https://www.home-assistant.io/components/http/#hosting-files">www</a> directory in your configuration folder</p>
+
+<p>Note: To get the data out of home assistant, I&rsquo;ve explored a few routes. Using <a href="https://www.home-assistant.io/components/python_script/">hass-python script</a> for interfacing with home assistant, scripts that would operate on home-assistant_v2.db, &hellip; until I&rsquo;ve stumbled upon the <a href="https://developers.home-assistant.io/docs/en/external_api_rest.html#get-apihistory">Home Assistant: REST API</a>. After this discovery, I don&rsquo;t know why I should use anything else to capture data. Since this can be accessed from anywhere on the network (and makes debugging easy).</p>
+
+<h2 id="rest-api">REST API</h2>
+
+<p>The documentation from the REST API, describes how to obtain a long term token. This needs to be filled in the hearders file (the xxx location).</p>
+
+<pre><code>
+#location where figure will be stored
+path=&quot;/home/homeassistant/.homeassistant/www&quot;
+os.chdir(path)
+
+# e-paper display size
+width_displ=640
+height_displ=384
+dpi=100;
+
+headers = {
+    'Authorization': 'Bearer xxx,
+    'content-type': 'application/json',
+}
+address_hass='192.168.0.205'
+</code></pre>
+
+<h2 id="getting-timezones">Getting timezones</h2>
+
+<p>All data gets stored with UTC timestamps. We want to convert our data to the local timezone.</p>
+
+<p>Obtaining the timezone can be done by requesting the <a href="https://developers.home-assistant.io/docs/en/external_api_rest.html#get-api-config">/api/config</a>:</p>
+
+<pre><code># get timezone to convert to local time, since database attributes are in UTC time
+url='http://'+address_hass+':8123/api/config'
+response = get(url, headers=headers)
+temp=response.text
+readable_json=json.loads(temp)
+time_zone=readable_json['time_zone']
+tz = timezone(time_zone)
+</code></pre>
+
+<h2 id="get-sensor-history">Get sensor history</h2>
+
+<p>Here the data from our sensor will be obtained, by default the history of 1 day is provided. The data will be stored in numpy arrays and will be immediately converted to the local timezone.</p>
+
+<pre><code>entity_id='sensor.commute'
+
+# this downloads history of the last day
+url='http://'+address_hass+':8123/api/history/period'+'?filter_entity_id='+entity_id
+
+response = get(url, headers=headers)
+temp=response.text
+temp=temp[1:len(temp)-1]
+readable_json=json.loads(temp)
+
+time_array= np.array([])
+state_array=np.array([])
+for i in readable_json:
+    time_update=datetime.strptime(i['last_updated'],'%Y-%m-%dT%H:%M:%S.%f%z')
+    time_array=np.append(time_array, time_update.astimezone(tz))
+    state_array=np.append(state_array,float(i['state']))
+</code></pre>
+
+<h2 id="create-bitmap-file">Create bitmap file</h2>
+
+<p>At last, a plot from the data within the last hour will be created,
+the x-axis will be plotted containing hours and minutes</p>
+
+<pre><code># only plot data from last hour
+time_treshold=time_array[-1]-timedelta(hours=1)
+idx=time_array&gt;time_treshold
+
+last_info=readable_json[-1]
+last_attr=last_info['attributes']
+
+fig=plt.figure(num=None, figsize=(int(width_displ/dpi), int(height_displ/dpi)), dpi=dpi, facecolor='w', edgecolor='k')
+
+plt.plot(time_array[idx],state_array[idx],linewidth=7.0,c='k')
+plt.ylabel('Minutes',fontsize=20)
+plt.xticks(fontsize=18)
+plt.yticks(fontsize=18)
+ax = plt.gca()
+ax.yaxis.set_major_formatter(FormatStrFormatter('%.0f'))
+
+plt.title('Commute: '+format(state_array[-1],'.0f')+' min'+'\n '+'Route: '+last_attr['route'],fontsize=28)
+
+xformatter = DateFormatter('%H:%M')
+plt.gcf().axes[0].xaxis.set_major_formatter(xformatter)
+plt.gcf().autofmt_xdate()
+
+fig.savefig('plot.png',bbox_inches='tight',dpi=dpi)
+</code></pre>
+
+<p>Example, generated figure:</p>
+
+<figure>
+    <img src="/goosst/pictures/commute_example.png" width="350"/> <figcaption>
+            <h4>Example bitmap </h4>
+        </figcaption>
+</figure>
+
+
+<h1 id="testing-the-python-script">Testing the python script</h1>
+
+<p>ssh to the home assistant server (raspberry pi)</p>
+
+<pre><code>sudo su -s /bin/bash homeassistant
+cd /home/homeassistant/.homeassistant/python_scripts/
+python3 db_plotter.py
+</code></pre>
+
+<p>As a next step we will add options to the python script, so we can command different options through automations in home assistant.</p>
+
+<pre><code># check if passed options are valid
+try:
+    options, args = getopt.getopt(sys.argv[1:], 's:',['selection='])
+    # print(options)
+    # print(args)
+except getopt.GetoptError:
+    print(&quot;incorrect syntax&quot;)
+    print(&quot;usage: python3 db_plotter.py -s &lt;value&gt;&quot;)
+    print(&quot;default to option 1&quot;)
+    display_option=1
+    sys.exit(2)
+for opt, value in options:
+    if opt in ('-s','-S','--selection'):
+        display_option=int(value)
+        print(&quot;successful argument&quot;)
+        print(display_option)
+</code></pre>
+
+<p>The whole script, created above will be moved to an if-else construction</p>
+
+<pre><code>if display_option==2:
+    entity_id='sensor.commute'
+    ....
+</code></pre>
+
+<p>Now we need to test the script by running: <code>python3 db_plotter.py -s 2.0</code></p>
+
+<h1 id="configuration-yaml">Configuration.yaml</h1>
+
+<p>Define the script as a shell command with the option to give different arguments with it, contained in a dummy variable (dummy_epaper).</p>
+
+<pre><code>shell_command:
+  take_screenshot: 'python3 /home/homeassistant/.homeassistant/python_scripts/db_plotter.py -s {{ states.input_number.dummy_epaper.state }}'
+
+input_number:
+  dummy_epaper:
+    name: dummy epaper
+    initial: 2
+    min: 1
+    max: 3
+    step: 1
+</code></pre>
+]]></content>
+		</item>
+		
+		<item>
+			<title>e-paper display ESP32</title>
+			<link>http://users.telenet.be/goosst/posts/homeautomation_epaper_esp/</link>
+			<pubDate>Tue, 17 Sep 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/homeautomation_epaper_esp/</guid>
+			<description>Intro In this part, a figure, living on the Home Assistant server, will be displayed on a 7.5 inch e-paper using an ESP32-based board.
+Used components: 7.5 inch e-paper from Waveshare with Driver HAT ESP32 based development board with battery holder Esp 32: pinout The SPI interface of the ESP32 will be used to control the display. The pins of SPI quickly get confusing:
+ Names of the different interfaces of SPI aren&amp;rsquo;t very consistently used (MOSI, SPI D, SD0, SS, CS, SCK, CLK, SD1, &amp;hellip; ) + you have to pay attention to the difference between IO pins and GPIO pins in the ESP32 datasheet.</description>
+			<content type="html"><![CDATA[
+
+<aside>
+    
+</aside>
+
+<h1 id="intro">Intro</h1>
+
+<p>In this part, a figure, living on the Home Assistant server, will be displayed on a 7.5 inch e-paper using an ESP32-based board.</p>
+
+<h2 id="used-components">Used components:</h2>
+
+<a target='_blank' href='https://www.banggood.com/Waveshare-7_5-Inch-E-ink-Screen-Module-e-Paper-Display-SPI-Interface-For-Arduino-Raspberry-Pi-p-1365278.html?p=ET150713234951201708&custlinkid=591953'><img src='https://imgaz.staticbg.com/images/oaupload/banggood/images/96/80/7005740a-3d5f-4246-b7cd-9a688c012370.JPG' alt='' width="400"><center>7.5 inch e-paper from Waveshare with Driver HAT</center></a>
+
+
+<a target='_blank' href='https://www.banggood.com/LILYGO-TTGO-T-Energy-ESP32-8MByte-PSRAM-WiFi-bluetooth-Module-18650-Battery-ESP32-WROVER-IB-Development-Board-p-1427125.html?p=ET150713234951201708&custlinkid=591947'><img src='https://imgaz.staticbg.com/images/oaupload/ser1/banggood/images/AA/A0/5c61b05c-dbc2-4594-9a4b-8f7ee3870389.jpg' alt='' width="250"><center>ESP32 based development board with battery holder</center></a>
+
+
+<h1 id="esp-32-pinout">Esp 32: pinout</h1>
+
+<p>The SPI interface of the ESP32 will be used to control the display.
+The pins of SPI quickly get confusing:</p>
+
+<ul>
+<li>Names of the different interfaces of SPI aren&rsquo;t very consistently used (MOSI, SPI D, SD0, SS, CS, SCK, CLK, SD1, &hellip; ) + you have to pay attention to the difference between IO pins and GPIO pins in the ESP32 datasheet.</li>
+<li>The ports labeled on the ESP-board with clk, SD0, SD1, &hellip; are linked to an SPI bus. But one only used to flash the device, not used for communication with external devices &hellip; .</li>
+</ul>
+
+<p>In the <a href="https://www.espressif.com/sites/default/files/documentation/esp32-wrover_datasheet_en.pdf">ESP32-wrover datasheet</a>, it can be found two SPI busses are available for external communication: VSPI and HSPI.</p>
+
+<p>Below, the overview is provided to which pins these two busses correspond with. The last column is mainly added to be able to check if custom esp32 boards (like this one) also respect the GPIO labels marked on the board. (The esp32 feet are still large enough to check with a multi-meter.)</p>
+
+<table>
+<thead>
+<tr>
+<th>VSPI</th>
+<th>GPIO   (pin label)</th>
+<th>Name ESP32-wrover chip</th>
+<th>No.  ESP32 Chip</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MOSI</td>
+<td>23</td>
+<td>VSPI D</td>
+<td>37</td>
+</tr>
+
+<tr>
+<td>MISO</td>
+<td>19</td>
+<td>VSPI Q</td>
+<td>31</td>
+</tr>
+
+<tr>
+<td>SCK</td>
+<td>18</td>
+<td>VSPI CLK</td>
+<td>30</td>
+</tr>
+
+<tr>
+<td>SS</td>
+<td>5</td>
+<td>VSPI CS</td>
+<td>29</td>
+</tr>
+</tbody>
+</table>
+
+<p>HSPI:</p>
+
+<table>
+<thead>
+<tr>
+<th>HSPI</th>
+<th>GPIO   (pin number board)</th>
+<th>Name ESP32-wrover chip</th>
+<th>No.  ESP32 Chip</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>MOSI</td>
+<td>13</td>
+<td>HSPI D</td>
+<td>16</td>
+</tr>
+
+<tr>
+<td>MISO</td>
+<td>12</td>
+<td>HSPI Q</td>
+<td>14</td>
+</tr>
+
+<tr>
+<td>SCK</td>
+<td>14</td>
+<td>HSPI CLK</td>
+<td>13</td>
+</tr>
+
+<tr>
+<td>SS</td>
+<td>15</td>
+<td>HSPI CS</td>
+<td>23</td>
+</tr>
+</tbody>
+</table>
+
+<p>For the BUSY, reset and DC pin, any suitable DIO can be selected. This is how it looks in my configuration / script for VSPI:</p>
+
+<pre><code>static const uint8_t EPD_BUSY = 4;  // to EPD BUSY
+static const uint8_t EPD_CS   = 5;  // to EPD CS
+static const uint8_t EPD_RST  = 21; // to EPD RST
+static const uint8_t EPD_DC   = 22; // to EPD DC
+static const uint8_t EPD_SCK  = 18; // to EPD CLK
+static const uint8_t EPD_MISO = 19; // Master-In Slave-Out not used, as no data from display
+static const uint8_t EPD_MOSI = 23; // to EPD DIN
+</code></pre>
+
+<h1 id="esp-32-the-code">Esp 32: the code</h1>
+
+<p>The great <a href="https://github.com/ZinggJM/GxEPD2">GxEPD2 library</a> will be used for drawing on the e-paper display.</p>
+
+<ul>
+<li>A good example to verify if your pinout is correct and libraries are installed correctly, is to use this implementation: <a href="https://github.com/G6EJD/ESP32-e-Paper-Weather-Display">Weather display</a></li>
+<li>For our purposes the default example in the library - GxEPD2_WiFi_Example.ino - will be modified to fit our purposes.
+The main challenge was to make it download an image from a local website (home assistant at <a href="http://192.168.0.205:8123/local/black2.bmp">http://192.168.0.205:8123/local/black2.bmp</a> ).</li>
+</ul>
+
+<p>The resulting script can be found <a href="https://github.com/goosst/HomeAutomation/blob/master/esp32_epaper/">here</a>, if you want to test it out:</p>
+
+<ul>
+<li><p>A Credentials.h file is expected which contains your WiFi settings</p>
+
+<pre><code>const char* ssid     = &quot;xxx&quot;;
+const char* password = &quot;xxx&quot;;
+</code></pre></li>
+
+<li><p>You have to copy a small bitmap image (.bmp) in your xxx/www folder in home assistant (<a href="https://www.home-assistant.io/components/http/#hosting-files">Home Assistant: External files</a>), or generate content through scripts (<a href="/goosst/posts/homeautomation_epaper_hass/">Home assistant: content creation</a>)</p></li>
+
+<li><p>Pay attention to set the SleepDuration, WakeupTime, SleepTime, &hellip; in the script when the system should remain awake</p></li>
+
+<li><p>Of course, change 192.168.0.205:8123 to your own home assistant settings</p></li>
+</ul>
+
+<h1 id="others">Others</h1>
+
+<p>if you want to play around with displaying any image, I use ImageMagick to convert images to bitmaps consisting of 3D arrays (and not 4D) with the command:</p>
+
+<pre><code>convert plot.png -resize 640x384 -type GrayScale -depth 8 black2.bmp
+</code></pre>
+]]></content>
+		</item>
+		
+		<item>
+			<title>e-paper display concept</title>
+			<link>http://users.telenet.be/goosst/posts/homeautomation_epaper_gen/</link>
+			<pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/homeautomation_epaper_gen/</guid>
+			<description>Intro This part sketches the entire flow. I&amp;rsquo;ve changed my method a few times during the creation of this. Mainly because I just stumble upon things in the home assistant documentation, rather than actually finding something when I need it :).
+Different steps   Sequence to get home assistant content on e-paper    Relevant references to documentation (I want to find it back myself ;):
+ Home Assistant: External files Home Assistant: REST API  Remarks:</description>
+			<content type="html"><![CDATA[
+
+<h1 id="intro">Intro</h1>
+
+<p>This part sketches the entire flow. I&rsquo;ve changed my method a few times during the creation of this. Mainly because I just stumble upon things in the home assistant documentation, rather than actually finding something when I need it :).</p>
+
+<h1 id="different-steps">Different steps</h1>
+
+<figure>
+    <img src="/goosst/pictures/epaper_hass.png" width="350"/> <figcaption>
+            <h4>Sequence to get home assistant content on e-paper </h4>
+        </figcaption>
+</figure>
+
+
+<p>Relevant references to documentation (I want to find it back myself ;):</p>
+
+<ul>
+<li><a href="https://www.home-assistant.io/components/http/#hosting-files">Home Assistant: External files</a></li>
+<li><a href="https://developers.home-assistant.io/docs/en/external_api_rest.html#get-apihistory">Home Assistant: REST API</a></li>
+</ul>
+
+<p>Remarks:</p>
+
+<ul>
+<li>I&rsquo;m using <a href="https://www.home-assistant.io/docs/installation/hassbian/installation/">hassbian</a> on a raspberry pi 3, I have not checked if anything should change when using hassio and other variants</li>
+<li>the REST API, would allow to do everything on the esp32, but I didn&rsquo;t go that route &hellip; .</li>
+</ul>
+]]></content>
+		</item>
+		
+		<item>
+			<title>e-paper display Intro</title>
+			<link>http://users.telenet.be/goosst/posts/homeautomation_epaper_intro/</link>
+			<pubDate>Sun, 15 Sep 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/homeautomation_epaper_intro/</guid>
+			<description>Intro  E-paper display linked with Home Assistant   --   E-paper display linked with Home Assistant   I wanted a display which:
+ does not consume (a lot of) electricity is linked with home-assistant, so I can get useful updates pending the moment of the day can display interesting photos, when I don&amp;rsquo;t want to know the status of my house / surroundings :) doesn&amp;rsquo;t cost an arm and a leg  The result of my tinkering can be seen in the picture above.</description>
+			<content type="html"><![CDATA[
+
+<h1 id="intro">Intro</h1>
+
+<!-- <figure>
+    <img src="/goosst/pictures/epaper_display.jpg" width="760"/> <figcaption>
+            <h4>E-paper display linked with Home Assistant</h4>
+        </figcaption>
+</figure>
+ -->
+
+<figure>
+    <img src="/goosst/pictures/epaper_display1.jpg" width="700"/> <figcaption>
+            <h4>E-paper display linked with Home Assistant</h4>
+        </figcaption>
+</figure>
+
+
+<p>I wanted a display which:</p>
+
+<ul>
+<li>does not consume (a lot of) electricity</li>
+<li>is linked with home-assistant, so I can get useful updates pending the moment of the day</li>
+<li>can display interesting photos, when I don&rsquo;t want to know the status of my house / surroundings :)</li>
+<li>doesn&rsquo;t cost an arm and a leg</li>
+</ul>
+
+<p>The result of my tinkering can be seen in the picture above.</p>
+
+<p>I&rsquo;ve used two 7.5 inch e-paper displays and incorporated them into a picture frame. The reason for two dislays is mainly because larger e-papers just become very expensive. Obviously you don&rsquo;t need two, if you don&rsquo;t want to&hellip; .</p>
+
+<h1 id="concept">Concept</h1>
+
+<p>In the following posts, the different parts of the display are explained in more detail:</p>
+
+<ul>
+<li><a href="/goosst/posts/homeautomation_epaper_gen/">General concept</a></li>
+<li><a href="/goosst/posts/homeautomation_epaper_esp/">Control e-paper with ESP 32</a></li>
+<li><a href="/goosst/posts/homeautomation_epaper_hass/">Home assistant: content creation</a></li>
+</ul>
+
+<p>All code is available at: <a href="https://github.com/goosst/HomeAutomation">github</a></p>
+
+<h1 id="remarks-and-todo">Remarks and Todo</h1>
+
+<ul>
+<li>I should not have bought an ESP32 board including an 18650 battery: this types of batteries is barely available in Europe + if I want it battery operated I can just attach a powerbank, there is more than enough space in the picture frame.</li>
+<li>Still need to get the second screen up and running (using the same ESP32 board)</li>
+<li>add description of construction</li>
+</ul>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Heating automation - alarm</title>
@@ -16,23 +479,14 @@
 			<pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
 			
 			<guid>http://users.telenet.be/goosst/posts/homeautomation_alarm/</guid>
-			<description>Intro  Troubleshooting To do     Intro I&amp;rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
+			<description>HAHAHUGOSHORTCODE-TOC0-HBHB  Intro I&amp;rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
 We&amp;rsquo;ll use MQTT to send status of alarm to Home Assistant.
-Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk.</description>
+Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk. We need to use esptool instead pip3 install esptool</description>
 			<content type="html"><![CDATA[
 
 <aside>
-    <nav id="TableOfContents">
-<ul>
-<li><a href="#intro">Intro</a>
-<ul>
-<li><a href="#troubleshooting">Troubleshooting</a></li>
-<li><a href="#to-do">To do</a></li>
-</ul></li>
-</ul>
-</nav>
+    HAHAHUGOSHORTCODE-TOC0-HBHB
 </aside>
-
 
 <h1 id="intro">Intro</h1>
 
@@ -58,24 +512,13 @@ Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk.<
 			<pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
 			
 			<guid>http://users.telenet.be/goosst/posts/homeautomation_el_heater/</guid>
-			<description>Intro  Concept Configure MQTT Tasmota Home assistant UI     Intro We&amp;rsquo;ll be using one of the sonoff devices to turn on/off a wall-plugged electric heater. These devices are pretty cheap but since we&amp;rsquo;ll be hacking into them, use at your own risk.
-The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standpoint). But once it&amp;rsquo;s done, the S26 is more compact and looks slick :).</description>
+			<description>Intro We&amp;rsquo;ll be using one of the sonoff devices to turn on/off a wall-plugged electric heater. These devices are pretty cheap but since we&amp;rsquo;ll be hacking into them, use at your own risk.
+The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standpoint). But once it&amp;rsquo;s done, the S26 is more compact and looks slick :). I&amp;rsquo;ve used both in the meantime (and I&amp;rsquo;m not a soldering guru by far).</description>
 			<content type="html"><![CDATA[
 
 <aside>
-    <nav id="TableOfContents">
-<ul>
-<li><a href="#intro">Intro</a>
-<ul>
-<li><a href="#concept">Concept</a></li>
-<li><a href="#configure-mqtt-tasmota">Configure MQTT Tasmota</a></li>
-<li><a href="#home-assistant">Home assistant</a></li>
-<li><a href="#ui">UI</a></li>
-</ul></li>
-</ul>
-</nav>
+    
 </aside>
-
 
 <h1 id="intro">Intro</h1>
 
@@ -194,25 +637,15 @@ tele/sonoff/STATE {&quot;Time&quot;:&quot;2019-08-02T18:34:57&quot;,&quot;Uptime
 			<pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
 			
 			<guid>http://users.telenet.be/goosst/posts/homeautomation_partiiii/</guid>
-			<description>Intro Concept Home assistant  Device tracking Identify phone Automate heating based on presence     Intro In this part we&amp;rsquo;ll turn our heating off and on when we leave the house (by detecting presence of our mobile phone).
-Concept We&amp;rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&amp;rsquo;ll do a simple scheduling of our heating.</description>
+			<description>Intro In this part we&amp;rsquo;ll turn our heating off and on when we leave the house (by detecting presence of our mobile phone).
+Concept We&amp;rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&amp;rsquo;ll do a simple scheduling of our heating.
+Home assistant No python scripts this time, only activity is done in Home Assistant.
+Device tracking Example below will use the component device_tracker and the nmap program to scan the network.</description>
 			<content type="html"><![CDATA[
 
 <aside>
-    <nav id="TableOfContents">
-<ul>
-<li><a href="#intro">Intro</a></li>
-<li><a href="#concept">Concept</a></li>
-<li><a href="#home-assistant">Home assistant</a>
-<ul>
-<li><a href="#device-tracking">Device tracking</a></li>
-<li><a href="#identify-phone">Identify phone</a></li>
-<li><a href="#automate-heating-based-on-presence">Automate heating based on presence</a></li>
-</ul></li>
-</ul>
-</nav>
+    
 </aside>
-
 
 <h1 id="intro">Intro</h1>
 
@@ -336,25 +769,14 @@ data:
 			<pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
 			
 			<guid>http://users.telenet.be/goosst/posts/homeautomation_partiii/</guid>
-			<description>Intro Concept  Python script Home assistant Home assistant UI Tip     Intro In this part we&amp;rsquo;ll read parameters from our heater through the interface of Home Assistant and plot them in the UI.
-Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.</description>
+			<description>Intro In this part we&amp;rsquo;ll read parameters from our heater through the interface of Home Assistant and plot them in the UI.
+Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.
+Again: in this way we can focus on making all the ebus related items running in python and we don&amp;rsquo;t have to deal with a custom Home Assistant syntax.</description>
 			<content type="html"><![CDATA[
 
 <aside>
-    <nav id="TableOfContents">
-<ul>
-<li><a href="#intro">Intro</a></li>
-<li><a href="#concept">Concept</a>
-<ul>
-<li><a href="#python-script">Python script</a></li>
-<li><a href="#home-assistant">Home assistant</a></li>
-<li><a href="#home-assistant-ui">Home assistant UI</a></li>
-<li><a href="#tip">Tip</a></li>
-</ul></li>
-</ul>
-</nav>
+    
 </aside>
-
 
 <h1 id="intro">Intro</h1>
 
@@ -557,31 +979,14 @@ views:
 			<pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate>
 			
 			<guid>http://users.telenet.be/goosst/posts/homeautomation_partii/</guid>
-			<description>Intro Preparing the Raspberry pi Initial temperature test using Home Assistant  Concept python scripts Home Assistant services  Clean up method  Adapt python scripts User interface Mutual exclusion     Intro In this part we&amp;rsquo;ll:
- install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, not confusing at all :).</description>
+			<description>Intro In this part we&amp;rsquo;ll:
+ install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, not confusing at all :). I&amp;rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&amp;rsquo;m not familiar with docker (hass.io) and its limitations.
+ Follow the Hassbian installation instructions: https://www.</description>
 			<content type="html"><![CDATA[
 
 <aside>
-    <nav id="TableOfContents">
-<ul>
-<li><a href="#intro">Intro</a></li>
-<li><a href="#preparing-the-raspberry-pi">Preparing the Raspberry pi</a></li>
-<li><a href="#initial-temperature-test-using-home-assistant">Initial temperature test using Home Assistant</a>
-<ul>
-<li><a href="#concept">Concept</a></li>
-<li><a href="#python-scripts">python scripts</a></li>
-<li><a href="#home-assistant-services">Home Assistant services</a></li>
-</ul></li>
-<li><a href="#clean-up-method">Clean up method</a>
-<ul>
-<li><a href="#adapt-python-scripts">Adapt python scripts</a></li>
-<li><a href="#user-interface">User interface</a></li>
-<li><a href="#mutual-exclusion">Mutual exclusion</a></li>
-</ul></li>
-</ul>
-</nav>
+    
 </aside>
-
 
 <h1 id="intro">Intro</h1>
 
@@ -894,32 +1299,13 @@ with ILock('ebus', timeout=200):
 			<pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
 			
 			<guid>http://users.telenet.be/goosst/posts/homeautomation_parti/</guid>
-			<description>Intro Hardware  Ebus adapter Raspberry pi My setup  Software  Preparing the Raspberry pi  Hassbian Static IP address  install and use ebusd     Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).</description>
+			<description>Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
+Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&amp;rsquo;m not going to write down all the details, since I can just refer to them:</description>
 			<content type="html"><![CDATA[
 
 <aside>
-    <nav id="TableOfContents">
-<ul>
-<li><a href="#intro">Intro</a></li>
-<li><a href="#hardware">Hardware</a>
-<ul>
-<li><a href="#ebus-adapter">Ebus adapter</a></li>
-<li><a href="#raspberry-pi">Raspberry pi</a></li>
-<li><a href="#my-setup">My setup</a></li>
-</ul></li>
-<li><a href="#software">Software</a>
-<ul>
-<li><a href="#preparing-the-raspberry-pi">Preparing the Raspberry pi</a>
-<ul>
-<li><a href="#hassbian">Hassbian</a></li>
-<li><a href="#static-ip-address">Static IP address</a></li>
-</ul></li>
-<li><a href="#install-and-use-ebusd">install and use ebusd</a></li>
-</ul></li>
-</ul>
-</nav>
+    
 </aside>
-
 
 <h1 id="intro">Intro</h1>
 
@@ -1136,19 +1522,12 @@ pi@raspberrypi:~ $ ebusctl read Time
 			<pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
 			
 			<guid>http://users.telenet.be/goosst/posts/homeautomation_intro/</guid>
-			<description>Intro Goal Tools Setup    Intro I think we all want a more intelligent control over our heaters than what the standard thermostats have to offer. e.g. Automatically turning the heating off when leaving your home, scheduling the heater to turn on sooner in the morning when it&amp;rsquo;s cold, &amp;hellip; .
-Disregarding privacy concerns, commercial solutions like Google Nest only seem to support on/off control of the heating.</description>
+			<description>Intro I think we all want a more intelligent control over our heaters than what the standard thermostats have to offer. e.g. Automatically turning the heating off when leaving your home, scheduling the heater to turn on sooner in the morning when it&amp;rsquo;s cold, &amp;hellip; .
+Disregarding privacy concerns, commercial solutions like Google Nest only seem to support on/off control of the heating. If we want to use proportional/modulated heating for more comfort, at the time of writing the amount of solutions seems very limited.</description>
 			<content type="html"><![CDATA[
 
 <aside>
-    <nav id="TableOfContents">
-<ul>
-<li><a href="#intro">Intro</a></li>
-<li><a href="#goal">Goal</a></li>
-<li><a href="#tools">Tools</a></li>
-<li><a href="#setup">Setup</a></li>
-</ul>
-</nav>
+    
 </aside>
 
 

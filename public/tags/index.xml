@@ -7,40 +7,67 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 22 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 18 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://users.telenet.be/goosst/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Ebus</title>
-      <link>http://users.telenet.be/goosst/tags/ebus/</link>
-      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      <title>7.5 inch</title>
+      <link>http://users.telenet.be/goosst/tags/7.5-inch/</link>
+      <pubDate>Wed, 18 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://users.telenet.be/goosst/tags/ebus/</guid>
+      <guid>http://users.telenet.be/goosst/tags/7.5-inch/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Ecotec Plus</title>
-      <link>http://users.telenet.be/goosst/tags/ecotec-plus/</link>
-      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
+      <title>ESP32</title>
+      <link>http://users.telenet.be/goosst/tags/esp32/</link>
+      <pubDate>Wed, 18 Sep 2019 00:00:00 +0000</pubDate>
       
-      <guid>http://users.telenet.be/goosst/tags/ecotec-plus/</guid>
+      <guid>http://users.telenet.be/goosst/tags/esp32/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Home Assistant</title>
+      <title>home assistant</title>
       <link>http://users.telenet.be/goosst/tags/home-assistant/</link>
-      <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 18 Sep 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/tags/home-assistant/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>Raspberry Pi</title>
+      <title>TTGO</title>
+      <link>http://users.telenet.be/goosst/tags/ttgo/</link>
+      <pubDate>Wed, 18 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/tags/ttgo/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>waveshare</title>
+      <link>http://users.telenet.be/goosst/tags/waveshare/</link>
+      <pubDate>Wed, 18 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/tags/waveshare/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>display</title>
+      <link>http://users.telenet.be/goosst/tags/display/</link>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/tags/display/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>raspberry pi</title>
       <link>http://users.telenet.be/goosst/tags/raspberry-pi/</link>
       <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
       
@@ -49,7 +76,16 @@
     </item>
     
     <item>
-      <title>Sonoff</title>
+      <title>wemos D1</title>
+      <link>http://users.telenet.be/goosst/tags/wemos-d1/</link>
+      <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/tags/wemos-d1/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sonoff</title>
       <link>http://users.telenet.be/goosst/tags/sonoff/</link>
       <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
       
@@ -63,24 +99,6 @@
       <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/tags/tasmota/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Vaillant</title>
-      <link>http://users.telenet.be/goosst/tags/vaillant/</link>
-      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://users.telenet.be/goosst/tags/vaillant/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Wemos D1</title>
-      <link>http://users.telenet.be/goosst/tags/wemos-d1/</link>
-      <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://users.telenet.be/goosst/tags/wemos-d1/</guid>
       <description></description>
     </item>
     

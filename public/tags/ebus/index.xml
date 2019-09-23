@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Ebus on Goosst blog</title>
+    <title>ebus on Goosst blog</title>
     <link>http://users.telenet.be/goosst/tags/ebus/</link>
-    <description>Recent content in Ebus on Goosst blog</description>
+    <description>Recent content in ebus on Goosst blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
@@ -18,8 +18,10 @@
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/homeautomation_partiiii/</guid>
-      <description>Intro Concept Home assistant  Device tracking Identify phone Automate heating based on presence     Intro In this part we&amp;rsquo;ll turn our heating off and on when we leave the house (by detecting presence of our mobile phone).
-Concept We&amp;rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&amp;rsquo;ll do a simple scheduling of our heating.</description>
+      <description>Intro In this part we&amp;rsquo;ll turn our heating off and on when we leave the house (by detecting presence of our mobile phone).
+Concept We&amp;rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&amp;rsquo;ll do a simple scheduling of our heating.
+Home assistant No python scripts this time, only activity is done in Home Assistant.
+Device tracking Example below will use the component device_tracker and the nmap program to scan the network.</description>
     </item>
     
     <item>
@@ -28,8 +30,9 @@ Concept We&amp;rsquo;ll be checking if the mac-address of our phone is on the wi
       <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/homeautomation_partiii/</guid>
-      <description>Intro Concept  Python script Home assistant Home assistant UI Tip     Intro In this part we&amp;rsquo;ll read parameters from our heater through the interface of Home Assistant and plot them in the UI.
-Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.</description>
+      <description>Intro In this part we&amp;rsquo;ll read parameters from our heater through the interface of Home Assistant and plot them in the UI.
+Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.
+Again: in this way we can focus on making all the ebus related items running in python and we don&amp;rsquo;t have to deal with a custom Home Assistant syntax.</description>
     </item>
     
     <item>
@@ -38,8 +41,9 @@ Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from th
       <pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/homeautomation_partii/</guid>
-      <description>Intro Preparing the Raspberry pi Initial temperature test using Home Assistant  Concept python scripts Home Assistant services  Clean up method  Adapt python scripts User interface Mutual exclusion     Intro In this part we&amp;rsquo;ll:
- install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, not confusing at all :).</description>
+      <description>Intro In this part we&amp;rsquo;ll:
+ install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, not confusing at all :). I&amp;rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&amp;rsquo;m not familiar with docker (hass.io) and its limitations.
+ Follow the Hassbian installation instructions: https://www.</description>
     </item>
     
     <item>
@@ -48,7 +52,8 @@ Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from th
       <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/homeautomation_parti/</guid>
-      <description>Intro Hardware  Ebus adapter Raspberry pi My setup  Software  Preparing the Raspberry pi  Hassbian Static IP address  install and use ebusd     Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).</description>
+      <description>Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
+Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&amp;rsquo;m not going to write down all the details, since I can just refer to them:</description>
     </item>
     
     <item>
@@ -57,8 +62,8 @@ Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from th
       <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/homeautomation_intro/</guid>
-      <description>Intro Goal Tools Setup    Intro I think we all want a more intelligent control over our heaters than what the standard thermostats have to offer. e.g. Automatically turning the heating off when leaving your home, scheduling the heater to turn on sooner in the morning when it&amp;rsquo;s cold, &amp;hellip; .
-Disregarding privacy concerns, commercial solutions like Google Nest only seem to support on/off control of the heating.</description>
+      <description>Intro I think we all want a more intelligent control over our heaters than what the standard thermostats have to offer. e.g. Automatically turning the heating off when leaving your home, scheduling the heater to turn on sooner in the morning when it&amp;rsquo;s cold, &amp;hellip; .
+Disregarding privacy concerns, commercial solutions like Google Nest only seem to support on/off control of the heating. If we want to use proportional/modulated heating for more comfort, at the time of writing the amount of solutions seems very limited.</description>
     </item>
     
   </channel>

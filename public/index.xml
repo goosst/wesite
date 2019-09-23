@@ -7,10 +7,53 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 31 Jul 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 18 Sep 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://users.telenet.be/goosst/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>epaper Home Assistant</title>
+      <link>http://users.telenet.be/goosst/posts/homeautomation_epaper_hass/</link>
+      <pubDate>Wed, 18 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/homeautomation_epaper_hass/</guid>
+      <description>Intro This is the part that will create the content out of home assistant and will get displayed on our e-paper. As an example I will display the expected commute time to work.
+Python scripts being defined as a shell_command in configuration.yaml will be used. A simple automation to trigger the python script will be used.
+Basis of script We want to make a plot that tells us the expected time of our commute with a graph of the last hour, to see how the time is trending.</description>
+    </item>
+    
+    <item>
+      <title>e-paper display ESP32</title>
+      <link>http://users.telenet.be/goosst/posts/homeautomation_epaper_esp/</link>
+      <pubDate>Tue, 17 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/homeautomation_epaper_esp/</guid>
+      <description>Intro In this part, a figure, living on the Home Assistant server, will be displayed on a 7.5 inch e-paper using an ESP32-based board.
+Used components: 7.5 inch e-paper from Waveshare with Driver HAT ESP32 based development board with battery holder Esp 32: pinout The SPI interface of the ESP32 will be used to control the display. The pins of SPI quickly get confusing:
+ Names of the different interfaces of SPI aren&amp;rsquo;t very consistently used (MOSI, SPI D, SD0, SS, CS, SCK, CLK, SD1, &amp;hellip; ) + you have to pay attention to the difference between IO pins and GPIO pins in the ESP32 datasheet.</description>
+    </item>
+    
+    <item>
+      <title>e-paper display concept</title>
+      <link>http://users.telenet.be/goosst/posts/homeautomation_epaper_gen/</link>
+      <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/homeautomation_epaper_gen/</guid>
+      <description>Intro This part sketches the entire flow. I&amp;rsquo;ve changed my method a few times during the creation of this. Mainly because I just stumble upon things in the home assistant documentation, rather than actually finding something when I need it :).
+Different steps   Sequence to get home assistant content on e-paper    Relevant references to documentation (I want to find it back myself ;):
+ Home Assistant: External files Home Assistant: REST API  Remarks:</description>
+    </item>
+    
+    <item>
+      <title>e-paper display Intro</title>
+      <link>http://users.telenet.be/goosst/posts/homeautomation_epaper_intro/</link>
+      <pubDate>Sun, 15 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/homeautomation_epaper_intro/</guid>
+      <description>Intro  E-paper display linked with Home Assistant   --   E-paper display linked with Home Assistant   I wanted a display which:
+ does not consume (a lot of) electricity is linked with home-assistant, so I can get useful updates pending the moment of the day can display interesting photos, when I don&amp;rsquo;t want to know the status of my house / surroundings :) doesn&amp;rsquo;t cost an arm and a leg  The result of my tinkering can be seen in the picture above.</description>
+    </item>
     
     <item>
       <title>About</title>
@@ -28,9 +71,9 @@ Learn more and contribute on GitHub.</description>
       <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/homeautomation_alarm/</guid>
-      <description>Intro  Troubleshooting To do     Intro I&amp;rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
+      <description>HAHAHUGOSHORTCODE-TOC0-HBHB  Intro I&amp;rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
 We&amp;rsquo;ll use MQTT to send status of alarm to Home Assistant.
-Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk.</description>
+Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk. We need to use esptool instead pip3 install esptool</description>
     </item>
     
     <item>
@@ -39,8 +82,8 @@ Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk.<
       <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/homeautomation_el_heater/</guid>
-      <description>Intro  Concept Configure MQTT Tasmota Home assistant UI     Intro We&amp;rsquo;ll be using one of the sonoff devices to turn on/off a wall-plugged electric heater. These devices are pretty cheap but since we&amp;rsquo;ll be hacking into them, use at your own risk.
-The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standpoint). But once it&amp;rsquo;s done, the S26 is more compact and looks slick :).</description>
+      <description>Intro We&amp;rsquo;ll be using one of the sonoff devices to turn on/off a wall-plugged electric heater. These devices are pretty cheap but since we&amp;rsquo;ll be hacking into them, use at your own risk.
+The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standpoint). But once it&amp;rsquo;s done, the S26 is more compact and looks slick :). I&amp;rsquo;ve used both in the meantime (and I&amp;rsquo;m not a soldering guru by far).</description>
     </item>
     
     <item>
@@ -49,8 +92,10 @@ The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standp
       <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/homeautomation_partiiii/</guid>
-      <description>Intro Concept Home assistant  Device tracking Identify phone Automate heating based on presence     Intro In this part we&amp;rsquo;ll turn our heating off and on when we leave the house (by detecting presence of our mobile phone).
-Concept We&amp;rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&amp;rsquo;ll do a simple scheduling of our heating.</description>
+      <description>Intro In this part we&amp;rsquo;ll turn our heating off and on when we leave the house (by detecting presence of our mobile phone).
+Concept We&amp;rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&amp;rsquo;ll do a simple scheduling of our heating.
+Home assistant No python scripts this time, only activity is done in Home Assistant.
+Device tracking Example below will use the component device_tracker and the nmap program to scan the network.</description>
     </item>
     
     <item>
@@ -59,8 +104,9 @@ Concept We&amp;rsquo;ll be checking if the mac-address of our phone is on the wi
       <pubDate>Sun, 21 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/homeautomation_partiii/</guid>
-      <description>Intro Concept  Python script Home assistant Home assistant UI Tip     Intro In this part we&amp;rsquo;ll read parameters from our heater through the interface of Home Assistant and plot them in the UI.
-Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.</description>
+      <description>Intro In this part we&amp;rsquo;ll read parameters from our heater through the interface of Home Assistant and plot them in the UI.
+Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.
+Again: in this way we can focus on making all the ebus related items running in python and we don&amp;rsquo;t have to deal with a custom Home Assistant syntax.</description>
     </item>
     
     <item>
@@ -69,27 +115,9 @@ Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from th
       <pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/homeautomation_partii/</guid>
-      <description>Intro Preparing the Raspberry pi Initial temperature test using Home Assistant  Concept python scripts Home Assistant services  Clean up method  Adapt python scripts User interface Mutual exclusion     Intro In this part we&amp;rsquo;ll:
- install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, not confusing at all :).</description>
-    </item>
-    
-    <item>
-      <title>Heating automation - setup hardware and ebus</title>
-      <link>http://users.telenet.be/goosst/posts/homeautomation_parti/</link>
-      <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://users.telenet.be/goosst/posts/homeautomation_parti/</guid>
-      <description>Intro Hardware  Ebus adapter Raspberry pi My setup  Software  Preparing the Raspberry pi  Hassbian Static IP address  install and use ebusd     Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).</description>
-    </item>
-    
-    <item>
-      <title>Heating automation - intro</title>
-      <link>http://users.telenet.be/goosst/posts/homeautomation_intro/</link>
-      <pubDate>Thu, 18 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://users.telenet.be/goosst/posts/homeautomation_intro/</guid>
-      <description>Intro Goal Tools Setup    Intro I think we all want a more intelligent control over our heaters than what the standard thermostats have to offer. e.g. Automatically turning the heating off when leaving your home, scheduling the heater to turn on sooner in the morning when it&amp;rsquo;s cold, &amp;hellip; .
-Disregarding privacy concerns, commercial solutions like Google Nest only seem to support on/off control of the heating.</description>
+      <description>Intro In this part we&amp;rsquo;ll:
+ install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, not confusing at all :). I&amp;rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&amp;rsquo;m not familiar with docker (hass.io) and its limitations.
+ Follow the Hassbian installation instructions: https://www.</description>
     </item>
     
   </channel>
