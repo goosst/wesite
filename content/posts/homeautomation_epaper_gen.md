@@ -1,7 +1,7 @@
 ---
 author: "goosst"
 date: 2019-09-16
-title: e-paper display concept
+title: e-paper - Display concept
 tags:
  - home assistant
  - display

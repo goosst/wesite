@@ -1,7 +1,7 @@
 ---
 author: "goosst"
 date: 2019-09-15
-title: e-paper display Intro
+title: e-paper - Display Intro
 tags:
  - home assistant
  - display

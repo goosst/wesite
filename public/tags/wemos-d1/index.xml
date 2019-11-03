@@ -20,7 +20,7 @@
       <guid>http://users.telenet.be/goosst/posts/homeautomation_alarm/</guid>
       <description>HAHAHUGOSHORTCODE-TOC0-HBHB  Intro I&amp;rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
 We&amp;rsquo;ll use MQTT to send status of alarm to Home Assistant.
-Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk. We need to use esptool instead pip3 install esptool</description>
+Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk (the arduino IDE part). We need to use esptool instead pip3 install esptool.</description>
     </item>
     
   </channel>

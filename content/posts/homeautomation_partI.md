@@ -24,13 +24,13 @@ We need an ebus adapter for the raspberry to interface with our heater. I'm not 
 * Start reading here for more background: https://ebus.github.io/adapter/index.en.html
 * I'm using the base board version 2.2, there might be better options to use directly with a raspberry pi. But when I ordered, it looked like the most flexible solution.
 * Adapter was ordered on the fhem forum. They will send you a pcb with a set of components, you have to solder yourself (or pay a bit extra): https://forum.fhem.de/index.php/topic,93190.msg857894.html#msg857894. If you've read the first link you will also know there are commercial options in case you don't want this.
-* Put it in a box so there is no chance on touching electrical connections etc. . 
- * You could consider placing the adapter inside the heater (plenty of space), I just didn't want to put custom electronics inside ... . 
+* Put it in a box so there is no chance on touching electrical connections etc. .
+ * You could consider placing the adapter inside the heater (plenty of space), I just didn't want to put custom electronics inside ... .
 
 {{< figure src="/goosst/pictures/ebus_adapter.jpg" title="ebus adapter v2.2" width="250">}}
 
 ## Raspberry pi
-Please use a decent power supply (it causes a lot of strange problems) and 32Gb size SD card (recommended by Home Assistant).
+Please use a decent [power supply with at least 2/3A](https://www.banggood.com/DC-5V-3_0A-EU-Power-Supply-Micro-USB-Adapter-Charger-For-Raspberry-Pi-3-Model-B-p-1079928.html?p=ET150713234951201708&custlinkid=664887) (it causes a lot of strange problems) and 32Gb size SD card (recommended by Home Assistant).
 
 ## My setup
 
@@ -47,12 +47,12 @@ Please use a decent power supply (it causes a lot of strange problems) and 32Gb 
 If you have a pi with raspbian already on it, you can jump to next section and install hassbian later. If you have a new sd card, just set it right from the first time.
 
 We'll be using Home Assistant for our interface and home automation.
-I chose Home Assistant because it's fully python based. I prefer to learn python over learning Java, Perl, ... which is used by the alternative open source domotica programs. 
+I chose Home Assistant because it's fully python based. I prefer to learn python over learning Java, Perl, ... which is used by the alternative open source domotica programs.
 
-### Hassbian 
+### Hassbian
 To use Home Assistant, there is hassbian, hass.io, home-assistant itself, ... as you see, it's not confusing at all :). I'm using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. (https://www.home-assistant.io/docs/installation/hassbian/installation/)
 
-Additional installations beside the normal updating and upgrading: 
+Additional installations beside the normal updating and upgrading:
 ```
 sudo apt-get install net-tools nmap
 sudo hassbian-config install mosquitto
@@ -61,7 +61,7 @@ sudo hassbian-config install samba
 
 ### Static IP address
 
-Since we will be sending quite some messages from other devices through MQTT, a static IP address is rather convenient. I've followed the steps from this link (my routher doesn't support fancy things)	: 
+Since we will be sending quite some messages from other devices through MQTT, a static IP address is rather convenient. I've followed the steps from this link (my routher doesn't support fancy things)	:
 https://raspberrypi.stackexchange.com/questions/37920/how-do-i-set-up-networking-wifi-static-ip-address/74428#74428
 
 
@@ -72,7 +72,7 @@ Ebusd is an awesome tool, it's a challenge however to find out how to efficientl
 * Go to your raspberry pi by ssh'ing to it
 * Follow these instructions: https://github.com/john30/ebusd-debian/blob/master/README.md
 * I've had some weird issues that magically got resolved, I still think it's linked to a strange power supply : https://github.com/john30/ebusd/issues/276
-* Check on the raspberry with the command: `dmesg | grep cp210` if the adpater is added to ttUSB0 (only relevant if you're using cp210 as uart device of course: <a target='_blank' href='https://www.banggood.com/CJMCU-CP2102-USB-To-TTLSerial-Module-UART-STC-Downloader-p-970993.html?p=ET150713234951201708&custlinkid=261938' title='' >CP2102 USB To TTL/Serial Module</a>) 
+* Check on the raspberry with the command: `dmesg | grep cp210` if the adpater is added to ttUSB0 (only relevant if you're using cp210 as uart device of course: <a target='_blank' href='https://www.banggood.com/CJMCU-CP2102-USB-To-TTLSerial-Module-UART-STC-Downloader-p-970993.html?p=ET150713234951201708&custlinkid=261938' title='' >CP2102 USB To TTL/Serial Module</a>)
 output should look something like this:
 
 ```
@@ -103,9 +103,9 @@ pi@raspberrypi:/ $ ebusd -f --scanconfig
 2019-03-31 13:30:58.780 [main notice] read common config file vaillant/general.csv
 2019-03-31 13:30:58.918 [main notice] read common config file vaillant/broadcast.csv
 2019-03-31 13:30:59.001 [main notice] read scan config file vaillant/08.bai.csv for ID "bai00", SW0202, HW9602
-2019-03-31 13:30:59.576 [update notice] sent scan-read scan.08 id QQ=31: 
-2019-03-31 13:30:59.756 [update notice] sent scan-read scan.08 id QQ=31: 
-2019-03-31 13:30:59.936 [update notice] sent scan-read scan.08 id QQ=31: 
+2019-03-31 13:30:59.576 [update notice] sent scan-read scan.08 id QQ=31:
+2019-03-31 13:30:59.756 [update notice] sent scan-read scan.08 id QQ=31:
+2019-03-31 13:30:59.936 [update notice] sent scan-read scan.08 id QQ=31:
 2019-03-31 13:31:00.117 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
 2019-03-31 13:31:00.478 [main notice] found messages: 198 (2 conditional on 24 conditions, 0 poll, 9 update)
 2019-03-31 13:31:00.645 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
@@ -118,8 +118,8 @@ pi@raspberrypi:/ $ ebusd -f --scanconfig
 2019-03-31 13:31:03.350 [update notice] sent scan-read scan.15  QQ=31: Vaillant;F3700;0114;6102
 2019-03-31 13:31:03.350 [bus notice] scan 15: ;Vaillant;F3700;0114;6102
 2019-03-31 13:31:03.581 [update notice] sent unknown MS cmd: 3115b5090124 / 09013231313732323030
-2019-03-31 13:31:03.761 [update notice] sent scan-read scan.15 id QQ=31: 
-2019-03-31 13:31:03.941 [update notice] sent scan-read scan.15 id QQ=31: 
+2019-03-31 13:31:03.761 [update notice] sent scan-read scan.15 id QQ=31:
+2019-03-31 13:31:03.941 [update notice] sent scan-read scan.15 id QQ=31:
 2019-03-31 13:31:04.002 [bus notice] max. symbols per second: 114
 2019-03-31 13:31:04.120 [update notice] sent scan-read scan.15 id QQ=31: 21;17;22;0020108149;0082;006391;N9
 2019-03-31 13:31:04.120 [bus notice] scan 15: ;21;17;22;0020108149;0082;006391;N9
@@ -182,6 +182,6 @@ pi@raspberrypi:~ $ ebusctl read Time
   * `ebusctl read Hc1DayTemp`, read and write your temperature setpoint during day time
   * `ebusctl read Hc1NightTemp`, read and write your temperature setpoint during night time
   * `ebusctl read RoomTemp`, read the temperature measured by the thermostat
-  * and a whole bunch of others ... 
+  * and a whole bunch of others ...
 
-{{< ama3 >}}
+<!-- {{< ama3 >}} -->

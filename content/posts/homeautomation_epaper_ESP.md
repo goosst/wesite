@@ -1,7 +1,7 @@
 ---
 author: "goosst"
 date: 2019-09-17
-title: e-paper display ESP32
+title: e-paper - Display ESP32
 tags:
  - ESP32
  - TTGO

@@ -3,47 +3,82 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://users.telenet.be/goosst/tags/7.5-inch/</loc>
-    <lastmod>2019-09-18T00:00:00+00:00</lastmod>
+    <loc>http://users.telenet.be/goosst/tags/crunchbang-plus-plus/</loc>
+    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://users.telenet.be/goosst/posts/homeautomation_epaper_hass/</loc>
-    <lastmod>2019-09-18T00:00:00+00:00</lastmod>
+    <loc>http://users.telenet.be/goosst/tags/debian/</loc>
+    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://users.telenet.be/goosst/tags/esp32/</loc>
-    <lastmod>2019-09-18T00:00:00+00:00</lastmod>
+    <loc>http://users.telenet.be/goosst/tags/ebus/</loc>
+    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/ebusd/</loc>
+    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://users.telenet.be/goosst/</loc>
-    <lastmod>2019-09-18T00:00:00+00:00</lastmod>
+    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/posts/hass_laptop/</loc>
+    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://users.telenet.be/goosst/tags/home-assistant/</loc>
-    <lastmod>2019-09-18T00:00:00+00:00</lastmod>
+    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/laptop/</loc>
+    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://users.telenet.be/goosst/posts/</loc>
-    <lastmod>2019-09-18T00:00:00+00:00</lastmod>
+    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://users.telenet.be/goosst/tags/</loc>
-    <lastmod>2019-09-18T00:00:00+00:00</lastmod>
+    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/7.5-inch/</loc>
+    <lastmod>2019-09-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/posts/homeautomation_epaper_esp_twodisp/</loc>
+    <lastmod>2019-09-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/esp32/</loc>
+    <lastmod>2019-09-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://users.telenet.be/goosst/tags/ttgo/</loc>
-    <lastmod>2019-09-18T00:00:00+00:00</lastmod>
+    <lastmod>2019-09-29T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://users.telenet.be/goosst/tags/waveshare/</loc>
+    <lastmod>2019-09-29T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/posts/homeautomation_epaper_hass/</loc>
     <lastmod>2019-09-18T00:00:00+00:00</lastmod>
   </url>
   
@@ -100,11 +135,6 @@
   <url>
     <loc>http://users.telenet.be/goosst/tags/tasmota/</loc>
     <lastmod>2019-04-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://users.telenet.be/goosst/tags/ebus/</loc>
-    <lastmod>2019-04-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>

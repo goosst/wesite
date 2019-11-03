@@ -1,7 +1,7 @@
 ---
 author: "goosst"
 date: 2019-09-18
-title: epaper Home Assistant
+title: e-paper - Home Assistant
 tags:
  - ESP32
  - TTGO

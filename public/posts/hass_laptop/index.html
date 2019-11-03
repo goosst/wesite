@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="Heating automation - laptop">
+<meta itemprop="description" content="Intro Install home assistant Install ebusd Launch homeassistant  Folder settings  Static IP address Result    Intro My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&hellip; .
+This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.">
+
+
+<meta itemprop="datePublished" content="2019-11-02T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-11-02T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="450">
+
+
+
+<meta itemprop="keywords" content="crunchbang plus plus,debian,ebusd,ebus,home assistant,laptop," />
+<meta property="og:title" content="Heating automation - laptop" />
+<meta property="og:description" content="Intro Install home assistant Install ebusd Launch homeassistant  Folder settings  Static IP address Result    Intro My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&hellip; .
+This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://users.telenet.be/goosst/posts/hass_laptop/" />
+<meta property="article:published_time" content="2019-11-02T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-11-02T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Heating automation - laptop"/>
+<meta name="twitter:description" content="Intro Install home assistant Install ebusd Launch homeassistant  Folder settings  Static IP address Result    Intro My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&hellip; .
+This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/goosst/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/goosst/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/goosst/favicon-16x16.png">
+	<link rel="manifest" href="/goosst/site.webmanifest">
+	<link rel="mask-icon" href="/goosst/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/goosst/favicon.ico">
+
+	<title>Heating automation - laptop</title>
+	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.31706917653d2b9e8410abd431f30ec4359a88a94fc87a63654779d87329edec.css" integrity="sha256-MXBpF2U9K56EEKvUMfMOxDWaiKlPyHpjZUd52HMp7ew=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="http://users.telenet.be/goosst">Goosst blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="http://users.telenet.be/goosst/posts/">Posts</a>
+					<a href="http://users.telenet.be/goosst/about-hugo/">About</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/goosst" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+			
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="http://users.telenet.be/goosst/posts/">Posts</a></li>
+			<li><a href="http://users.telenet.be/goosst/about-hugo/">About</a></li>
+		</ul>
+		
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Nov 2, 2019</span></div>
+				<h1>Heating automation - laptop</h1>
+			</header>
+			<div class="content">
+				
+
+<aside>
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#intro">Intro</a></li>
+<li><a href="#install-home-assistant">Install home assistant</a></li>
+<li><a href="#install-ebusd">Install ebusd</a></li>
+<li><a href="#launch-homeassistant">Launch homeassistant</a>
+<ul>
+<li><a href="#folder-settings">Folder settings</a></li>
+</ul></li>
+<li><a href="#static-ip-address">Static IP address</a></li>
+<li><a href="#result">Result</a></li>
+</ul>
+</nav>
+</aside>
+
+<h1 id="intro">Intro<a href="#intro" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&hellip; .</p>
+
+<p>This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
+It starts with a fresh install of the debian based <a href="https://www.crunchbangplusplus.org/">crunchbangplusplus</a>, here installed on an (old) laptop with i386 processor.
+Quite some additional python and other packages are specific for my installation, they can be left out to suit your needs.</p>
+
+<h1 id="install-home-assistant">Install home assistant<a href="#install-home-assistant" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>This one mainly follows the steps outlined on the home assistant website to install hass in a virtual environment.</p>
+
+<p>First prepare the list of repositories in crunchbangplusplus:
+Add a line to your /etc/apt/sources.list: <code>deb http://ftp.de.debian.org/debian buster main</code></p>
+
+<pre><code>sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install python3 python3-dev python3-venv python3-pip libffi-dev libssl-dev
+sudo useradd -rm homeassistant
+cd /srv
+sudo mkdir homeassistant
+sudo chown homeassistant:homeassistant homeassistant
+sudo -u homeassistant -H -s
+cd /srv/homeassistant
+python3 -m venv .
+source bin/activate
+python3 -m pip install wheel
+</code></pre>
+
+<p>Install the development version of home assistant (or the stable of course):</p>
+
+<pre><code>exit
+sudo -u homeassistant -H -s
+source /srv/homeassistant/bin/activate
+pip3 install --pre --upgrade homeassistant
+exit
+</code></pre>
+
+<p>Due to some specific installation issues with the 0.100 version, this one had to be installed manually: <code>https://pypi.org/project/home-assistant-frontend/</code></p>
+
+<p>additional python packages</p>
+
+<pre><code>sudo apt-get install libfreetype6-dev pkg-config libjpeg-dev imagemagick mosquitto mosquitto-clients
+sudo -u homeassistant -H -s
+source /srv/homeassistant/bin/activate
+pip3 install ilock requests datetime numpy pytz matplotlib pillow pyunsplash
+exit
+</code></pre>
+
+<h1 id="install-ebusd">Install ebusd<a href="#install-ebusd" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<pre><code> wget -O - https://raw.githubusercontent.com/john30/ebusd-debian/master/ebusd.gpg.key|sudo apt-key add -
+ dpkg --print-architecture
+ sudo wget -O /etc/apt/sources.list.d/ebusd.list https://raw.githubusercontent.com/john30/ebusd-debian/master/ebusd-i386-nomqtt.list
+</code></pre>
+
+<p>check status and let it start at boot</p>
+
+<pre><code> sudo systemctl status ebusd
+ sudo systemctl start ebusd
+ sudo systemctl stop ebusd
+</code></pre>
+
+<p>start at bootup:</p>
+
+<pre><code>  sudo systemctl enable ebusd
+</code></pre>
+
+<h1 id="launch-homeassistant">Launch homeassistant<a href="#launch-homeassistant" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>Launch home assistant:</p>
+
+<pre><code>sudo -u homeassistant -H -s
+source /srv/homeassistant/bin/activate
+hass
+</code></pre>
+
+<p>Check if any error messages pop up in the command window. If so, try to resolve them.
+surf to your ip address</p>
+
+<h2 id="folder-settings">Folder settings<a href="#folder-settings" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>Exit from the virtual environment to set some folder settings.
+I copy my yaml and python files through FileZilla, which requires to change the read/write settings.
+Maybe there are other solutions, but I don&rsquo;t know them.</p>
+
+<pre><code>sudo mkdir /home/homeassistant/.homeassistant/www
+sudo chmod -R 777 /home/homeassistant/.homeassistant/
+</code></pre>
+
+<p>copy files with Filezilla in the .homeassistant folder</p>
+
+<p>run again <code>sudo chmod -R 777 /home/homeassistant/.homeassistant/</code></p>
+
+<h1 id="static-ip-address">Static IP address<a href="#static-ip-address" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>Let the laptop bootup with a fixed ip address:
+run <code>sudo nmtui</code>, change the following (to have a fixed address: 192.168.0.205)
+<figure>
+    <img src="/goosst/pictures/nmtui.png" width="550"/> <figcaption>
+            <h4>network settings</h4>
+        </figcaption>
+</figure>
+</p>
+
+<h1 id="result">Result<a href="#result" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<figure>
+    <img src="/goosst/pictures/hass_ui.png" width="750"/> <figcaption>
+            <h4>hass interface</h4>
+        </figcaption>
+</figure>
+
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://users.telenet.be/goosst/tags/crunchbang-plus-plus">crunchbang plus plus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/debian">debian</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ebusd">ebusd</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ebus">ebus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/home-assistant">home assistant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/laptop">laptop</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>450 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-11-02 01:00 &#43;0100</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="prev-post" href="http://users.telenet.be/goosst/posts/homeautomation_epaper_esp_twodisp/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>e-paper - Extension to two displays</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="http://users.telenet.be/goosst">Goosst</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="http://users.telenet.be/goosst/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="http://users.telenet.be/goosst/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js" integrity="sha256-eEQX9YRxUfhIwznPCssToGy7ZIsUg0NaKO1FVsTq1ps="></script>
+
+</body>
+
+</html>

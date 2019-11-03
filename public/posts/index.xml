@@ -6,11 +6,216 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Wed, 18 Sep 2019 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Sat, 02 Nov 2019 00:00:00 +0000</lastBuildDate>
 		<atom:link href="http://users.telenet.be/goosst/posts/index.xml" rel="self" type="application/rss+xml" />
 		
 		<item>
-			<title>epaper Home Assistant</title>
+			<title>Heating automation - laptop</title>
+			<link>http://users.telenet.be/goosst/posts/hass_laptop/</link>
+			<pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/hass_laptop/</guid>
+			<description>Intro My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&amp;rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&amp;hellip; .
+This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd. It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor.</description>
+			<content type="html"><![CDATA[
+
+<aside>
+    
+</aside>
+
+<h1 id="intro">Intro</h1>
+
+<p>My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&hellip; .</p>
+
+<p>This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
+It starts with a fresh install of the debian based <a href="https://www.crunchbangplusplus.org/">crunchbangplusplus</a>, here installed on an (old) laptop with i386 processor.
+Quite some additional python and other packages are specific for my installation, they can be left out to suit your needs.</p>
+
+<h1 id="install-home-assistant">Install home assistant</h1>
+
+<p>This one mainly follows the steps outlined on the home assistant website to install hass in a virtual environment.</p>
+
+<p>First prepare the list of repositories in crunchbangplusplus:
+Add a line to your /etc/apt/sources.list: <code>deb http://ftp.de.debian.org/debian buster main</code></p>
+
+<pre><code>sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install python3 python3-dev python3-venv python3-pip libffi-dev libssl-dev
+sudo useradd -rm homeassistant
+cd /srv
+sudo mkdir homeassistant
+sudo chown homeassistant:homeassistant homeassistant
+sudo -u homeassistant -H -s
+cd /srv/homeassistant
+python3 -m venv .
+source bin/activate
+python3 -m pip install wheel
+</code></pre>
+
+<p>Install the development version of home assistant (or the stable of course):</p>
+
+<pre><code>exit
+sudo -u homeassistant -H -s
+source /srv/homeassistant/bin/activate
+pip3 install --pre --upgrade homeassistant
+exit
+</code></pre>
+
+<p>Due to some specific installation issues with the 0.100 version, this one had to be installed manually: <code>https://pypi.org/project/home-assistant-frontend/</code></p>
+
+<p>additional python packages</p>
+
+<pre><code>sudo apt-get install libfreetype6-dev pkg-config libjpeg-dev imagemagick mosquitto mosquitto-clients
+sudo -u homeassistant -H -s
+source /srv/homeassistant/bin/activate
+pip3 install ilock requests datetime numpy pytz matplotlib pillow pyunsplash
+exit
+</code></pre>
+
+<h1 id="install-ebusd">Install ebusd</h1>
+
+<pre><code> wget -O - https://raw.githubusercontent.com/john30/ebusd-debian/master/ebusd.gpg.key|sudo apt-key add -
+ dpkg --print-architecture
+ sudo wget -O /etc/apt/sources.list.d/ebusd.list https://raw.githubusercontent.com/john30/ebusd-debian/master/ebusd-i386-nomqtt.list
+</code></pre>
+
+<p>check status and let it start at boot</p>
+
+<pre><code> sudo systemctl status ebusd
+ sudo systemctl start ebusd
+ sudo systemctl stop ebusd
+</code></pre>
+
+<p>start at bootup:</p>
+
+<pre><code>  sudo systemctl enable ebusd
+</code></pre>
+
+<h1 id="launch-homeassistant">Launch homeassistant</h1>
+
+<p>Launch home assistant:</p>
+
+<pre><code>sudo -u homeassistant -H -s
+source /srv/homeassistant/bin/activate
+hass
+</code></pre>
+
+<p>Check if any error messages pop up in the command window. If so, try to resolve them.
+surf to your ip address</p>
+
+<h2 id="folder-settings">Folder settings</h2>
+
+<p>Exit from the virtual environment to set some folder settings.
+I copy my yaml and python files through FileZilla, which requires to change the read/write settings.
+Maybe there are other solutions, but I don&rsquo;t know them.</p>
+
+<pre><code>sudo mkdir /home/homeassistant/.homeassistant/www
+sudo chmod -R 777 /home/homeassistant/.homeassistant/
+</code></pre>
+
+<p>copy files with Filezilla in the .homeassistant folder</p>
+
+<p>run again <code>sudo chmod -R 777 /home/homeassistant/.homeassistant/</code></p>
+
+<h1 id="static-ip-address">Static IP address</h1>
+
+<p>Let the laptop bootup with a fixed ip address:
+run <code>sudo nmtui</code>, change the following (to have a fixed address: 192.168.0.205)
+<figure>
+    <img src="/goosst/pictures/nmtui.png" width="550"/> <figcaption>
+            <h4>network settings</h4>
+        </figcaption>
+</figure>
+</p>
+
+<h1 id="result">Result</h1>
+
+<figure>
+    <img src="/goosst/pictures/hass_ui.png" width="750"/> <figcaption>
+            <h4>hass interface</h4>
+        </figcaption>
+</figure>
+
+]]></content>
+		</item>
+		
+		<item>
+			<title>e-paper - Extension to two displays</title>
+			<link>http://users.telenet.be/goosst/posts/homeautomation_epaper_esp_twodisp/</link>
+			<pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/homeautomation_epaper_esp_twodisp/</guid>
+			<description>Intro In this part, the esp32 software will be extended to control two displays. The described solution mainly comes because of the great support from the creator of gxEPD2, so credits to him.
+Hardware struggles The used 7.5 inch display, comes with an e-Paper Driver HAT. When connecting it as intended - 3.3V of this ESP32 connected to the 3.3 V of the e-paper HAT - it turns out very unreliable.</description>
+			<content type="html"><![CDATA[
+
+<aside>
+    
+</aside>
+
+<h1 id="intro">Intro</h1>
+
+<p>In this part, the esp32 software will be extended to control two displays.
+The described solution mainly comes because of the great support from the creator of <a href="https://github.com/ZinggJM/GxEPD2">gxEPD2</a>, so credits to him.</p>
+
+<h1 id="hardware-struggles">Hardware struggles</h1>
+
+<p>The used <a href="https://www.banggood.com/Waveshare-7_5-Inch-E-ink-Screen-Module-e-Paper-Display-SPI-Interface-For-Arduino-Raspberry-Pi-p-1365278.html?p=ET150713234951201708&amp;custlinkid=591953">7.5 inch display</a>, comes with an e-Paper Driver HAT.
+When connecting it as intended - 3.3V of this <a href="https://www.banggood.com/LILYGO-TTGO-T-Energy-ESP32-8MByte-PSRAM-WiFi-bluetooth-Module-18650-Battery-ESP32-WROVER-IB-Development-Board-p-1427125.html?p=ET150713234951201708&amp;custlinkid=591947">ESP32</a> connected to the 3.3 V of the e-paper HAT - it turns out very unreliable.
+It becomes more unreliable when combining more than one e-paper to the display (or it can be my cognitive bias).</p>
+
+<p>The solution is to bypass the voltage converter and directly connect the 3.3V from the ESP32 according the picture below (see <a href="https://www.waveshare.com/w/upload/8/87/E-Paper-Driver-HAT-Schematic.pdf">scematics</a>):
+<figure>
+    <img src="/goosst/pictures/epaper_hat.png" width="300"/> <figcaption>
+            <h4>Alternative 3.3V connection</h4>
+        </figcaption>
+</figure>
+</p>
+
+<h1 id="software-esp32">Software ESP32</h1>
+
+<h2 id="spi">SPI</h2>
+
+<p>One common SPI is used for both displays; the busy, reset and CS pin are separate pins for each display.
+(Using two different SPI&rsquo;s for both displays, was too much work to make it work.)</p>
+
+<pre><code>#define ENABLE_GxEPD2_GFX 1
+#include &lt;GxEPD2_BW.h&gt;
+
+//SPI pins, common for both displays
+static const uint8_t EPD_DC   = 22; // to EPD DC
+static const uint8_t EPD_SCK  = 18; // to EPD CLK
+static const uint8_t EPD_MISO = 19; // Master-In Slave-Out not used, as no data from display
+static const uint8_t EPD_MOSI = 23; // to EPD DIN
+
+// display two:
+static const uint8_t EPD_BUSY2 = 4;  // to EPD BUSY
+static const uint8_t EPD_CS2   = 5;  // to EPD CS
+static const uint8_t EPD_RST2  = 21; // to EPD RST
+GxEPD2_BW&lt;GxEPD2_750, GxEPD2_750::HEIGHT&gt; display2(GxEPD2_750(/*CS=*/ EPD_CS2, /*DC=*/ EPD_DC, /*RST=*/ EPD_RST2, /*BUSY=*/ EPD_BUSY2));   // B/W display
+
+//display one:
+static const uint8_t EPD_BUSY1 = 25;  // to EPD BUSY
+static const uint8_t EPD_RST1  = 34; // to EPD RST
+static const uint8_t EPD_CS1   = 15;  // to EPD CS
+GxEPD2_BW&lt;GxEPD2_750, GxEPD2_750::HEIGHT&gt; display1(GxEPD2_750(/*CS=*/ EPD_CS1, /*DC=*/ EPD_DC, /*RST=*/ EPD_RST1, /*BUSY=*/ EPD_BUSY1));   // B/W display
+
+</code></pre>
+
+<h2 id="displaying">Displaying</h2>
+
+<p>Two images are downloaded now, one for each display: black1.bmp and black2.bmp</p>
+
+<p>Full script is available on <a href="https://github.com/goosst/HomeAutomation/blob/master/esp32_epaper/bmp_http_twodisp.ino">github</a>.</p>
+
+<h1 id="software-home-assistant">Software Home assistant</h1>
+
+<p>Generate black1.bmp image</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>e-paper - Home Assistant</title>
 			<link>http://users.telenet.be/goosst/posts/homeautomation_epaper_hass/</link>
 			<pubDate>Wed, 18 Sep 2019 00:00:00 +0000</pubDate>
 			
@@ -202,7 +407,7 @@ input_number:
 		</item>
 		
 		<item>
-			<title>e-paper display ESP32</title>
+			<title>e-paper - Display ESP32</title>
 			<link>http://users.telenet.be/goosst/posts/homeautomation_epaper_esp/</link>
 			<pubDate>Tue, 17 Sep 2019 00:00:00 +0000</pubDate>
 			
@@ -373,7 +578,7 @@ const char* password = &quot;xxx&quot;;
 		</item>
 		
 		<item>
-			<title>e-paper display concept</title>
+			<title>e-paper - Display concept</title>
 			<link>http://users.telenet.be/goosst/posts/homeautomation_epaper_gen/</link>
 			<pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
 			
@@ -413,7 +618,7 @@ Different steps   Sequence to get home assistant content on e-paper    Relevant 
 		</item>
 		
 		<item>
-			<title>e-paper display Intro</title>
+			<title>e-paper - Display Intro</title>
 			<link>http://users.telenet.be/goosst/posts/homeautomation_epaper_intro/</link>
 			<pubDate>Sun, 15 Sep 2019 00:00:00 +0000</pubDate>
 			
@@ -481,7 +686,7 @@ Different steps   Sequence to get home assistant content on e-paper    Relevant 
 			<guid>http://users.telenet.be/goosst/posts/homeautomation_alarm/</guid>
 			<description>HAHAHUGOSHORTCODE-TOC0-HBHB  Intro I&amp;rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
 We&amp;rsquo;ll use MQTT to send status of alarm to Home Assistant.
-Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk. We need to use esptool instead pip3 install esptool</description>
+Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk (the arduino IDE part). We need to use esptool instead pip3 install esptool.</description>
 			<content type="html"><![CDATA[
 
 <aside>
@@ -496,13 +701,16 @@ Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk. 
 
 <h2 id="troubleshooting">Troubleshooting</h2>
 
-<p>The connection of a Wemos D1 with Arduino IDE seems to be junk. We need to use esptool instead
-<code>pip3 install esptool</code></p>
+<p>The connection of a <a href="https://www.banggood.com/Geekcreit-D1-R2-V2_1_0-WiFi-Uno-Module-Based-ESP8266-Module-For-Arduino-Nodemcu-Compatible-p-1085610.html?p=ET150713234951201708&amp;custlinkid=664901">Wemos D1</a> with Arduino IDE seems to be junk (the arduino IDE part). We need to use esptool instead
+<code>pip3 install esptool</code>.</p>
 
 <p>structure to use:
 <code>esptool --port &quot;{serial.port}&quot; --baud {upload.speed} write_flash 0x00000 &quot;{build.path}/{build.project_name}.bin</code></p>
 
-<h2 id="to-do">To do</h2>
+<h2 id="used-script">Used script</h2>
+
+<p><a href="https://github.com/goosst/HomeAutomation/blob/master/wemos/sketch/sketch.ino">Location</a>
+Can be updated over the air (ota), so you only have to fysically connect it once (in theory at least, if everything uploads correctly)</p>
 ]]></content>
 		</item>
 		
@@ -756,10 +964,10 @@ data:
 </code></pre></li>
 </ul>
 
-<div align=center>
+<!-- <div align=center>
 <SCRIPT charset="utf-8" type="text/javascript" src="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218&Operation=NoScript">Amazon.de Widgets</A></NOSCRIPT>
 </div>
-
+ -->
 ]]></content>
 		</item>
 		
@@ -966,10 +1174,10 @@ views:
 </figure>
 </p>
 
-<div align=center>
+<!-- <div align=center>
 <SCRIPT charset="utf-8" type="text/javascript" src="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218&Operation=NoScript">Amazon.de Widgets</A></NOSCRIPT>
 </div>
-
+ -->
 ]]></content>
 		</item>
 		
@@ -1092,12 +1300,12 @@ print(&quot;setting correct&quot;)
 
 Output in the terminal of the raspberry:</p>
 
-<pre><code>pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_on.py 
+<pre><code>pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_on.py
 setting correct
 &gt;&gt;&gt; quit()
-pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_off.py 
+pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_off.py
 setting correct
-&gt;&gt;&gt; 
+&gt;&gt;&gt;
 
 </code></pre></li>
 </ul>
@@ -1286,10 +1494,10 @@ with ILock('ebus', timeout=200):
 	    print(&quot;setting correct&quot;)
 </code></pre>
 
-<div align=center>
+<!-- <div align=center>
 <SCRIPT charset="utf-8" type="text/javascript" src="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218&Operation=NoScript">Amazon.de Widgets</A></NOSCRIPT>
 </div>
-
+ -->
 ]]></content>
 		</item>
 		
@@ -1337,7 +1545,7 @@ Hardware Ebus adapter We need an ebus adapter for the raspberry to interface wit
 
 <h2 id="raspberry-pi">Raspberry pi</h2>
 
-<p>Please use a decent power supply (it causes a lot of strange problems) and 32Gb size SD card (recommended by Home Assistant).</p>
+<p>Please use a decent <a href="https://www.banggood.com/DC-5V-3_0A-EU-Power-Supply-Micro-USB-Adapter-Charger-For-Raspberry-Pi-3-Model-B-p-1079928.html?p=ET150713234951201708&amp;custlinkid=664887">power supply with at least 2/3A</a> (it causes a lot of strange problems) and 32Gb size SD card (recommended by Home Assistant).</p>
 
 <h2 id="my-setup">My setup</h2>
 
@@ -1420,9 +1628,9 @@ output should look something like this:</p>
 2019-03-31 13:30:58.780 [main notice] read common config file vaillant/general.csv
 2019-03-31 13:30:58.918 [main notice] read common config file vaillant/broadcast.csv
 2019-03-31 13:30:59.001 [main notice] read scan config file vaillant/08.bai.csv for ID &quot;bai00&quot;, SW0202, HW9602
-2019-03-31 13:30:59.576 [update notice] sent scan-read scan.08 id QQ=31: 
-2019-03-31 13:30:59.756 [update notice] sent scan-read scan.08 id QQ=31: 
-2019-03-31 13:30:59.936 [update notice] sent scan-read scan.08 id QQ=31: 
+2019-03-31 13:30:59.576 [update notice] sent scan-read scan.08 id QQ=31:
+2019-03-31 13:30:59.756 [update notice] sent scan-read scan.08 id QQ=31:
+2019-03-31 13:30:59.936 [update notice] sent scan-read scan.08 id QQ=31:
 2019-03-31 13:31:00.117 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
 2019-03-31 13:31:00.478 [main notice] found messages: 198 (2 conditional on 24 conditions, 0 poll, 9 update)
 2019-03-31 13:31:00.645 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
@@ -1435,8 +1643,8 @@ output should look something like this:</p>
 2019-03-31 13:31:03.350 [update notice] sent scan-read scan.15  QQ=31: Vaillant;F3700;0114;6102
 2019-03-31 13:31:03.350 [bus notice] scan 15: ;Vaillant;F3700;0114;6102
 2019-03-31 13:31:03.581 [update notice] sent unknown MS cmd: 3115b5090124 / 09013231313732323030
-2019-03-31 13:31:03.761 [update notice] sent scan-read scan.15 id QQ=31: 
-2019-03-31 13:31:03.941 [update notice] sent scan-read scan.15 id QQ=31: 
+2019-03-31 13:31:03.761 [update notice] sent scan-read scan.15 id QQ=31:
+2019-03-31 13:31:03.941 [update notice] sent scan-read scan.15 id QQ=31:
 2019-03-31 13:31:04.002 [bus notice] max. symbols per second: 114
 2019-03-31 13:31:04.120 [update notice] sent scan-read scan.15 id QQ=31: 21;17;22;0020108149;0082;006391;N9
 2019-03-31 13:31:04.120 [bus notice] scan 15: ;21;17;22;0020108149;0082;006391;N9
@@ -1509,10 +1717,10 @@ pi@raspberrypi:~ $ ebusctl read Time
 </ul></li>
 </ul>
 
-<div align=center>
+<!-- <div align=center>
 <SCRIPT charset="utf-8" type="text/javascript" src="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218&Operation=NoScript">Amazon.de Widgets</A></NOSCRIPT>
 </div>
-
+ -->
 ]]></content>
 		</item>
 		
@@ -1550,7 +1758,7 @@ Disregarding privacy concerns, commercial solutions like Google Nest only seem t
 <p>We&rsquo;ll be using the following hardware and software:</p>
 
 <ol>
-<li>Raspberry pi 3b</li>
+<li><a href="https://www.banggood.com/Raspberry-Pi-3-Model-B-Plus-Mother-Board-Mainboard-With-BCM2837B0-Cortex-A53-ARMv8-1_4GHz-CPU-D-p-1278398.html?p=ET150713234951201708&amp;custlinkid=664885">Raspberry pi 3b</a></li>
 <li>ebus adapter: <a href="https://ebus.github.io/adapter/index.en.html">https://ebus.github.io/adapter/index.en.html</a></li>
 <li>ebusd software: <a href="https://github.com/john30/ebusd">https://github.com/john30/ebusd</a></li>
 <li>Home Assistant: <a href="https://www.home-assistant.io/">https://www.home-assistant.io/</a></li>

@@ -20,7 +20,7 @@ In this part we'll read parameters from our heater through the interface of Home
 
 We'll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.
 
-Again: in this way we can focus on making all the ebus related items running in python and we don't have to deal with a custom Home Assistant syntax. I personally prefer spending time learning python over learning a custom program specific language/syntax. 
+Again: in this way we can focus on making all the ebus related items running in python and we don't have to deal with a custom Home Assistant syntax. I personally prefer spending time learning python over learning a custom program specific language/syntax.
 
 
 ## Python script
@@ -28,7 +28,7 @@ Again: in this way we can focus on making all the ebus related items running in 
 script below:
 
 * queries the ebus for certain parameters (three temperatures in this example)
-* broadcasts them as an mqtt message, pay attention the messages generated in the python scripts (e.g. `sensor/thermostat/temperature`) match with the `state_topic` defined in the sensors (see next section) 
+* broadcasts them as an mqtt message, pay attention the messages generated in the python scripts (e.g. `sensor/thermostat/temperature`) match with the `state_topic` defined in the sensors (see next section)
 * store the script again in `/home/homeassistant/.homeassistant/python_scripts/`
 
 ```
@@ -97,7 +97,7 @@ sensor:
     unit_of_measurement: "°C"
 ```
 
-We'll create a `shell_command` to be able to call the python script above to read out the parameters on the ebus, we'll add a third item called `read_ebus` (`readtime_thermostat.py` is the script mentioned above). 
+We'll create a `shell_command` to be able to call the python script above to read out the parameters on the ebus, we'll add a third item called `read_ebus` (`readtime_thermostat.py` is the script mentioned above).
 
 In `configuration.yaml` it looks like this:
 
@@ -195,5 +195,4 @@ views:
 Which results in:
 {{< figure src="/goosst/pictures/lovelace_ui.png" title="Interface define in ui-lovelace.yaml" width="760">}}
 
-{{< ama3 >}}
-
+<!-- {{< ama3 >}} -->

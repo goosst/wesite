@@ -8,31 +8,31 @@
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
 <meta itemprop="name" content="Heating automation - alarm">
-<meta itemprop="description" content="Intro  Troubleshooting To do     Intro I&rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
+<meta itemprop="description" content="Intro  Troubleshooting Used script     Intro I&rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
 We&rsquo;ll use MQTT to send status of alarm to Home Assistant.
-Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk.">
+Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk (the arduino IDE part).">
 
 
 <meta itemprop="datePublished" content="2019-05-10T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-05-10T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="87">
+<meta itemprop="wordCount" content="116">
 
 
 
 <meta itemprop="keywords" content="wemos D1,home assistant,raspberry pi," />
 <meta property="og:title" content="Heating automation - alarm" />
-<meta property="og:description" content="Intro  Troubleshooting To do     Intro I&rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
+<meta property="og:description" content="Intro  Troubleshooting Used script     Intro I&rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
 We&rsquo;ll use MQTT to send status of alarm to Home Assistant.
-Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk." />
+Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk (the arduino IDE part)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://users.telenet.be/goosst/posts/homeautomation_alarm/" />
 <meta property="article:published_time" content="2019-05-10T00:00:00+00:00" />
 <meta property="article:modified_time" content="2019-05-10T00:00:00+00:00" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Heating automation - alarm"/>
-<meta name="twitter:description" content="Intro  Troubleshooting To do     Intro I&rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
+<meta name="twitter:description" content="Intro  Troubleshooting Used script     Intro I&rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
 We&rsquo;ll use MQTT to send status of alarm to Home Assistant.
-Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk."/>
+Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk (the arduino IDE part)."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/goosst/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/goosst/favicon-32x32.png">
@@ -62,7 +62,7 @@ Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk."
 			<div class="hdr-right hdr-icons">
 				<span class="hdr-social hide-in-mobile"><a href="https://github.com/goosst" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
 			</div>
-			<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=288&l=ez&f=ifr&linkID=8e0370935cd8bd0e3a8f7eb4cbc24956&t=goosst-21&tracking_id=goosst-21" width="320" height="50" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+			
 		</div>
 	</header>
 	<div id="mobile-menu" class="animated fast">
@@ -70,7 +70,7 @@ Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk."
 			<li><a href="http://users.telenet.be/goosst/posts/">Posts</a></li>
 			<li><a href="http://users.telenet.be/goosst/about-hugo/">About</a></li>
 		</ul>
-		<iframe src="https://rcm-eu.amazon-adsystem.com/e/cm?o=3&p=288&l=ez&f=ifr&linkID=8e0370935cd8bd0e3a8f7eb4cbc24956&t=goosst-21&tracking_id=goosst-21" width="320" height="50" scrolling="no" border="0" marginwidth="0" style="border:none;" frameborder="0"></iframe>
+		
 	</div>
 
 
@@ -89,7 +89,7 @@ Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk."
 <li><a href="#intro">Intro</a>
 <ul>
 <li><a href="#troubleshooting">Troubleshooting</a></li>
-<li><a href="#to-do">To do</a></li>
+<li><a href="#used-script">Used script</a></li>
 </ul></li>
 </ul>
 </nav>
@@ -103,13 +103,16 @@ Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk."
 
 <h2 id="troubleshooting">Troubleshooting<a href="#troubleshooting" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
-<p>The connection of a Wemos D1 with Arduino IDE seems to be junk. We need to use esptool instead
-<code>pip3 install esptool</code></p>
+<p>The connection of a <a href="https://www.banggood.com/Geekcreit-D1-R2-V2_1_0-WiFi-Uno-Module-Based-ESP8266-Module-For-Arduino-Nodemcu-Compatible-p-1085610.html?p=ET150713234951201708&amp;custlinkid=664901">Wemos D1</a> with Arduino IDE seems to be junk (the arduino IDE part). We need to use esptool instead
+<code>pip3 install esptool</code>.</p>
 
 <p>structure to use:
 <code>esptool --port &quot;{serial.port}&quot; --baud {upload.speed} write_flash 0x00000 &quot;{build.path}/{build.project_name}.bin</code></p>
 
-<h2 id="to-do">To do<a href="#to-do" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h2 id="used-script">Used script<a href="#used-script" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p><a href="https://github.com/goosst/HomeAutomation/blob/master/wemos/sketch/sketch.ino">Location</a>
+Can be updated over the air (ota), so you only have to fysically connect it once (in theory at least, if everything uploads correctly)</p>
 
 			</div>
 			<hr class="post-end">
@@ -117,13 +120,13 @@ Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk."
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://users.telenet.be/goosst/tags/wemos-d1">wemos D1</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/home-assistant">home assistant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/raspberry-pi">raspberry pi</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>87 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>116 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-05-10 02:00 &#43;0200</p>
 			</footer>
 		</article>
 		<div class="post-nav thin">
 			<a class="next-post" href="http://users.telenet.be/goosst/posts/homeautomation_epaper_intro/">
-				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>e-paper display Intro</span>
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>e-paper - Display Intro</span>
 			</a>
 			<a class="prev-post" href="http://users.telenet.be/goosst/posts/homeautomation_el_heater/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Heating automation - electric heater</span>

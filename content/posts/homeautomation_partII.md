@@ -16,7 +16,7 @@ tags:
 In this part we'll:
 
 * install hassbian
-* set our requested room temperature through the interface of Home Assistant. 
+* set our requested room temperature through the interface of Home Assistant.
 
 
 # Preparing the Raspberry pi
@@ -25,7 +25,7 @@ There is hassbian, hass.io, homme-assistant itself, ... as you see, not confusin
 
 * Follow the Hassbian installation instructions: https://www.home-assistant.io/docs/installation/hassbian/installation/
 * find your ip-address and have ssh enabled (plenty of sites which explain this)
-* Additional installations beside the normal updating, upgrading, setting the time-zone: 
+* Additional installations beside the normal updating, upgrading, setting the time-zone:
 
 ```
 sudo apt-get install net-tools nmap
@@ -46,13 +46,13 @@ In general it's good to:
 ## Concept
 
 We'll be using python scripts to trigger actions from Home Assistant to ebus(d).
-In this way we can focus on making all the ebus related items running in python and we don't have to deal with the custom Home Assistant syntax. I personally prefer spending time learning python over learning a custom program specific language/syntax. 
+In this way we can focus on making all the ebus related items running in python and we don't have to deal with the custom Home Assistant syntax. I personally prefer spending time learning python over learning a custom program specific language/syntax.
 
 
 ## python scripts
 We'll create a few python scripts to test if we can control our heater from python. On the Pi we will create a new folder `python_scripts` locate the scripts in `/home/homeassistant/.homeassistant/python_scripts`.
 
-* The script below with the name `set_temperature_on.py` will set the day and night temperatures to 21C by calling the appropriate ebus commands directly from the command line (making use of the subprocess function). The second part of the script just does an additional check if it was really set correctly. 
+* The script below with the name `set_temperature_on.py` will set the day and night temperatures to 21C by calling the appropriate ebus commands directly from the command line (making use of the subprocess function). The second part of the script just does an additional check if it was really set correctly.
 * create the same script with the name `set_temperature_off.py` where `msg2` in the script below has been changed to `msg2=15`. (Yes, I know this is a stupid way of working and we should give the temperature as an argument to the python script. But for initial testing/debugging this is good enough.)
 
 ```
@@ -96,12 +96,12 @@ else:
 Output in the terminal of the raspberry:
 
 ```
-pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_on.py 
+pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_on.py
 setting correct
 >>> quit()
-pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_off.py 
+pi@hassbian:/home/homeassistant/.homeassistant/python_scripts $ python3 -i set_temperature_off.py
 setting correct
->>> 
+>>>
 
 ```
 
@@ -141,7 +141,7 @@ In the sections above, we've demonstrated the basic functionallity of controllin
 Starting with the python scripts:
 
 * We want to provide the temperature as argument to our python script (have `msg2` as an external input in our script)
-* We'll use the `getopt` module in python and parse the arguments to create a temp setpoint, 
+* We'll use the `getopt` module in python and parse the arguments to create a temp setpoint,
 
 ```
 import getopt
@@ -169,7 +169,7 @@ for opt, value in options:
 
 ## User interface
 
-In `configuration.yaml`, we'll define three input boxes for setting a temperature (night, day and an additional one for instant change of the heating). 
+In `configuration.yaml`, we'll define three input boxes for setting a temperature (night, day and an additional one for instant change of the heating).
 The critical part are the additional `{{}}` arguments in the `shell_command` definition. The exact name of the argument you need to find back in the `states` menu in the user interface.
 
 ```
@@ -279,5 +279,4 @@ with ILock('ebus', timeout=200):
 ```
 
 
-{{< ama3 >}}
-
+<!-- {{< ama3 >}} -->

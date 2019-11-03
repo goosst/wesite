@@ -38,7 +38,7 @@ device_tracker:
     scan_options: " -min-rtt-timeout 3s " #scan_options: " -min-rtt-timeout 3s --privileged -sP "
 ```
 
-* it will scan all ip-addresses 192.168.0.x 
+* it will scan all ip-addresses 192.168.0.x
 * an additional scan option has been added to increase the minimum timeout, detection on my wireless network does not seem to work reliably without this option.
 * starts a scan every 180 seconds
 
@@ -115,4 +115,4 @@ automation at_home:
 
 
 
-{{< ama3 >}}
+<!-- {{< ama3 >}} -->

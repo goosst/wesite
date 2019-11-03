@@ -7,13 +7,33 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 18 Sep 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 02 Nov 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://users.telenet.be/goosst/tags/home-assistant/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>epaper Home Assistant</title>
+      <title>Heating automation - laptop</title>
+      <link>http://users.telenet.be/goosst/posts/hass_laptop/</link>
+      <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/hass_laptop/</guid>
+      <description>Intro My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&amp;rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&amp;hellip; .
+This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd. It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor.</description>
+    </item>
+    
+    <item>
+      <title>e-paper - Extension to two displays</title>
+      <link>http://users.telenet.be/goosst/posts/homeautomation_epaper_esp_twodisp/</link>
+      <pubDate>Sun, 29 Sep 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/homeautomation_epaper_esp_twodisp/</guid>
+      <description>Intro In this part, the esp32 software will be extended to control two displays. The described solution mainly comes because of the great support from the creator of gxEPD2, so credits to him.
+Hardware struggles The used 7.5 inch display, comes with an e-Paper Driver HAT. When connecting it as intended - 3.3V of this ESP32 connected to the 3.3 V of the e-paper HAT - it turns out very unreliable.</description>
+    </item>
+    
+    <item>
+      <title>e-paper - Home Assistant</title>
       <link>http://users.telenet.be/goosst/posts/homeautomation_epaper_hass/</link>
       <pubDate>Wed, 18 Sep 2019 00:00:00 +0000</pubDate>
       
@@ -24,7 +44,7 @@ Basis of script We want to make a plot that tells us the expected time of our co
     </item>
     
     <item>
-      <title>e-paper display ESP32</title>
+      <title>e-paper - Display ESP32</title>
       <link>http://users.telenet.be/goosst/posts/homeautomation_epaper_esp/</link>
       <pubDate>Tue, 17 Sep 2019 00:00:00 +0000</pubDate>
       
@@ -35,7 +55,7 @@ Used components: 7.5 inch e-paper from Waveshare with Driver HAT ESP32 based dev
     </item>
     
     <item>
-      <title>e-paper display concept</title>
+      <title>e-paper - Display concept</title>
       <link>http://users.telenet.be/goosst/posts/homeautomation_epaper_gen/</link>
       <pubDate>Mon, 16 Sep 2019 00:00:00 +0000</pubDate>
       
@@ -46,7 +66,7 @@ Different steps   Sequence to get home assistant content on e-paper    Relevant 
     </item>
     
     <item>
-      <title>e-paper display Intro</title>
+      <title>e-paper - Display Intro</title>
       <link>http://users.telenet.be/goosst/posts/homeautomation_epaper_intro/</link>
       <pubDate>Sun, 15 Sep 2019 00:00:00 +0000</pubDate>
       
@@ -63,7 +83,7 @@ Different steps   Sequence to get home assistant content on e-paper    Relevant 
       <guid>http://users.telenet.be/goosst/posts/homeautomation_alarm/</guid>
       <description>HAHAHUGOSHORTCODE-TOC0-HBHB  Intro I&amp;rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
 We&amp;rsquo;ll use MQTT to send status of alarm to Home Assistant.
-Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk. We need to use esptool instead pip3 install esptool</description>
+Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk (the arduino IDE part). We need to use esptool instead pip3 install esptool.</description>
     </item>
     
     <item>
@@ -97,27 +117,6 @@ Device tracking Example below will use the component device_tracker and the nmap
       <description>Intro In this part we&amp;rsquo;ll read parameters from our heater through the interface of Home Assistant and plot them in the UI.
 Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.
 Again: in this way we can focus on making all the ebus related items running in python and we don&amp;rsquo;t have to deal with a custom Home Assistant syntax.</description>
-    </item>
-    
-    <item>
-      <title>Heating automation - set temperatures</title>
-      <link>http://users.telenet.be/goosst/posts/homeautomation_partii/</link>
-      <pubDate>Sat, 20 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://users.telenet.be/goosst/posts/homeautomation_partii/</guid>
-      <description>Intro In this part we&amp;rsquo;ll:
- install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, not confusing at all :). I&amp;rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&amp;rsquo;m not familiar with docker (hass.io) and its limitations.
- Follow the Hassbian installation instructions: https://www.</description>
-    </item>
-    
-    <item>
-      <title>Heating automation - setup hardware and ebus</title>
-      <link>http://users.telenet.be/goosst/posts/homeautomation_parti/</link>
-      <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://users.telenet.be/goosst/posts/homeautomation_parti/</guid>
-      <description>Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
-Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&amp;rsquo;m not going to write down all the details, since I can just refer to them:</description>
     </item>
     
   </channel>
