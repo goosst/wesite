@@ -7,29 +7,29 @@
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
-<meta itemprop="name" content="Heating automation - laptop">
-<meta itemprop="description" content="Intro Install home assistant Install ebusd Launch homeassistant  Folder settings  Static IP address Result    Intro My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&hellip; .
-This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.">
+<meta itemprop="name" content="Setup debian system">
+<meta itemprop="description" content="Intro Remote access Install home assistant Install ebusd Launch homeassistant  Folder settings  Static IP address Result    Intro This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
+It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor. The same method has worked on other debian based systems (tested on armbian running on a singleboard computer).">
 
 
 <meta itemprop="datePublished" content="2019-11-02T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-11-02T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="450">
+<meta itemprop="wordCount" content="529">
 
 
 
 <meta itemprop="keywords" content="crunchbang plus plus,debian,ebusd,ebus,home assistant,laptop," />
-<meta property="og:title" content="Heating automation - laptop" />
-<meta property="og:description" content="Intro Install home assistant Install ebusd Launch homeassistant  Folder settings  Static IP address Result    Intro My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&hellip; .
-This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd." />
+<meta property="og:title" content="Setup debian system" />
+<meta property="og:description" content="Intro Remote access Install home assistant Install ebusd Launch homeassistant  Folder settings  Static IP address Result    Intro This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
+It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor. The same method has worked on other debian based systems (tested on armbian running on a singleboard computer)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://users.telenet.be/goosst/posts/hass_laptop/" />
 <meta property="article:published_time" content="2019-11-02T00:00:00+00:00" />
 <meta property="article:modified_time" content="2019-11-02T00:00:00+00:00" />
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="Heating automation - laptop"/>
-<meta name="twitter:description" content="Intro Install home assistant Install ebusd Launch homeassistant  Folder settings  Static IP address Result    Intro My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&hellip; .
-This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd."/>
+<meta name="twitter:title" content="Setup debian system"/>
+<meta name="twitter:description" content="Intro Remote access Install home assistant Install ebusd Launch homeassistant  Folder settings  Static IP address Result    Intro This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
+It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor. The same method has worked on other debian based systems (tested on armbian running on a singleboard computer)."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/goosst/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/goosst/favicon-32x32.png">
@@ -38,7 +38,7 @@ This page is mainly to document the steps starting from a fresh linux install an
 	<link rel="mask-icon" href="/goosst/safari-pinned-tab.svg" color="">
 	<link rel="shortcut icon" href="/goosst/favicon.ico">
 
-	<title>Heating automation - laptop</title>
+	<title>Setup debian system</title>
 	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.31706917653d2b9e8410abd431f30ec4359a88a94fc87a63654779d87329edec.css" integrity="sha256-MXBpF2U9K56EEKvUMfMOxDWaiKlPyHpjZUd52HMp7ew=">
 	
 </head>
@@ -75,7 +75,7 @@ This page is mainly to document the steps starting from a fresh linux install an
 		<article class="thin">
 			<header class="post-header">
 				<div class="post-meta"><span>Nov 2, 2019</span></div>
-				<h1>Heating automation - laptop</h1>
+				<h1>Setup debian system</h1>
 			</header>
 			<div class="content">
 				
@@ -84,6 +84,7 @@ This page is mainly to document the steps starting from a fresh linux install an
     <nav id="TableOfContents">
 <ul>
 <li><a href="#intro">Intro</a></li>
+<li><a href="#remote-access">Remote access</a></li>
 <li><a href="#install-home-assistant">Install home assistant</a></li>
 <li><a href="#install-ebusd">Install ebusd</a></li>
 <li><a href="#launch-homeassistant">Launch homeassistant</a>
@@ -98,11 +99,25 @@ This page is mainly to document the steps starting from a fresh linux install an
 
 <h1 id="intro">Intro<a href="#intro" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
-<p>My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&hellip; .</p>
+<p>This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.</p>
 
-<p>This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
-It starts with a fresh install of the debian based <a href="https://www.crunchbangplusplus.org/">crunchbangplusplus</a>, here installed on an (old) laptop with i386 processor.
+<p>It starts with a fresh install of the debian based <a href="https://www.crunchbangplusplus.org/">crunchbangplusplus</a>, here installed on an (old) laptop with i386 processor.
+The same method has worked on other debian based systems (tested on armbian running on a singleboard computer).
+It is assumed the debian based distro is based on debian Buster.
 Quite some additional python and other packages are specific for my installation, they can be left out to suit your needs.</p>
+
+<h1 id="remote-access">Remote access<a href="#remote-access" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>To make life easy and not be close to your machine running home assistant:</p>
+
+<ul>
+<li>ssh into the remote machine</li>
+<li><code>sudo apt-get install tmux</code></li>
+<li>start tmux by typing tmux</li>
+<li>execute your commands in the started tmux session</li>
+<li>leave/detach the tmux session by typing Ctrl+b and then d</li>
+<li>If you connect again after being disconnected, type <code>tmux attach</code></li>
+</ul>
 
 <h1 id="install-home-assistant">Install home assistant<a href="#install-home-assistant" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
@@ -113,7 +128,7 @@ Add a line to your /etc/apt/sources.list: <code>deb http://ftp.de.debian.org/deb
 
 <pre><code>sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install python3 python3-dev python3-venv python3-pip libffi-dev libssl-dev
+sudo apt-get install python3 python3-dev python3-venv python3-pip libffi-dev libssl-dev build-essential
 sudo useradd -rm homeassistant
 cd /srv
 sudo mkdir homeassistant
@@ -147,9 +162,15 @@ exit
 
 <h1 id="install-ebusd">Install ebusd<a href="#install-ebusd" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
+<p>select the correct computer-architecture:</p>
+
 <pre><code> wget -O - https://raw.githubusercontent.com/john30/ebusd-debian/master/ebusd.gpg.key|sudo apt-key add -
  dpkg --print-architecture
  sudo wget -O /etc/apt/sources.list.d/ebusd.list https://raw.githubusercontent.com/john30/ebusd-debian/master/ebusd-i386-nomqtt.list
+</code></pre>
+
+<pre><code>sudo apt-get update
+sudo apt-get install ebusd
 </code></pre>
 
 <p>check status and let it start at boot</p>
@@ -174,7 +195,7 @@ hass
 </code></pre>
 
 <p>Check if any error messages pop up in the command window. If so, try to resolve them.
-surf to your ip address</p>
+Brows to <a href="http://ip_address:8123">http://ip_address:8123</a>, to see if you can access. Setup an account.</p>
 
 <h2 id="folder-settings">Folder settings<a href="#folder-settings" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
 
@@ -193,13 +214,15 @@ sudo chmod -R 777 /home/homeassistant/.homeassistant/
 <h1 id="static-ip-address">Static IP address<a href="#static-ip-address" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
 <p>Let the laptop bootup with a fixed ip address:
-run <code>sudo nmtui</code>, change the following (to have a fixed address: 192.168.0.205)
+run <code>sudo nmtui</code>, change the following in <code>edit connection</code> (to have a fixed address: 192.168.0.205)
 <figure>
     <img src="/goosst/pictures/nmtui.png" width="550"/> <figcaption>
             <h4>network settings</h4>
         </figcaption>
 </figure>
 </p>
+
+<p>Most likely requires a reboot (and access to a display instead of ssh).</p>
 
 <h1 id="result">Result<a href="#result" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
@@ -216,11 +239,14 @@ run <code>sudo nmtui</code>, change the following (to have a fixed address: 192.
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://users.telenet.be/goosst/tags/crunchbang-plus-plus">crunchbang plus plus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/debian">debian</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ebusd">ebusd</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ebus">ebus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/home-assistant">home assistant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/laptop">laptop</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>450 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>529 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-11-02 01:00 &#43;0100</p>
 			</footer>
 		</article>
 		<div class="post-nav thin">
+			<a class="next-post" href="http://users.telenet.be/goosst/posts/hass_tor/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Remote access home assistant</span>
+			</a>
 			<a class="prev-post" href="http://users.telenet.be/goosst/posts/homeautomation_epaper_esp_twodisp/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>e-paper - Extension to two displays</span>
 			</a>

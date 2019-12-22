@@ -25,12 +25,11 @@ If your goal is to remove your thermostat completely, that's not going to happen
 
 The posts provide guidance how to add additional intelligence and monitoring to our setup and serve as documentation for myself and others. It's not a dummy proof step-by-step guide.
 
-
 # Tools
 
 We'll be using the following hardware and software:
 
-1. [Raspberry pi 3b](https://www.banggood.com/Raspberry-Pi-3-Model-B-Plus-Mother-Board-Mainboard-With-BCM2837B0-Cortex-A53-ARMv8-1_4GHz-CPU-D-p-1278398.html?p=ET150713234951201708&custlinkid=664885)
+1. A debian based system (laptop, tinkerboard, [Raspberry pi 3b](https://www.banggood.com/Raspberry-Pi-3-Model-B-Plus-Mother-Board-Mainboard-With-BCM2837B0-Cortex-A53-ARMv8-1_4GHz-CPU-D-p-1278398.html?p=ET150713234951201708&custlinkid=664885), ...)
 2. ebus adapter: https://ebus.github.io/adapter/index.en.html
 3. ebusd software: https://github.com/john30/ebusd
 4. Home Assistant: https://www.home-assistant.io/
@@ -51,3 +50,9 @@ My setup is rather simple:
 
 {{< figure src="/goosst/pictures/IMG_20190420_091458.jpg" title="Vaillant ecotec plus" width="350">}}
 {{< figure src="/goosst/pictures/IMG_20190420_112454.jpg" title="Vaillant wireless thermostat, Calormatic 370f" width="350">}}
+
+# Getting started
+
+* [Hardware and communication to heater]({{< relref "homeautomation_wemos_ebus.md" >}})
+* [Set temperatures through Home Assistant]({{< relref "homeautomation_partII.md" >}})
+* [Reading additional information through Home Assistant]({{< relref "homeautomation_partIII.md" >}})

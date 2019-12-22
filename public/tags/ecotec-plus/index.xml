@@ -7,10 +7,20 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 22 Apr 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 21 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://users.telenet.be/goosst/tags/ecotec-plus/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Heating automation - setup hardware and ebus</title>
+      <link>http://users.telenet.be/goosst/posts/homeautomation_wemos_ebus/</link>
+      <pubDate>Sat, 21 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/homeautomation_wemos_ebus/</guid>
+      <description>Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
+Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&amp;rsquo;m not going to write down all the details, since I can just refer to them:</description>
+    </item>
     
     <item>
       <title>Heating automation - device tracking</title>
@@ -31,7 +41,7 @@ Device tracking Example below will use the component device_tracker and the nmap
       
       <guid>http://users.telenet.be/goosst/posts/homeautomation_partiii/</guid>
       <description>Intro In this part we&amp;rsquo;ll read parameters from our heater through the interface of Home Assistant and plot them in the UI.
-Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.
+Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant. This sending of messages will be done in a python script.
 Again: in this way we can focus on making all the ebus related items running in python and we don&amp;rsquo;t have to deal with a custom Home Assistant syntax.</description>
     </item>
     
@@ -42,18 +52,7 @@ Again: in this way we can focus on making all the ebus related items running in 
       
       <guid>http://users.telenet.be/goosst/posts/homeautomation_partii/</guid>
       <description>Intro In this part we&amp;rsquo;ll:
- install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, not confusing at all :). I&amp;rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&amp;rsquo;m not familiar with docker (hass.io) and its limitations.
- Follow the Hassbian installation instructions: https://www.</description>
-    </item>
-    
-    <item>
-      <title>Heating automation - setup hardware and ebus</title>
-      <link>http://users.telenet.be/goosst/posts/homeautomation_parti/</link>
-      <pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://users.telenet.be/goosst/posts/homeautomation_parti/</guid>
-      <description>Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
-Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&amp;rsquo;m not going to write down all the details, since I can just refer to them:</description>
+ preparing the host which will run Home Assistant set our requested room temperature through the interface of Home Assistant.  Preparing the host There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, not confusing at all :). I&amp;rsquo;m using a regular debian based system since at least I know ebusd works in a debian environment. I&amp;rsquo;m not familiar with docker (hass.</description>
     </item>
     
     <item>

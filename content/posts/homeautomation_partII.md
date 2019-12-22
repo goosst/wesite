@@ -15,25 +15,15 @@ tags:
 # Intro
 In this part we'll:
 
-* install hassbian
+* preparing the host which will run Home Assistant
 * set our requested room temperature through the interface of Home Assistant.
 
 
-# Preparing the Raspberry pi
+# Preparing the host
 
-There is hassbian, hass.io, homme-assistant itself, ... as you see, not confusing at all :). I'm using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I'm not familiar with docker (hass.io) and its limitations.
+There is hassbian, hass.io, homme-assistant itself, ... as you see, not confusing at all :). I'm using a regular debian based system since at least I know ebusd works in a debian environment. I'm not familiar with docker (hass.io) and its limitations.
 
-* Follow the Hassbian installation instructions: https://www.home-assistant.io/docs/installation/hassbian/installation/
-* find your ip-address and have ssh enabled (plenty of sites which explain this)
-* Additional installations beside the normal updating, upgrading, setting the time-zone:
-
-```
-sudo apt-get install net-tools nmap
-sudo hassbian-config install mosquitto
-sudo hassbian-config install samba
-```
-An overview of other helper scripts can be found at: https://github.com/home-assistant/hassbian-scripts
-
+A detailed description to setup your host can be found [here]({{< relref "hass_laptop.md" >}}).
 
 # Initial temperature test using Home Assistant
 
@@ -277,6 +267,3 @@ with ILock('ebus', timeout=200):
 	else:
 	    print("setting correct")
 ```
-
-
-<!-- {{< ama3 >}} -->

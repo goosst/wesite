@@ -21,7 +21,7 @@ The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standp
 ## Concept
 
 * The sonoff devices will be flashed with the custom Tasmota firmware (cfr. the very complete documentation at https://github.com/arendst/Sonoff-Tasmota).
-* There are enough sites out there explaining the flashing procedure. I flash through the FTDI device below (can handle 3.3 and 5V based devices): {{< bng2 >}}
+* There are enough sites out there explaining the flashing procedure (https://github.com/arendst/Tasmota/wiki/Sonoff-S26-Smart-Socket as starting point). I flash through the FTDI device below (can handle 3.3 and 5V based devices): {{< bng2 >}}
 * Once this is done, MQTT messages will be used to control and report the status through the interface of Home Assistant
 
 

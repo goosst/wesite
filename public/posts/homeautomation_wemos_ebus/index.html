@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="Heating automation - setup hardware and ebus">
+<meta itemprop="description" content="Intro Hardware  Ebus adapter Attention!! My setup  Software  Software Wemos D1 mini ebusd Debugging     Intro In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
+Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater.">
+
+
+<meta itemprop="datePublished" content="2019-12-21T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-12-21T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="802">
+
+
+
+<meta itemprop="keywords" content="vaillant,ecotec plus,ebus,home assistant,Ebusd,wemos mini D1," />
+<meta property="og:title" content="Heating automation - setup hardware and ebus" />
+<meta property="og:description" content="Intro Hardware  Ebus adapter Attention!! My setup  Software  Software Wemos D1 mini ebusd Debugging     Intro In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
+Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://users.telenet.be/goosst/posts/homeautomation_wemos_ebus/" />
+<meta property="article:published_time" content="2019-12-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2019-12-21T00:00:00+00:00" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Heating automation - setup hardware and ebus"/>
+<meta name="twitter:description" content="Intro Hardware  Ebus adapter Attention!! My setup  Software  Software Wemos D1 mini ebusd Debugging     Intro In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
+Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater."/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/goosst/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/goosst/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/goosst/favicon-16x16.png">
+	<link rel="manifest" href="/goosst/site.webmanifest">
+	<link rel="mask-icon" href="/goosst/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/goosst/favicon.ico">
+
+	<title>Heating automation - setup hardware and ebus</title>
+	<link rel="stylesheet" href="http://users.telenet.be/goosst/css/style.min.31706917653d2b9e8410abd431f30ec4359a88a94fc87a63654779d87329edec.css" integrity="sha256-MXBpF2U9K56EEKvUMfMOxDWaiKlPyHpjZUd52HMp7ew=">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp faster">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="http://users.telenet.be/goosst">Goosst blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					<a href="http://users.telenet.be/goosst/posts/">Posts</a>
+					<a href="http://users.telenet.be/goosst/about-hugo/">About</a>
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<span class="hdr-social hide-in-mobile"><a href="https://github.com/goosst" target="_blank" rel="noopener" title="Github"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+			
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="http://users.telenet.be/goosst/posts/">Posts</a></li>
+			<li><a href="http://users.telenet.be/goosst/about-hugo/">About</a></li>
+		</ul>
+		
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Dec 21, 2019</span></div>
+				<h1>Heating automation - setup hardware and ebus</h1>
+			</header>
+			<div class="content">
+				
+
+<aside>
+    <nav id="TableOfContents">
+<ul>
+<li><a href="#intro">Intro</a></li>
+<li><a href="#hardware">Hardware</a>
+<ul>
+<li><a href="#ebus-adapter">Ebus adapter</a></li>
+<li><a href="#attention">Attention!!</a></li>
+<li><a href="#my-setup">My setup</a></li>
+</ul></li>
+<li><a href="#software">Software</a>
+<ul>
+<li><a href="#software-wemos-d1-mini">Software Wemos D1 mini</a></li>
+<li><a href="#ebusd">ebusd</a></li>
+<li><a href="#debugging">Debugging</a></li>
+</ul></li>
+</ul>
+</nav>
+</aside>
+
+<h1 id="intro">Intro<a href="#intro" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<p>In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).</p>
+
+<h1 id="hardware">Hardware<a href="#hardware" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<h2 id="ebus-adapter">Ebus adapter<a href="#ebus-adapter" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>We need an ebus adapter for the raspberry to interface with our heater. I&rsquo;m not going to write down all the details, since I can just refer to them:</p>
+
+<ul>
+<li>Start reading here for more background: <a href="https://ebus.github.io/adapter/index.en.html">https://ebus.github.io/adapter/index.en.html</a></li>
+<li>I&rsquo;m using the base board version 2.2, there might be better options to use directly with a raspberry pi. But when I ordered, it looked like the most flexible solution.</li>
+<li>Adapter was ordered on the fhem forum. They will send you a pcb with a set of components, you have to solder yourself (or pay a bit extra): <a href="https://forum.fhem.de/index.php/topic,93190.msg857894.html#msg857894">https://forum.fhem.de/index.php/topic,93190.msg857894.html#msg857894</a>. If you&rsquo;ve read the first link you will also know there are commercial options in case you don&rsquo;t want this.</li>
+<li>Put it in a box so there is no chance on touching electrical connections etc. .
+
+<ul>
+<li>You could consider placing the adapter inside the heater (plenty of space), I just didn&rsquo;t want to put custom electronics inside &hellip; .</li>
+</ul></li>
+</ul>
+
+<figure>
+    <img src="/goosst/pictures/ebus_adapter.jpg" width="250"/> <figcaption>
+            <h4>ebus adapter v2.2</h4>
+        </figcaption>
+</figure>
+
+
+<h2 id="attention">Attention!!<a href="#attention" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p><strong><em>Connecting the ebus adapter over USB to your host, is not reliable over longer periods of time! I&rsquo;ve wasted way too much time with an unreliable home automation because of this. Connecting the adapter to a wemos, seems the more reliable route.</em></strong></p>
+
+<p>If you&rsquo;re running on a single board computer:</p>
+
+<ul>
+<li>Please use a decent <a href="https://www.banggood.com/DC-5V-3_0A-EU-Power-Supply-Micro-USB-Adapter-Charger-For-Raspberry-Pi-3-Model-B-p-1079928.html?p=ET150713234951201708&amp;custlinkid=664887">power supply with at least 2/3A</a></li>
+<li>Use a 32Gb size SD card (recommended by Home Assistant).</li>
+</ul>
+
+<h2 id="my-setup">My setup<a href="#my-setup" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<figure>
+    <img src="/goosst/pictures/ebus_wemos.jpg" width="350"/> <figcaption>
+            <h4>Wemos mini D1 and ebus adapter mounted on heater</h4>
+        </figcaption>
+</figure>
+
+
+<ul>
+<li><a href="https://www.banggood.com/Geekcreit-D1-Mini-V3_0_0-WIFI-Internet-Of-Things-Development-Board-Based-ESP8266-4MB-p-1264245.html?p=ET150713234951201708&amp;custlinkid=734961">Wemos mini D1</a> and ebus-adapter (without uart interface) are mounted against the heater by using velco strips</li>
+<li>The white and purple wire are the ebus, they are connected inside the heater (ebus protocol has no polarity, so you can swap the wires)</li>
+<li>ebus-adapter is connected through five wires as described <a href="https://ebus.github.io/adapter/images/wemos-wiring-v21.jpg">here</a></li>
+</ul>
+
+<h1 id="software">Software<a href="#software" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+
+<h2 id="software-wemos-d1-mini">Software Wemos D1 mini<a href="#software-wemos-d1-mini" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>A special software is created by john30, the procedure to start using it is described on <a href="https://github.com/john30/ebusd-esp">his github page</a>.
+There is not much too add here.</p>
+
+<h2 id="ebusd">ebusd<a href="#ebusd" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>First install the ebus related software on your system running your home automation, see the ebus section in the <a href="/goosst/posts/hass_laptop/">installation guide</a>.</p>
+
+<p>If this is done, adapt your ebus configuration to match your wemos settings:</p>
+
+<ul>
+<li>Check the settings in the interface of the wemos / ebus adapter, the ebusd device string is what you&rsquo;ll need in the next step.
+<figure>
+    <img src="/goosst/pictures/ebusd_adapter_wemos_sw.png" width="350"/> <figcaption>
+            <h4>Interface when browsing to wemos D1 mini</h4>
+        </figcaption>
+</figure>
+</li>
+
+<li><p>adapt the ebus configuration on your host, as described in the following steps:</p>
+
+<pre><code>cd /etc/default
+sudo nano ebusd
+</code></pre>
+
+<p>Adapt the EBUSD_OPTS in the file, so you get something like the example below. (Pending your internet connection / hardware you might have to play with the latency parameters.)</p>
+
+<pre><code># /etc/default/ebusd:
+# config file for ebusd service.
+
+# Options to pass to ebusd (run &quot;ebusd -?&quot; for more info):
+#EBUSD_OPTS=&quot;--scanconfig&quot;
+EBUSD_OPTS=&quot;-d 192.168.0.193:9999 -l /var/log/ebusd.log --scanconfig --latency=100000 --address=01&quot;
+# MULTIPLE EBUSD INSTANCES WITH SYSV
+# In order to run multiple ebusd instances on a SysV enabled system, simply
+# define several EBUSD_OPTS with a unique suffix for each. Recommended is to
+....
+</code></pre></li>
+</ul>
+
+<p>Do a restart of the ebusd and check its status:</p>
+
+<pre><code>sudo systemctl restart ebusd
+sudo systemctl status ebusd
+</code></pre>
+
+<p>The output should look like this:</p>
+
+<pre><code>● ebusd.service - ebusd, the daemon for communication with eBUS heating systems.
+   Loaded: loaded (/lib/systemd/system/ebusd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sat 2019-12-21 16:45:54 UTC; 56min ago
+  Process: 3221 ExecStart=/usr/bin/ebusd $EBUSD_OPTS (code=exited, status=0/SUCCESS)
+ Main PID: 3222 (ebusd)
+    Tasks: 4 (limit: 4749)
+   Memory: 1.5M
+   CGroup: /system.slice/ebusd.service
+           └─3222 /usr/bin/ebusd -d 192.168.0.193:9999 -l /var/log/ebusd.log --scanconfig --latency=100000 --address=01
+
+Dec 21 16:45:54 tinkerboard systemd[1]: Starting ebusd, the daemon for communication with eBUS heating systems....
+Dec 21 16:45:54 tinkerboard systemd[1]: Started ebusd, the daemon for communication with eBUS heating systems..
+</code></pre>
+
+<p>check if your heating system is identified by running <code>ebusctl info</code>:</p>
+
+<pre><code>xxx@tinkerboard:~$ ebusctl info
+version: ebusd 3.4.v3.3-51-g57eae05
+update check: revision v3.4 available
+signal: acquired
+symbol rate: 42
+max symbol rate: 102
+min arbitration micros: 20
+max arbitration micros: 177
+min symbol latency: 6
+max symbol latency: 80
+reconnects: 0
+masters: 3
+messages: 345
+conditional: 2
+poll: 0
+update: 9
+address 01: master #6, ebusd
+address 03: master #11
+address 06: slave #6, ebusd
+address 08: slave #11, scanned &quot;MF=Vaillant;ID=BAI00;SW=0202;HW=9602&quot;, loaded &quot;vaillant/bai.0010015600.inc&quot; ([HW=9602]), &quot;vaillant/08.bai.csv&quot;
+address 10: master #2
+address 15: slave #2, scanned &quot;MF=Vaillant;ID=F3700;SW=0114;HW=6102&quot;, loaded &quot;vaillant/15.f37.csv&quot;
+</code></pre>
+
+<p>Query some commands to see if everything is working as expected.</p>
+
+<pre><code>xxx@tinkerboard:~$ ebusctl read RoomTemp
+21.00;ok
+
+xxx@tinkerboard:~$ ebusctl read Hc1DayTemp
+21.0
+</code></pre>
+
+<h2 id="debugging">Debugging<a href="#debugging" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+
+<p>Useful commands to debug can be <code>tail -30 /var/log/ebusd.log</code>, this to see what ebus has been written to the log file configured in EBUSD_OPTS.</p>
+
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://users.telenet.be/goosst/tags/vaillant">vaillant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ecotec-plus">ecotec plus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ebus">ebus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/home-assistant">home assistant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ebusd">Ebusd</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/wemos-mini-d1">wemos mini D1</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>802 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-12-21 01:00 &#43;0100</p>
+			</footer>
+		</article>
+		<div class="post-nav thin">
+			<a class="next-post" href="http://users.telenet.be/goosst/posts/hass_tor_macro/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Heating control from Android</span>
+			</a>
+			<a class="prev-post" href="http://users.telenet.be/goosst/posts/hass_tor/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Remote access home assistant</span>
+			</a>
+		</div>
+		<div id="comments" class="thin">
+</div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2019 <a href="http://users.telenet.be/goosst">Goosst</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="http://users.telenet.be/goosst/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+	<script src="http://users.telenet.be/goosst/js/main.min.784417f5847151f848c339cf0acb13a06cbb648b1483435a28ed4556c4ead69b.js" integrity="sha256-eEQX9YRxUfhIwznPCssToGy7ZIsUg0NaKO1FVsTq1ps="></script>
+
+</body>
+
+</html>

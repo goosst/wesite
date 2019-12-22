@@ -7,19 +7,29 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 02 Nov 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 21 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://users.telenet.be/goosst/tags/ebusd/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Heating automation - laptop</title>
+      <title>Heating automation - setup hardware and ebus</title>
+      <link>http://users.telenet.be/goosst/posts/homeautomation_wemos_ebus/</link>
+      <pubDate>Sat, 21 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/homeautomation_wemos_ebus/</guid>
+      <description>Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
+Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&amp;rsquo;m not going to write down all the details, since I can just refer to them:</description>
+    </item>
+    
+    <item>
+      <title>Setup debian system</title>
       <link>http://users.telenet.be/goosst/posts/hass_laptop/</link>
       <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/hass_laptop/</guid>
-      <description>Intro My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&amp;rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&amp;hellip; .
-This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd. It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor.</description>
+      <description>Intro This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
+It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor. The same method has worked on other debian based systems (tested on armbian running on a singleboard computer). It is assumed the debian based distro is based on debian Buster.</description>
     </item>
     
   </channel>

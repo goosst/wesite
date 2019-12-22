@@ -18,7 +18,7 @@ In this part we'll read parameters from our heater through the interface of Home
 
 # Concept
 
-We'll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.
+We'll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant. This sending of messages will be done in a python script.
 
 Again: in this way we can focus on making all the ebus related items running in python and we don't have to deal with a custom Home Assistant syntax. I personally prefer spending time learning python over learning a custom program specific language/syntax.
 

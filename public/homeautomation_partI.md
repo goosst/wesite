@@ -30,6 +30,8 @@ We need an ebus adapter for the raspberry to interface with our heater. I'm not 
 {{< figure src="/goosst/pictures/ebus_adapter.jpg" title="ebus adapter v2.2" width="250">}}
 
 ## Raspberry pi
+***Should be updated, connecting the ebus adapter to USB is not reliable over longer periods of time!***
+
 Please use a decent [power supply with at least 2/3A](https://www.banggood.com/DC-5V-3_0A-EU-Power-Supply-Micro-USB-Adapter-Charger-For-Raspberry-Pi-3-Model-B-p-1079928.html?p=ET150713234951201708&custlinkid=664887) (it causes a lot of strange problems) and 32Gb size SD card (recommended by Home Assistant).
 
 ## My setup

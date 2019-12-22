@@ -6,17 +6,17 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>en-us</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Sat, 02 Nov 2019 00:00:00 +0000</lastBuildDate>
+		<lastBuildDate>Sun, 22 Dec 2019 00:00:00 +0000</lastBuildDate>
 		<atom:link href="http://users.telenet.be/goosst/posts/index.xml" rel="self" type="application/rss+xml" />
 		
 		<item>
-			<title>Heating automation - laptop</title>
-			<link>http://users.telenet.be/goosst/posts/hass_laptop/</link>
-			<pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
+			<title>Heating control from Android</title>
+			<link>http://users.telenet.be/goosst/posts/hass_tor_macro/</link>
+			<pubDate>Sun, 22 Dec 2019 00:00:00 +0000</pubDate>
 			
-			<guid>http://users.telenet.be/goosst/posts/hass_laptop/</guid>
-			<description>Intro My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&amp;rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&amp;hellip; .
-This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd. It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor.</description>
+			<guid>http://users.telenet.be/goosst/posts/hass_tor_macro/</guid>
+			<description>Intro This is the continuation of HomeAssistant Tor. Here we&amp;rsquo;ll create a macro to automatically turn our heating on/off from an Android phone. The end result is something which only requires two / three pushes on a button on your android phone to turn on my heating. It works when being connected to a mobile network as well as a wifi network.
+Method and tools  Macrodroid: Android app used for creating the macro.</description>
 			<content type="html"><![CDATA[
 
 <aside>
@@ -25,11 +25,388 @@ This page is mainly to document the steps starting from a fresh linux install an
 
 <h1 id="intro">Intro</h1>
 
-<p>My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&hellip; .</p>
+<p>This is the continuation of <a href="http://users.telenet.be/goosst/posts/hass_tor/">HomeAssistant Tor</a>. Here we&rsquo;ll create a macro to automatically turn our heating on/off from an Android phone. The end result is something which only requires two / three pushes on a button on your android phone to turn on my heating.
+It works when being connected to a mobile network as well as a wifi network.</p>
 
-<p>This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
-It starts with a fresh install of the debian based <a href="https://www.crunchbangplusplus.org/">crunchbangplusplus</a>, here installed on an (old) laptop with i386 processor.
+<h1 id="method-and-tools">Method and tools</h1>
+
+<ul>
+<li>Macrodroid: Android app used for creating the macro. It&rsquo;s free and can do everything we need.</li>
+<li>Curl commands will be created making use of the <a href="https://developers.home-assistant.io/docs/en/external_api_rest.html">REST API from home assistant</a></li>
+<li>You need a long-lived access token from HomeAssistant. It can be obtained by browsing to <a href="http://ip_addr_hass:8123/profile">http://ip_addr_hass:8123/profile</a> and creating one.</li>
+</ul>
+
+<p>Additional tools to make debugging easier on your phone: Termux</p>
+
+<h1 id="macro-creation">Macro creation</h1>
+
+<h2 id="home-assistant">Home Assistant</h2>
+
+<p>In <code>configuration.yaml</code>:
+* an input_boolean with the name turn_heating_on is defined
+* an automation is defined if we see a change from off to on in this variable, an action is defined that runs an automation to turn our heating on</p>
+
+<pre><code>input_boolean:
+  turn_heating_on:
+    name: Heating Living Day
+    initial: off
+</code></pre>
+
+<pre><code>automation turn_heating_on_living:
+  - alias: 'turn heating living on'
+    trigger:
+      platform: state
+      entity_id: input_boolean.turn_heating_on
+      from: 'off'
+      to: 'on'
+    action:
+      - service: shell_command.set_temp_high
+        data:
+          message: &quot;Turned living heating on&quot;
+      - delay: '00:01:00'
+      - service: shell_command.read_ebus
+</code></pre>
+
+<h2 id="shell-script">shell script</h2>
+
+<ul>
+<li>Open Macrodroid &ndash;&gt; Add macro</li>
+<li>Add an &ldquo;action&rdquo; of the type &ldquo;Applications-Shell Script&rdquo;</li>
+
+<li><p>Create a curl command to change the state of turn_heating_on to off or on</p>
+
+<pre><code>curl  \
+-X POST --socks5-hostname localhost:9150 http://xxxxx.onion/api/states/input_boolean.turn_heating_on \
+-H &quot;Authorization: Bearer
+here_is_your_very_long_lived_token&quot; \
+-H &quot;Content-Type: application/json&quot; \
+-d '{&quot;state&quot;: &quot;off&quot;}'
+</code></pre>
+
+<figure>
+    <img src="/goosst/pictures/macrodroid_shellscript.png" width="200"/> <figcaption>
+            <h4>Macrodroid shell script</h4>
+        </figcaption>
+</figure>
+</li>
+
+<li><p>Start Orbot / Tor</p></li>
+
+<li><p>Test your shell script and play with the &ldquo;state&rdquo; attribute, you should see the turn_heating_on change accordingly (&ldquo;off&rdquo;/&ldquo;on&rdquo;)</p></li>
+</ul>
+
+<h2 id="incorporate-in-larger-macro">Incorporate in larger macro</h2>
+
+<ul>
+<li>Create a larger macro which starts and stops Orbot automatically.</li>
+<li>Since my home automation assumes a change from &ldquo;off&rdquo; to &ldquo;on&rdquo;, the turn_heating_on will be first put &ldquo;off&rdquo; and then put to &ldquo;on&rdquo;
+<figure>
+    <img src="/goosst/pictures/macrodroid_macro.png" width="200"/> <figcaption>
+            <h4>Macrodroid macro</h4>
+        </figcaption>
+</figure>
+</li>
+</ul>
+
+<p>The end result is, I need two/three pushes on the screen to turn my heating on:
+* First push: start the macro
+* Second push: when the orbot screen launches, push the big onion to connect to the tor network
+* Optional third push: when the orbot screen launches for the second time, disconnect from the tor network</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Heating automation - setup hardware and ebus</title>
+			<link>http://users.telenet.be/goosst/posts/homeautomation_wemos_ebus/</link>
+			<pubDate>Sat, 21 Dec 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/homeautomation_wemos_ebus/</guid>
+			<description>Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
+Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&amp;rsquo;m not going to write down all the details, since I can just refer to them:</description>
+			<content type="html"><![CDATA[
+
+<aside>
+    
+</aside>
+
+<h1 id="intro">Intro</h1>
+
+<p>In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).</p>
+
+<h1 id="hardware">Hardware</h1>
+
+<h2 id="ebus-adapter">Ebus adapter</h2>
+
+<p>We need an ebus adapter for the raspberry to interface with our heater. I&rsquo;m not going to write down all the details, since I can just refer to them:</p>
+
+<ul>
+<li>Start reading here for more background: <a href="https://ebus.github.io/adapter/index.en.html">https://ebus.github.io/adapter/index.en.html</a></li>
+<li>I&rsquo;m using the base board version 2.2, there might be better options to use directly with a raspberry pi. But when I ordered, it looked like the most flexible solution.</li>
+<li>Adapter was ordered on the fhem forum. They will send you a pcb with a set of components, you have to solder yourself (or pay a bit extra): <a href="https://forum.fhem.de/index.php/topic,93190.msg857894.html#msg857894">https://forum.fhem.de/index.php/topic,93190.msg857894.html#msg857894</a>. If you&rsquo;ve read the first link you will also know there are commercial options in case you don&rsquo;t want this.</li>
+<li>Put it in a box so there is no chance on touching electrical connections etc. .
+
+<ul>
+<li>You could consider placing the adapter inside the heater (plenty of space), I just didn&rsquo;t want to put custom electronics inside &hellip; .</li>
+</ul></li>
+</ul>
+
+<figure>
+    <img src="/goosst/pictures/ebus_adapter.jpg" width="250"/> <figcaption>
+            <h4>ebus adapter v2.2</h4>
+        </figcaption>
+</figure>
+
+
+<h2 id="attention">Attention!!</h2>
+
+<p><strong><em>Connecting the ebus adapter over USB to your host, is not reliable over longer periods of time! I&rsquo;ve wasted way too much time with an unreliable home automation because of this. Connecting the adapter to a wemos, seems the more reliable route.</em></strong></p>
+
+<p>If you&rsquo;re running on a single board computer:</p>
+
+<ul>
+<li>Please use a decent <a href="https://www.banggood.com/DC-5V-3_0A-EU-Power-Supply-Micro-USB-Adapter-Charger-For-Raspberry-Pi-3-Model-B-p-1079928.html?p=ET150713234951201708&amp;custlinkid=664887">power supply with at least 2/3A</a></li>
+<li>Use a 32Gb size SD card (recommended by Home Assistant).</li>
+</ul>
+
+<h2 id="my-setup">My setup</h2>
+
+<figure>
+    <img src="/goosst/pictures/ebus_wemos.jpg" width="350"/> <figcaption>
+            <h4>Wemos mini D1 and ebus adapter mounted on heater</h4>
+        </figcaption>
+</figure>
+
+
+<ul>
+<li><a href="https://www.banggood.com/Geekcreit-D1-Mini-V3_0_0-WIFI-Internet-Of-Things-Development-Board-Based-ESP8266-4MB-p-1264245.html?p=ET150713234951201708&amp;custlinkid=734961">Wemos mini D1</a> and ebus-adapter (without uart interface) are mounted against the heater by using velco strips</li>
+<li>The white and purple wire are the ebus, they are connected inside the heater (ebus protocol has no polarity, so you can swap the wires)</li>
+<li>ebus-adapter is connected through five wires as described <a href="https://ebus.github.io/adapter/images/wemos-wiring-v21.jpg">here</a></li>
+</ul>
+
+<h1 id="software">Software</h1>
+
+<h2 id="software-wemos-d1-mini">Software Wemos D1 mini</h2>
+
+<p>A special software is created by john30, the procedure to start using it is described on <a href="https://github.com/john30/ebusd-esp">his github page</a>.
+There is not much too add here.</p>
+
+<h2 id="ebusd">ebusd</h2>
+
+<p>First install the ebus related software on your system running your home automation, see the ebus section in the <a href="/goosst/posts/hass_laptop/">installation guide</a>.</p>
+
+<p>If this is done, adapt your ebus configuration to match your wemos settings:</p>
+
+<ul>
+<li>Check the settings in the interface of the wemos / ebus adapter, the ebusd device string is what you&rsquo;ll need in the next step.
+<figure>
+    <img src="/goosst/pictures/ebusd_adapter_wemos_sw.png" width="350"/> <figcaption>
+            <h4>Interface when browsing to wemos D1 mini</h4>
+        </figcaption>
+</figure>
+</li>
+
+<li><p>adapt the ebus configuration on your host, as described in the following steps:</p>
+
+<pre><code>cd /etc/default
+sudo nano ebusd
+</code></pre>
+
+<p>Adapt the EBUSD_OPTS in the file, so you get something like the example below. (Pending your internet connection / hardware you might have to play with the latency parameters.)</p>
+
+<pre><code># /etc/default/ebusd:
+# config file for ebusd service.
+
+# Options to pass to ebusd (run &quot;ebusd -?&quot; for more info):
+#EBUSD_OPTS=&quot;--scanconfig&quot;
+EBUSD_OPTS=&quot;-d 192.168.0.193:9999 -l /var/log/ebusd.log --scanconfig --latency=100000 --address=01&quot;
+# MULTIPLE EBUSD INSTANCES WITH SYSV
+# In order to run multiple ebusd instances on a SysV enabled system, simply
+# define several EBUSD_OPTS with a unique suffix for each. Recommended is to
+....
+</code></pre></li>
+</ul>
+
+<p>Do a restart of the ebusd and check its status:</p>
+
+<pre><code>sudo systemctl restart ebusd
+sudo systemctl status ebusd
+</code></pre>
+
+<p>The output should look like this:</p>
+
+<pre><code>● ebusd.service - ebusd, the daemon for communication with eBUS heating systems.
+   Loaded: loaded (/lib/systemd/system/ebusd.service; enabled; vendor preset: enabled)
+   Active: active (running) since Sat 2019-12-21 16:45:54 UTC; 56min ago
+  Process: 3221 ExecStart=/usr/bin/ebusd $EBUSD_OPTS (code=exited, status=0/SUCCESS)
+ Main PID: 3222 (ebusd)
+    Tasks: 4 (limit: 4749)
+   Memory: 1.5M
+   CGroup: /system.slice/ebusd.service
+           └─3222 /usr/bin/ebusd -d 192.168.0.193:9999 -l /var/log/ebusd.log --scanconfig --latency=100000 --address=01
+
+Dec 21 16:45:54 tinkerboard systemd[1]: Starting ebusd, the daemon for communication with eBUS heating systems....
+Dec 21 16:45:54 tinkerboard systemd[1]: Started ebusd, the daemon for communication with eBUS heating systems..
+</code></pre>
+
+<p>check if your heating system is identified by running <code>ebusctl info</code>:</p>
+
+<pre><code>xxx@tinkerboard:~$ ebusctl info
+version: ebusd 3.4.v3.3-51-g57eae05
+update check: revision v3.4 available
+signal: acquired
+symbol rate: 42
+max symbol rate: 102
+min arbitration micros: 20
+max arbitration micros: 177
+min symbol latency: 6
+max symbol latency: 80
+reconnects: 0
+masters: 3
+messages: 345
+conditional: 2
+poll: 0
+update: 9
+address 01: master #6, ebusd
+address 03: master #11
+address 06: slave #6, ebusd
+address 08: slave #11, scanned &quot;MF=Vaillant;ID=BAI00;SW=0202;HW=9602&quot;, loaded &quot;vaillant/bai.0010015600.inc&quot; ([HW=9602]), &quot;vaillant/08.bai.csv&quot;
+address 10: master #2
+address 15: slave #2, scanned &quot;MF=Vaillant;ID=F3700;SW=0114;HW=6102&quot;, loaded &quot;vaillant/15.f37.csv&quot;
+</code></pre>
+
+<p>Query some commands to see if everything is working as expected.</p>
+
+<pre><code>xxx@tinkerboard:~$ ebusctl read RoomTemp
+21.00;ok
+
+xxx@tinkerboard:~$ ebusctl read Hc1DayTemp
+21.0
+</code></pre>
+
+<h2 id="debugging">Debugging</h2>
+
+<p>Useful commands to debug can be <code>tail -30 /var/log/ebusd.log</code>, this to see what ebus has been written to the log file configured in EBUSD_OPTS.</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Remote access home assistant</title>
+			<link>http://users.telenet.be/goosst/posts/hass_tor/</link>
+			<pubDate>Sun, 10 Nov 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/hass_tor/</guid>
+			<description>Intro Don&amp;rsquo;t we all want to monitor our home remotely (i.e. when not connected to our local network), turn on the heating on or off if we change our plans, check if everything is going well with our created home automation, etc. Of course we want to do this in a secure way that has limited chance of being hacked.
+In this section we&amp;rsquo;ll use tor to access home assistant remotely and connect to it from our mobile phone (through mobile internet).</description>
+			<content type="html"><![CDATA[
+
+<aside>
+    
+</aside>
+
+<h1 id="intro">Intro</h1>
+
+<p>Don&rsquo;t we all want to monitor our home remotely (i.e. when not connected to our local network), turn on the heating on or off if we change our plans, check if everything is going well with our created home automation, etc.
+Of course we want to do this in a secure way that has limited chance of being hacked.</p>
+
+<p>In this section we&rsquo;ll use tor to access home assistant remotely and connect to it from our mobile phone (through mobile internet).
+Read more about <a href="https://2019.www.torproject.org/docs/onion-services">Tor Hidden Services</a>.</p>
+
+<h1 id="installation">Installation</h1>
+
+<p>I&rsquo;m using a debian based system with home assistant running in a virtual (python) environment, as described <a href="http://users.telenet.be/goosst/posts/hass_laptop/">here</a>.</p>
+
+<p>The documentation to setup tor is here: <a href="https://www.home-assistant.io/docs/ecosystem/tor">homeassistant tor</a>.
+However, for debian 10 (buster), this isn&rsquo;t entirely correct anymore.
+The &lsquo;HiddenServiceVersion 2&rsquo;, needs to be added to the torrc configration. All the other steps are still relevant.</p>
+
+<p>torrc:</p>
+
+<pre><code>HiddenServiceDir /var/lib/tor/homeassistant
+HiddenServicePort 80 127.0.0.1:8123
+HiddenServiceVersion 2
+HiddenServiceAuthorizeClient stealth haremote1
+</code></pre>
+
+<h1 id="accessing-from-android-phone">Accessing from Android phone</h1>
+
+<p>As described in <a href="https://www.home-assistant.io/docs/ecosystem/tor">homeassistant tor</a>, one need to install Orbot and Orfox (Tor browser).</p>
+
+<h2 id="configuring-orbot">Configuring Orbot</h2>
+
+<ul>
+<li>Use the result obtained by executing <code>$ sudo more /var/lib/tor/homeassistant/hostname</code>, you will obtain something like <code>xxxxx.onion xx....xx</code>.</li>
+<li>Edit the torrc file in Orbot &ndash;&gt; Settings &ndash;&gt; Torrc Custom Config. Fill in: <code>HidServAuth xxxxx.onion xx....xx</code></li>
+<li>One additional step I had to, is to go to Orbot &ndash;&gt; Settings &ndash;&gt; Tor SOCKS and add port 9150. This to avoid getting a refused connection because of proxy servers.</li>
+</ul>
+
+<h1 id="home-assistant">Home Assistant</h1>
+
+<p>The <code>configuration.yaml</code> file should have <code>type: homeassistant</code> to be able to access it remotely.
+In my case when connected from the local internet (not through tor), I&rsquo;m automatically logged in.</p>
+
+<pre><code>auth_providers:
+  - type: trusted_networks
+    trusted_networks:
+      - 192.168.0.0/24
+    allow_bypass_login: true
+  - type: homeassistant
+</code></pre>
+
+<h1 id="usage">Usage</h1>
+
+<h2 id="orfox-tor-browser">Orfox / Tor Browser</h2>
+
+<ul>
+<li>Start up Orbot (by pressing Start)</li>
+<li>If successful, start up the Tor Browser and browse to your xxxxx.onion address. You should see your homeassistant login screen.</li>
+<li>Create a bookmark with your .onion address. It&rsquo;s hard to know it by hard :).</li>
+<li>click &ldquo;Home Assistant Local&rdquo;</li>
+<li>type in your home assistant username and password</li>
+<li>and you have your usual interface screen :)</li>
+</ul>
+
+<h2 id="create-a-macro">Create a macro</h2>
+
+<p>Of course we are all lazy and don&rsquo;t want to start up Orbot, launch the browser, login to homeassistant, and change our settings.
+Here is an example on how to create a macro on an android phone to turn on your heating: <a href="http://users.telenet.be/goosst/posts/hass_tor_macro/">link</a>.</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Setup debian system</title>
+			<link>http://users.telenet.be/goosst/posts/hass_laptop/</link>
+			<pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
+			
+			<guid>http://users.telenet.be/goosst/posts/hass_laptop/</guid>
+			<description>Intro This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
+It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor. The same method has worked on other debian based systems (tested on armbian running on a singleboard computer). It is assumed the debian based distro is based on debian Buster.</description>
+			<content type="html"><![CDATA[
+
+<aside>
+    
+</aside>
+
+<h1 id="intro">Intro</h1>
+
+<p>This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.</p>
+
+<p>It starts with a fresh install of the debian based <a href="https://www.crunchbangplusplus.org/">crunchbangplusplus</a>, here installed on an (old) laptop with i386 processor.
+The same method has worked on other debian based systems (tested on armbian running on a singleboard computer).
+It is assumed the debian based distro is based on debian Buster.
 Quite some additional python and other packages are specific for my installation, they can be left out to suit your needs.</p>
+
+<h1 id="remote-access">Remote access</h1>
+
+<p>To make life easy and not be close to your machine running home assistant:</p>
+
+<ul>
+<li>ssh into the remote machine</li>
+<li><code>sudo apt-get install tmux</code></li>
+<li>start tmux by typing tmux</li>
+<li>execute your commands in the started tmux session</li>
+<li>leave/detach the tmux session by typing Ctrl+b and then d</li>
+<li>If you connect again after being disconnected, type <code>tmux attach</code></li>
+</ul>
 
 <h1 id="install-home-assistant">Install home assistant</h1>
 
@@ -40,7 +417,7 @@ Add a line to your /etc/apt/sources.list: <code>deb http://ftp.de.debian.org/deb
 
 <pre><code>sudo apt-get update
 sudo apt-get upgrade
-sudo apt-get install python3 python3-dev python3-venv python3-pip libffi-dev libssl-dev
+sudo apt-get install python3 python3-dev python3-venv python3-pip libffi-dev libssl-dev build-essential
 sudo useradd -rm homeassistant
 cd /srv
 sudo mkdir homeassistant
@@ -74,9 +451,15 @@ exit
 
 <h1 id="install-ebusd">Install ebusd</h1>
 
+<p>select the correct computer-architecture:</p>
+
 <pre><code> wget -O - https://raw.githubusercontent.com/john30/ebusd-debian/master/ebusd.gpg.key|sudo apt-key add -
  dpkg --print-architecture
  sudo wget -O /etc/apt/sources.list.d/ebusd.list https://raw.githubusercontent.com/john30/ebusd-debian/master/ebusd-i386-nomqtt.list
+</code></pre>
+
+<pre><code>sudo apt-get update
+sudo apt-get install ebusd
 </code></pre>
 
 <p>check status and let it start at boot</p>
@@ -101,7 +484,7 @@ hass
 </code></pre>
 
 <p>Check if any error messages pop up in the command window. If so, try to resolve them.
-surf to your ip address</p>
+Brows to <a href="http://ip_address:8123">http://ip_address:8123</a>, to see if you can access. Setup an account.</p>
 
 <h2 id="folder-settings">Folder settings</h2>
 
@@ -120,13 +503,15 @@ sudo chmod -R 777 /home/homeassistant/.homeassistant/
 <h1 id="static-ip-address">Static IP address</h1>
 
 <p>Let the laptop bootup with a fixed ip address:
-run <code>sudo nmtui</code>, change the following (to have a fixed address: 192.168.0.205)
+run <code>sudo nmtui</code>, change the following in <code>edit connection</code> (to have a fixed address: 192.168.0.205)
 <figure>
     <img src="/goosst/pictures/nmtui.png" width="550"/> <figcaption>
             <h4>network settings</h4>
         </figcaption>
 </figure>
 </p>
+
+<p>Most likely requires a reboot (and access to a display instead of ssh).</p>
 
 <h1 id="result">Result</h1>
 
@@ -742,7 +1127,7 @@ The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standp
 
 <ul>
 <li>The sonoff devices will be flashed with the custom Tasmota firmware (cfr. the very complete documentation at <a href="https://github.com/arendst/Sonoff-Tasmota">https://github.com/arendst/Sonoff-Tasmota</a>).</li>
-<li>There are enough sites out there explaining the flashing procedure. I flash through the FTDI device below (can handle 3.3 and 5V based devices): <a target='_blank' href='https://www.banggood.com/FT232RL-FTDI-USB-To-TTL-Serial-Converter-Adapter-Module-For-Arduino-p-917226.html?p=ET150713234951201708&custlinkid=257737'><img src='https://img.staticbg.com/images/oaupload/banggood/images/4A/1F/72fb76d9-d3ad-45a4-9323-e9924a3d7805.jpg' alt='' width="150"></a>
+<li>There are enough sites out there explaining the flashing procedure (<a href="https://github.com/arendst/Tasmota/wiki/Sonoff-S26-Smart-Socket">https://github.com/arendst/Tasmota/wiki/Sonoff-S26-Smart-Socket</a> as starting point). I flash through the FTDI device below (can handle 3.3 and 5V based devices): <a target='_blank' href='https://www.banggood.com/FT232RL-FTDI-USB-To-TTL-Serial-Converter-Adapter-Module-For-Arduino-p-917226.html?p=ET150713234951201708&custlinkid=257737'><img src='https://img.staticbg.com/images/oaupload/banggood/images/4A/1F/72fb76d9-d3ad-45a4-9323-e9924a3d7805.jpg' alt='' width="150"></a>
 </li>
 <li>Once this is done, MQTT messages will be used to control and report the status through the interface of Home Assistant</li>
 </ul>
@@ -978,7 +1363,7 @@ data:
 			
 			<guid>http://users.telenet.be/goosst/posts/homeautomation_partiii/</guid>
 			<description>Intro In this part we&amp;rsquo;ll read parameters from our heater through the interface of Home Assistant and plot them in the UI.
-Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.
+Concept We&amp;rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant. This sending of messages will be done in a python script.
 Again: in this way we can focus on making all the ebus related items running in python and we don&amp;rsquo;t have to deal with a custom Home Assistant syntax.</description>
 			<content type="html"><![CDATA[
 
@@ -992,7 +1377,7 @@ Again: in this way we can focus on making all the ebus related items running in 
 
 <h1 id="concept">Concept</h1>
 
-<p>We&rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant (both running on the same raspberry). This sending of messages will be done in a python script.</p>
+<p>We&rsquo;ll be (mis)using the mqtt protocol to send messages from the ebusd program to Home Assistant. This sending of messages will be done in a python script.</p>
 
 <p>Again: in this way we can focus on making all the ebus related items running in python and we don&rsquo;t have to deal with a custom Home Assistant syntax. I personally prefer spending time learning python over learning a custom program specific language/syntax.</p>
 
@@ -1188,8 +1573,7 @@ views:
 			
 			<guid>http://users.telenet.be/goosst/posts/homeautomation_partii/</guid>
 			<description>Intro In this part we&amp;rsquo;ll:
- install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, not confusing at all :). I&amp;rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&amp;rsquo;m not familiar with docker (hass.io) and its limitations.
- Follow the Hassbian installation instructions: https://www.</description>
+ preparing the host which will run Home Assistant set our requested room temperature through the interface of Home Assistant.  Preparing the host There is hassbian, hass.io, homme-assistant itself, &amp;hellip; as you see, not confusing at all :). I&amp;rsquo;m using a regular debian based system since at least I know ebusd works in a debian environment. I&amp;rsquo;m not familiar with docker (hass.</description>
 			<content type="html"><![CDATA[
 
 <aside>
@@ -1201,27 +1585,15 @@ views:
 <p>In this part we&rsquo;ll:</p>
 
 <ul>
-<li>install hassbian</li>
+<li>preparing the host which will run Home Assistant</li>
 <li>set our requested room temperature through the interface of Home Assistant.</li>
 </ul>
 
-<h1 id="preparing-the-raspberry-pi">Preparing the Raspberry pi</h1>
+<h1 id="preparing-the-host">Preparing the host</h1>
 
-<p>There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.</p>
+<p>There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :). I&rsquo;m using a regular debian based system since at least I know ebusd works in a debian environment. I&rsquo;m not familiar with docker (hass.io) and its limitations.</p>
 
-<ul>
-<li>Follow the Hassbian installation instructions: <a href="https://www.home-assistant.io/docs/installation/hassbian/installation/">https://www.home-assistant.io/docs/installation/hassbian/installation/</a></li>
-<li>find your ip-address and have ssh enabled (plenty of sites which explain this)</li>
-
-<li><p>Additional installations beside the normal updating, upgrading, setting the time-zone:</p>
-
-<pre><code>sudo apt-get install net-tools nmap
-sudo hassbian-config install mosquitto
-sudo hassbian-config install samba
-</code></pre></li>
-</ul>
-
-<p>An overview of other helper scripts can be found at: <a href="https://github.com/home-assistant/hassbian-scripts">https://github.com/home-assistant/hassbian-scripts</a></p>
+<p>A detailed description to setup your host can be found <a href="/goosst/posts/hass_laptop/">here</a>.</p>
 
 <h1 id="initial-temperature-test-using-home-assistant">Initial temperature test using Home Assistant</h1>
 
@@ -1493,234 +1865,6 @@ with ILock('ebus', timeout=200):
 	else:
 	    print(&quot;setting correct&quot;)
 </code></pre>
-
-<!-- <div align=center>
-<SCRIPT charset="utf-8" type="text/javascript" src="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218&Operation=NoScript">Amazon.de Widgets</A></NOSCRIPT>
-</div>
- -->
-]]></content>
-		</item>
-		
-		<item>
-			<title>Heating automation - setup hardware and ebus</title>
-			<link>http://users.telenet.be/goosst/posts/homeautomation_parti/</link>
-			<pubDate>Fri, 19 Apr 2019 00:00:00 +0000</pubDate>
-			
-			<guid>http://users.telenet.be/goosst/posts/homeautomation_parti/</guid>
-			<description>Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
-Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&amp;rsquo;m not going to write down all the details, since I can just refer to them:</description>
-			<content type="html"><![CDATA[
-
-<aside>
-    
-</aside>
-
-<h1 id="intro">Intro</h1>
-
-<p>In this part we&rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).</p>
-
-<h1 id="hardware">Hardware</h1>
-
-<h2 id="ebus-adapter">Ebus adapter</h2>
-
-<p>We need an ebus adapter for the raspberry to interface with our heater. I&rsquo;m not going to write down all the details, since I can just refer to them:</p>
-
-<ul>
-<li>Start reading here for more background: <a href="https://ebus.github.io/adapter/index.en.html">https://ebus.github.io/adapter/index.en.html</a></li>
-<li>I&rsquo;m using the base board version 2.2, there might be better options to use directly with a raspberry pi. But when I ordered, it looked like the most flexible solution.</li>
-<li>Adapter was ordered on the fhem forum. They will send you a pcb with a set of components, you have to solder yourself (or pay a bit extra): <a href="https://forum.fhem.de/index.php/topic,93190.msg857894.html#msg857894">https://forum.fhem.de/index.php/topic,93190.msg857894.html#msg857894</a>. If you&rsquo;ve read the first link you will also know there are commercial options in case you don&rsquo;t want this.</li>
-<li>Put it in a box so there is no chance on touching electrical connections etc. .
-
-<ul>
-<li>You could consider placing the adapter inside the heater (plenty of space), I just didn&rsquo;t want to put custom electronics inside &hellip; .</li>
-</ul></li>
-</ul>
-
-<figure>
-    <img src="/goosst/pictures/ebus_adapter.jpg" width="250"/> <figcaption>
-            <h4>ebus adapter v2.2</h4>
-        </figcaption>
-</figure>
-
-
-<h2 id="raspberry-pi">Raspberry pi</h2>
-
-<p>Please use a decent <a href="https://www.banggood.com/DC-5V-3_0A-EU-Power-Supply-Micro-USB-Adapter-Charger-For-Raspberry-Pi-3-Model-B-p-1079928.html?p=ET150713234951201708&amp;custlinkid=664887">power supply with at least 2/3A</a> (it causes a lot of strange problems) and 32Gb size SD card (recommended by Home Assistant).</p>
-
-<h2 id="my-setup">My setup</h2>
-
-<figure>
-    <img src="/goosst/pictures/IMG_20190420_092754.jpg" width="350"/> <figcaption>
-            <h4>Raspberry pi and ebus adapter mounted on heater</h4>
-        </figcaption>
-</figure>
-
-
-<ul>
-<li>Pi and ebus-adapter are mounted against the heater by using velco strips</li>
-<li>A case, specific for the raspberry pi is used</li>
-<li>The white and purple wire are the ebus, they are connected inside the heater (ebus protocol has no polarity, so you can swap the wires)</li>
-<li>ebus-adapter is connected through usb with the raspberry pi</li>
-</ul>
-
-<h1 id="software">Software</h1>
-
-<h2 id="preparing-the-raspberry-pi">Preparing the Raspberry pi</h2>
-
-<p>If you have a pi with raspbian already on it, you can jump to next section and install hassbian later. If you have a new sd card, just set it right from the first time.</p>
-
-<p>We&rsquo;ll be using Home Assistant for our interface and home automation.
-I chose Home Assistant because it&rsquo;s fully python based. I prefer to learn python over learning Java, Perl, &hellip; which is used by the alternative open source domotica programs.</p>
-
-<h3 id="hassbian">Hassbian</h3>
-
-<p>To use Home Assistant, there is hassbian, hass.io, home-assistant itself, &hellip; as you see, it&rsquo;s not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. (<a href="https://www.home-assistant.io/docs/installation/hassbian/installation/">https://www.home-assistant.io/docs/installation/hassbian/installation/</a>)</p>
-
-<p>Additional installations beside the normal updating and upgrading:</p>
-
-<pre><code>sudo apt-get install net-tools nmap
-sudo hassbian-config install mosquitto
-sudo hassbian-config install samba
-</code></pre>
-
-<h3 id="static-ip-address">Static IP address</h3>
-
-<p>Since we will be sending quite some messages from other devices through MQTT, a static IP address is rather convenient. I&rsquo;ve followed the steps from this link (my routher doesn&rsquo;t support fancy things)    :
-<a href="https://raspberrypi.stackexchange.com/questions/37920/how-do-i-set-up-networking-wifi-static-ip-address/74428#74428">https://raspberrypi.stackexchange.com/questions/37920/how-do-i-set-up-networking-wifi-static-ip-address/74428#74428</a></p>
-
-<h2 id="install-and-use-ebusd">install and use ebusd</h2>
-
-<p>Ebusd is an awesome tool, it&rsquo;s a challenge however to find out how to efficiently use it :).</p>
-
-<ul>
-<li>Go to your raspberry pi by ssh&rsquo;ing to it</li>
-<li>Follow these instructions: <a href="https://github.com/john30/ebusd-debian/blob/master/README.md">https://github.com/john30/ebusd-debian/blob/master/README.md</a></li>
-<li>I&rsquo;ve had some weird issues that magically got resolved, I still think it&rsquo;s linked to a strange power supply : <a href="https://github.com/john30/ebusd/issues/276">https://github.com/john30/ebusd/issues/276</a></li>
-
-<li><p>Check on the raspberry with the command: <code>dmesg | grep cp210</code> if the adpater is added to ttUSB0 (only relevant if you&rsquo;re using cp210 as uart device of course: <a target='_blank' href='https://www.banggood.com/CJMCU-CP2102-USB-To-TTLSerial-Module-UART-STC-Downloader-p-970993.html?p=ET150713234951201708&custlinkid=261938' title='' >CP2102 USB To TTL/Serial Module</a>)
-output should look something like this:</p>
-
-<pre><code>pi@raspberrypi:/ $ dmesg | grep cp210
-[    3.826051] usbcore: registered new interface driver cp210x
-[    3.826168] usbserial: USB Serial support registered for cp210x
-[    3.834271] cp210x 1-1.3:1.0: cp210x converter detected
-[    3.856013] usb 1-1.3: cp210x converter now attached to ttyUSB0
-
-</code></pre></li>
-
-<li><p>The magic ebusd command is: <code>ebusd -f --scanconfig</code>, ebusd should find your connected devices (a wireless thermostat and a vaillant heater in my case), output looks something like the one below. If you don&rsquo;t see any read messages something is wrong and you need to start debugging.</p>
-
-<pre><code>pi@raspberrypi:/ $ ebusd -f --scanconfig
-2019-03-31 13:30:47.528 [main notice] ebusd 3.3.v3.3 started with auto scan
-2019-03-31 13:30:47.875 [bus notice] bus started with own address 31/36
-2019-03-31 13:30:47.897 [bus notice] signal acquired
-2019-03-31 13:30:48.146 [bus notice] new master 03, master count 2
-2019-03-31 13:30:53.347 [bus notice] new master 10, master count 3
-2019-03-31 13:30:53.410 [update notice] received unknown MS cmd: 1008b5110101 / 093d3c008033390000ff
-2019-03-31 13:30:54.523 [update notice] received unknown MS cmd: 1008b5040100 / 0a00ffffffffffffff0080
-2019-03-31 13:30:55.347 [update notice] received unknown BC cmd: 10feb51603010000
-2019-03-31 13:30:57.436 [update notice] received unknown MS cmd: 1008b51009000000ffffff45ff00 / 0101
-2019-03-31 13:30:58.038 [bus notice] scan 08: ;Vaillant;BAI00;0202;9602
-2019-03-31 13:30:58.039 [update notice] store 08 ident: done
-2019-03-31 13:30:58.039 [update notice] sent scan-read scan.08  QQ=31: Vaillant;BAI00;0202;9602
-2019-03-31 13:30:58.039 [bus notice] scan 08: ;Vaillant;BAI00;0202;9602
-2019-03-31 13:30:58.565 [main notice] read common config file vaillant/scan.csv
-2019-03-31 13:30:58.780 [main notice] read common config file vaillant/general.csv
-2019-03-31 13:30:58.918 [main notice] read common config file vaillant/broadcast.csv
-2019-03-31 13:30:59.001 [main notice] read scan config file vaillant/08.bai.csv for ID &quot;bai00&quot;, SW0202, HW9602
-2019-03-31 13:30:59.576 [update notice] sent scan-read scan.08 id QQ=31:
-2019-03-31 13:30:59.756 [update notice] sent scan-read scan.08 id QQ=31:
-2019-03-31 13:30:59.936 [update notice] sent scan-read scan.08 id QQ=31:
-2019-03-31 13:31:00.117 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
-2019-03-31 13:31:00.478 [main notice] found messages: 198 (2 conditional on 24 conditions, 0 poll, 9 update)
-2019-03-31 13:31:00.645 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
-2019-03-31 13:31:00.827 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
-2019-03-31 13:31:01.010 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
-2019-03-31 13:31:01.189 [update notice] sent scan-read scan.08 id QQ=31: 21;17;09;0010011632;1300;378112;N5
-2019-03-31 13:31:01.190 [bus notice] scan 08: ;21;17;09;0010011632;1300;378112;N5
-2019-03-31 13:31:03.350 [bus notice] scan 15: ;Vaillant;F3700;0114;6102
-2019-03-31 13:31:03.350 [update notice] store 15 ident: done
-2019-03-31 13:31:03.350 [update notice] sent scan-read scan.15  QQ=31: Vaillant;F3700;0114;6102
-2019-03-31 13:31:03.350 [bus notice] scan 15: ;Vaillant;F3700;0114;6102
-2019-03-31 13:31:03.581 [update notice] sent unknown MS cmd: 3115b5090124 / 09013231313732323030
-2019-03-31 13:31:03.761 [update notice] sent scan-read scan.15 id QQ=31:
-2019-03-31 13:31:03.941 [update notice] sent scan-read scan.15 id QQ=31:
-2019-03-31 13:31:04.002 [bus notice] max. symbols per second: 114
-2019-03-31 13:31:04.120 [update notice] sent scan-read scan.15 id QQ=31: 21;17;22;0020108149;0082;006391;N9
-2019-03-31 13:31:04.120 [bus notice] scan 15: ;21;17;22;0020108149;0082;006391;N9
-2019-03-31 13:31:04.518 [main notice] read scan config file vaillant/15.f37.csv for ID &quot;f3700&quot;, SW0114, HW6102
-2019-03-31 13:31:04.858 [main notice] found messages: 345 (2 conditional on 24 conditions, 0 poll, 9 update)
-2019-03-31 13:31:05.428 [update notice] received read bai Status02 QQ=10: on;60;75.0;70;65.0
-2019-03-31 13:31:07.472 [update notice] received update-write bai SetMode QQ=10: auto;0.0;-;-;1;0;1;0;0;0
-2019-03-31 13:31:13.444 [update notice] received read bai Status01 QQ=10: 30.5;30.0;-;25.5;28.5;off
-2019-03-31 13:31:17.474 [update notice] received update-write bai SetMode QQ=10: auto;0.0;-;-;1;0;1;0;0;0
-</code></pre></li>
-
-<li><p>Make sure ebusd starts up when the raspberry boots: <a href="https://github.com/john30/ebusd/wiki/2.-Run">https://github.com/john30/ebusd/wiki/2.-Run</a></p></li>
-
-<li><p>In parallel commands with ebusctl can be queried</p>
-
-<pre><code>pi@raspberrypi:~ $ ebusctl info
-version: ebusd 3.3.v3.3
-signal: acquired
-symbol rate: 23
-max symbol rate: 114
-min arbitration micros: 3217
-max arbitration micros: 3341
-min symbol latency: 4
-max symbol latency: 5
-reconnects: 0
-masters: 3
-messages: 345
-conditional: 2
-poll: 0
-update: 9
-address 03: master #11
-address 08: slave #11, scanned &quot;MF=Vaillant;ID=BAI00;SW=0202;HW=9602&quot;, loaded &quot;vaillant/bai.0010015600.inc&quot; ([HW=9602]), &quot;vaillant/08.bai.csv&quot;
-address 10: master #2
-address 15: slave #2, scanned &quot;MF=Vaillant;ID=F3700;SW=0114;HW=6102&quot;, loaded &quot;vaillant/15.f37.csv&quot;
-address 31: master #8, ebusd
-address 36: slave #8, ebusd
-</code></pre>
-
-<p>In this output you can find back the names f37 and bai, the devicenames needed for further usage in ebusd.</p></li>
-
-<li><p>You have to look up the mentioned csv files (e.g. 15.f37.csv) to see which parameters are available, which parameters have read permission &reg;, which have write permissions (w), &hellip; . The configuration files are stored on another github site from john30:  <a href="https://github.com/john30/ebusd-configuration/tree/master/ebusd-2.1.x/en/vaillant">https://github.com/john30/ebusd-configuration/tree/master/ebusd-2.1.x/en/vaillant</a></p></li>
-
-<li><p>Once ebus is running open a second terminal on the pi and read and write all the things you want to do:</p>
-
-<ul>
-<li><p>Read example, here we read the time reported by the thermostat:</p>
-
-<pre><code>ebusctl read Time
-14:30:30
-</code></pre></li>
-
-<li><p>Write example, writing the time to the thermostat:</p>
-
-<pre><code>pi@raspberrypi:~ $ ebusctl write -c f37 Time 14:00:00
-done
-
-pi@raspberrypi:~ $ ebusctl read Time
-14:00:02
-</code></pre></li>
-
-<li><p>play around with other relevant parameters from the .csv sheet:</p></li>
-
-<li><p><code>ebusctl read Hc1DayTemp</code>, read and write your temperature setpoint during day time</p></li>
-
-<li><p><code>ebusctl read Hc1NightTemp</code>, read and write your temperature setpoint during night time</p></li>
-
-<li><p><code>ebusctl read RoomTemp</code>, read the temperature measured by the thermostat</p></li>
-
-<li><p>and a whole bunch of others &hellip;</p></li>
-</ul></li>
-</ul>
-
-<!-- <div align=center>
-<SCRIPT charset="utf-8" type="text/javascript" src="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218&Operation=NoScript">Amazon.de Widgets</A></NOSCRIPT>
-</div>
- -->
 ]]></content>
 		</item>
 		
@@ -1758,7 +1902,7 @@ Disregarding privacy concerns, commercial solutions like Google Nest only seem t
 <p>We&rsquo;ll be using the following hardware and software:</p>
 
 <ol>
-<li><a href="https://www.banggood.com/Raspberry-Pi-3-Model-B-Plus-Mother-Board-Mainboard-With-BCM2837B0-Cortex-A53-ARMv8-1_4GHz-CPU-D-p-1278398.html?p=ET150713234951201708&amp;custlinkid=664885">Raspberry pi 3b</a></li>
+<li>A debian based system (laptop, tinkerboard, <a href="https://www.banggood.com/Raspberry-Pi-3-Model-B-Plus-Mother-Board-Mainboard-With-BCM2837B0-Cortex-A53-ARMv8-1_4GHz-CPU-D-p-1278398.html?p=ET150713234951201708&amp;custlinkid=664885">Raspberry pi 3b</a>, &hellip;)</li>
 <li>ebus adapter: <a href="https://ebus.github.io/adapter/index.en.html">https://ebus.github.io/adapter/index.en.html</a></li>
 <li>ebusd software: <a href="https://github.com/john30/ebusd">https://github.com/john30/ebusd</a></li>
 <li>Home Assistant: <a href="https://www.home-assistant.io/">https://www.home-assistant.io/</a></li>
@@ -1791,6 +1935,14 @@ Disregarding privacy concerns, commercial solutions like Google Nest only seem t
         </figcaption>
 </figure>
 </p>
+
+<h1 id="getting-started">Getting started</h1>
+
+<ul>
+<li><a href="/goosst/posts/homeautomation_wemos_ebus/">Hardware and communication to heater</a></li>
+<li><a href="/goosst/posts/homeautomation_partii/">Set temperatures through Home Assistant</a></li>
+<li><a href="/goosst/posts/homeautomation_partiii/">Reading additional information through Home Assistant</a></li>
+</ul>
 ]]></content>
 		</item>
 		

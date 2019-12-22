@@ -7,19 +7,49 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 02 Nov 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Sun, 22 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="http://users.telenet.be/goosst/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
-      <title>Heating automation - laptop</title>
+      <title>Heating control from Android</title>
+      <link>http://users.telenet.be/goosst/posts/hass_tor_macro/</link>
+      <pubDate>Sun, 22 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/hass_tor_macro/</guid>
+      <description>Intro This is the continuation of HomeAssistant Tor. Here we&amp;rsquo;ll create a macro to automatically turn our heating on/off from an Android phone. The end result is something which only requires two / three pushes on a button on your android phone to turn on my heating. It works when being connected to a mobile network as well as a wifi network.
+Method and tools  Macrodroid: Android app used for creating the macro.</description>
+    </item>
+    
+    <item>
+      <title>Heating automation - setup hardware and ebus</title>
+      <link>http://users.telenet.be/goosst/posts/homeautomation_wemos_ebus/</link>
+      <pubDate>Sat, 21 Dec 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/homeautomation_wemos_ebus/</guid>
+      <description>Intro In this part we&amp;rsquo;ll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
+Hardware Ebus adapter We need an ebus adapter for the raspberry to interface with our heater. I&amp;rsquo;m not going to write down all the details, since I can just refer to them:</description>
+    </item>
+    
+    <item>
+      <title>Remote access home assistant</title>
+      <link>http://users.telenet.be/goosst/posts/hass_tor/</link>
+      <pubDate>Sun, 10 Nov 2019 00:00:00 +0000</pubDate>
+      
+      <guid>http://users.telenet.be/goosst/posts/hass_tor/</guid>
+      <description>Intro Don&amp;rsquo;t we all want to monitor our home remotely (i.e. when not connected to our local network), turn on the heating on or off if we change our plans, check if everything is going well with our created home automation, etc. Of course we want to do this in a secure way that has limited chance of being hacked.
+In this section we&amp;rsquo;ll use tor to access home assistant remotely and connect to it from our mobile phone (through mobile internet).</description>
+    </item>
+    
+    <item>
+      <title>Setup debian system</title>
       <link>http://users.telenet.be/goosst/posts/hass_laptop/</link>
       <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/hass_laptop/</guid>
-      <description>Intro My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&amp;rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&amp;hellip; .
-This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd. It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor.</description>
+      <description>Intro This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
+It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor. The same method has worked on other debian based systems (tested on armbian running on a singleboard computer). It is assumed the debian based distro is based on debian Buster.</description>
     </item>
     
     <item>
@@ -81,41 +111,8 @@ Different steps   Sequence to get home assistant content on e-paper    Relevant 
       <pubDate>Wed, 31 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/about-hugo/</guid>
-      <description>Mainly serves as my own documentation to be able to replicate my setups. Hopefully it helps others as well.
-Learn more and contribute on GitHub.</description>
-    </item>
-    
-    <item>
-      <title>Heating automation - alarm</title>
-      <link>http://users.telenet.be/goosst/posts/homeautomation_alarm/</link>
-      <pubDate>Fri, 10 May 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://users.telenet.be/goosst/posts/homeautomation_alarm/</guid>
-      <description>HAHAHUGOSHORTCODE-TOC0-HBHB  Intro I&amp;rsquo;ve let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
-We&amp;rsquo;ll use MQTT to send status of alarm to Home Assistant.
-Troubleshooting The connection of a Wemos D1 with Arduino IDE seems to be junk (the arduino IDE part). We need to use esptool instead pip3 install esptool.</description>
-    </item>
-    
-    <item>
-      <title>Heating automation - electric heater</title>
-      <link>http://users.telenet.be/goosst/posts/homeautomation_el_heater/</link>
-      <pubDate>Sat, 27 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://users.telenet.be/goosst/posts/homeautomation_el_heater/</guid>
-      <description>Intro We&amp;rsquo;ll be using one of the sonoff devices to turn on/off a wall-plugged electric heater. These devices are pretty cheap but since we&amp;rsquo;ll be hacking into them, use at your own risk.
-The sonoff S20 is more hackerfriendly compared to the S26 (from soldering standpoint). But once it&amp;rsquo;s done, the S26 is more compact and looks slick :). I&amp;rsquo;ve used both in the meantime (and I&amp;rsquo;m not a soldering guru by far).</description>
-    </item>
-    
-    <item>
-      <title>Heating automation - device tracking</title>
-      <link>http://users.telenet.be/goosst/posts/homeautomation_partiiii/</link>
-      <pubDate>Mon, 22 Apr 2019 00:00:00 +0000</pubDate>
-      
-      <guid>http://users.telenet.be/goosst/posts/homeautomation_partiiii/</guid>
-      <description>Intro In this part we&amp;rsquo;ll turn our heating off and on when we leave the house (by detecting presence of our mobile phone).
-Concept We&amp;rsquo;ll be checking if the mac-address of our phone is on the wifi network. Based on this we&amp;rsquo;ll do a simple scheduling of our heating.
-Home assistant No python scripts this time, only activity is done in Home Assistant.
-Device tracking Example below will use the component device_tracker and the nmap program to scan the network.</description>
+      <description>Mainly serves as my own documentation, to be able to replicate the setups I create. Hopefully this helps others as well.
+Code is typically available on GitHub.</description>
     </item>
     
   </channel>

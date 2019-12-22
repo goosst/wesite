@@ -13,13 +13,13 @@
     
     
     <item>
-      <title>Heating automation - laptop</title>
+      <title>Setup debian system</title>
       <link>http://users.telenet.be/goosst/posts/hass_laptop/</link>
       <pubDate>Sat, 02 Nov 2019 00:00:00 +0000</pubDate>
       
       <guid>http://users.telenet.be/goosst/posts/hass_laptop/</guid>
-      <description>Intro My singleboard computers (Raspberry 3b, tinkerboard) in combination with the ebus adapter didn&amp;rsquo;t turn out to be very reliable. I was not able to pinpoint the exact root cause (most likely some power/voltage related issues). But on my laptop everything seems to work quite stable&amp;hellip; .
-This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd. It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor.</description>
+      <description>Intro This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
+It starts with a fresh install of the debian based crunchbangplusplus, here installed on an (old) laptop with i386 processor. The same method has worked on other debian based systems (tested on armbian running on a singleboard computer). It is assumed the debian based distro is based on debian Buster.</description>
     </item>
     
   </channel>

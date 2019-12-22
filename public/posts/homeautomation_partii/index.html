@@ -8,28 +8,28 @@
 	<meta name="theme-color" content="#494f5c">
 	<meta name="msapplication-TileColor" content="#494f5c">
 <meta itemprop="name" content="Heating automation - set temperatures">
-<meta itemprop="description" content="Intro Preparing the Raspberry pi Initial temperature test using Home Assistant  Concept python scripts Home Assistant services  Clean up method  Adapt python scripts User interface Mutual exclusion     Intro In this part we&rsquo;ll:
- install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :).">
+<meta itemprop="description" content="Intro Preparing the host Initial temperature test using Home Assistant  Concept python scripts Home Assistant services  Clean up method  Adapt python scripts User interface Mutual exclusion     Intro In this part we&rsquo;ll:
+ preparing the host which will run Home Assistant set our requested room temperature through the interface of Home Assistant.  Preparing the host There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :).">
 
 
 <meta itemprop="datePublished" content="2019-04-20T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2019-04-20T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1170">
+<meta itemprop="wordCount" content="1129">
 
 
 
 <meta itemprop="keywords" content="vaillant,ecotec plus,ebus,home assistant,raspberry pi," />
 <meta property="og:title" content="Heating automation - set temperatures" />
-<meta property="og:description" content="Intro Preparing the Raspberry pi Initial temperature test using Home Assistant  Concept python scripts Home Assistant services  Clean up method  Adapt python scripts User interface Mutual exclusion     Intro In this part we&rsquo;ll:
- install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :)." />
+<meta property="og:description" content="Intro Preparing the host Initial temperature test using Home Assistant  Concept python scripts Home Assistant services  Clean up method  Adapt python scripts User interface Mutual exclusion     Intro In this part we&rsquo;ll:
+ preparing the host which will run Home Assistant set our requested room temperature through the interface of Home Assistant.  Preparing the host There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :)." />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="http://users.telenet.be/goosst/posts/homeautomation_partii/" />
 <meta property="article:published_time" content="2019-04-20T00:00:00+00:00" />
 <meta property="article:modified_time" content="2019-04-20T00:00:00+00:00" />
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Heating automation - set temperatures"/>
-<meta name="twitter:description" content="Intro Preparing the Raspberry pi Initial temperature test using Home Assistant  Concept python scripts Home Assistant services  Clean up method  Adapt python scripts User interface Mutual exclusion     Intro In this part we&rsquo;ll:
- install hassbian set our requested room temperature through the interface of Home Assistant.  Preparing the Raspberry pi There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :)."/>
+<meta name="twitter:description" content="Intro Preparing the host Initial temperature test using Home Assistant  Concept python scripts Home Assistant services  Clean up method  Adapt python scripts User interface Mutual exclusion     Intro In this part we&rsquo;ll:
+ preparing the host which will run Home Assistant set our requested room temperature through the interface of Home Assistant.  Preparing the host There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :)."/>
 
 	<link rel="apple-touch-icon" sizes="180x180" href="/goosst/apple-touch-icon.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="/goosst/favicon-32x32.png">
@@ -84,7 +84,7 @@
     <nav id="TableOfContents">
 <ul>
 <li><a href="#intro">Intro</a></li>
-<li><a href="#preparing-the-raspberry-pi">Preparing the Raspberry pi</a></li>
+<li><a href="#preparing-the-host">Preparing the host</a></li>
 <li><a href="#initial-temperature-test-using-home-assistant">Initial temperature test using Home Assistant</a>
 <ul>
 <li><a href="#concept">Concept</a></li>
@@ -106,27 +106,15 @@
 <p>In this part we&rsquo;ll:</p>
 
 <ul>
-<li>install hassbian</li>
+<li>preparing the host which will run Home Assistant</li>
 <li>set our requested room temperature through the interface of Home Assistant.</li>
 </ul>
 
-<h1 id="preparing-the-raspberry-pi">Preparing the Raspberry pi<a href="#preparing-the-raspberry-pi" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
+<h1 id="preparing-the-host">Preparing the host<a href="#preparing-the-host" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
-<p>There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :). I&rsquo;m using hassbian since at least I know ebusd works in a debian environment on the raspberry pi. I&rsquo;m not familiar with docker (hass.io) and its limitations.</p>
+<p>There is hassbian, hass.io, homme-assistant itself, &hellip; as you see, not confusing at all :). I&rsquo;m using a regular debian based system since at least I know ebusd works in a debian environment. I&rsquo;m not familiar with docker (hass.io) and its limitations.</p>
 
-<ul>
-<li>Follow the Hassbian installation instructions: <a href="https://www.home-assistant.io/docs/installation/hassbian/installation/">https://www.home-assistant.io/docs/installation/hassbian/installation/</a></li>
-<li>find your ip-address and have ssh enabled (plenty of sites which explain this)</li>
-
-<li><p>Additional installations beside the normal updating, upgrading, setting the time-zone:</p>
-
-<pre><code>sudo apt-get install net-tools nmap
-sudo hassbian-config install mosquitto
-sudo hassbian-config install samba
-</code></pre></li>
-</ul>
-
-<p>An overview of other helper scripts can be found at: <a href="https://github.com/home-assistant/hassbian-scripts">https://github.com/home-assistant/hassbian-scripts</a></p>
+<p>A detailed description to setup your host can be found <a href="/goosst/posts/hass_laptop/">here</a>.</p>
 
 <h1 id="initial-temperature-test-using-home-assistant">Initial temperature test using Home Assistant<a href="#initial-temperature-test-using-home-assistant" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h1>
 
@@ -399,18 +387,13 @@ with ILock('ebus', timeout=200):
 	    print(&quot;setting correct&quot;)
 </code></pre>
 
-<!-- <div align=center>
-<SCRIPT charset="utf-8" type="text/javascript" src="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218"> </SCRIPT> <NOSCRIPT><A rel="nofollow" HREF="//ws-eu.amazon-adsystem.com/widgets/q?rt=tf_mfw&ServiceVersion=20070822&MarketPlace=DE&ID=V20070822%2FDE%2Fgoosst-21%2F8001%2F33cbbdfe-5f25-411e-af19-105529c55218&Operation=NoScript">Amazon.de Widgets</A></NOSCRIPT>
-</div>
- -->
-
 			</div>
 			<hr class="post-end">
 			<footer class="post-info">
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="http://users.telenet.be/goosst/tags/vaillant">vaillant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ecotec-plus">ecotec plus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/ebus">ebus</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/home-assistant">home assistant</a></span><span class="tag"><a href="http://users.telenet.be/goosst/tags/raspberry-pi">raspberry pi</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1170 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1129 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2019-04-20 02:00 &#43;0200</p>
 			</footer>
 		</article>
@@ -418,8 +401,8 @@ with ILock('ebus', timeout=200):
 			<a class="next-post" href="http://users.telenet.be/goosst/posts/homeautomation_partiii/">
 				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Heating automation - read information</span>
 			</a>
-			<a class="prev-post" href="http://users.telenet.be/goosst/posts/homeautomation_parti/">
-				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Heating automation - setup hardware and ebus</span>
+			<a class="prev-post" href="http://users.telenet.be/goosst/posts/homeautomation_intro/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Heating automation - intro</span>
 			</a>
 		</div>
 		<div id="comments" class="thin">

@@ -3,38 +3,118 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://users.telenet.be/goosst/tags/crunchbang-plus-plus/</loc>
-    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
+    <loc>http://users.telenet.be/goosst/tags/armbian/</loc>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/curl/</loc>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://users.telenet.be/goosst/tags/debian/</loc>
-    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://users.telenet.be/goosst/tags/ebus/</loc>
-    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://users.telenet.be/goosst/tags/ebusd/</loc>
-    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://users.telenet.be/goosst/</loc>
-    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>http://users.telenet.be/goosst/posts/hass_laptop/</loc>
-    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
+    <loc>http://users.telenet.be/goosst/posts/hass_tor_macro/</loc>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>http://users.telenet.be/goosst/tags/home-assistant/</loc>
-    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/home-automation/</loc>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/macrodroid/</loc>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/orbot/</loc>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/orfox/</loc>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/posts/</loc>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/rest-api/</loc>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/</loc>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/tor/</loc>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/torrc/</loc>
+    <lastmod>2019-12-22T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/ebus/</loc>
+    <lastmod>2019-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/ebusd/</loc>
+    <lastmod>2019-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/ecotec-plus/</loc>
+    <lastmod>2019-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/posts/homeautomation_wemos_ebus/</loc>
+    <lastmod>2019-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/vaillant/</loc>
+    <lastmod>2019-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/wemos-mini-d1/</loc>
+    <lastmod>2019-12-21T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/tags/crunchbang-plus-plus/</loc>
+    <lastmod>2019-11-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://users.telenet.be/goosst/posts/hass_tor/</loc>
+    <lastmod>2019-11-10T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -43,12 +123,7 @@
   </url>
   
   <url>
-    <loc>http://users.telenet.be/goosst/posts/</loc>
-    <lastmod>2019-11-02T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://users.telenet.be/goosst/tags/</loc>
+    <loc>http://users.telenet.be/goosst/posts/hass_laptop/</loc>
     <lastmod>2019-11-02T00:00:00+00:00</lastmod>
   </url>
   
@@ -138,17 +213,7 @@
   </url>
   
   <url>
-    <loc>http://users.telenet.be/goosst/tags/ecotec-plus/</loc>
-    <lastmod>2019-04-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>http://users.telenet.be/goosst/posts/homeautomation_partiiii/</loc>
-    <lastmod>2019-04-22T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://users.telenet.be/goosst/tags/vaillant/</loc>
     <lastmod>2019-04-22T00:00:00+00:00</lastmod>
   </url>
   
@@ -160,11 +225,6 @@
   <url>
     <loc>http://users.telenet.be/goosst/posts/homeautomation_partii/</loc>
     <lastmod>2019-04-20T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://users.telenet.be/goosst/posts/homeautomation_parti/</loc>
-    <lastmod>2019-04-19T00:00:00+00:00</lastmod>
   </url>
   
   <url>

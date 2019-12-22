@@ -3,6 +3,7 @@ title = "About"
 date = "2019-07-31"
 +++
 
-Mainly serves as my own documentation to be able to replicate my setups. Hopefully it helps others as well.
+Mainly serves as my own documentation, to be able to replicate the setups I create.
+Hopefully this helps others as well.
 
-Learn more and contribute on [GitHub](https://github.com/goosst).
+Code is typically available on [GitHub](https://github.com/goosst).
