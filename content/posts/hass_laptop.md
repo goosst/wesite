@@ -4,6 +4,7 @@ date: 2019-11-02
 title: Setup debian system
 tags:
  - crunchbang plus plus
+ - armbian
  - debian
  - ebusd
  - ebus
@@ -68,10 +69,11 @@ Due to some specific installation issues with the 0.100 version, this one had to
 additional python packages
 
 ```
-sudo apt-get install libfreetype6-dev pkg-config libjpeg-dev imagemagick mosquitto mosquitto-clients
+sudo apt-get install libfreetype6-dev pkg-config libjpeg-dev imagemagick mosquitto mosquitto-clients python3-scipy
+sudo apt-get -y install liblapack-dev libblas-dev gfortran
 sudo -u homeassistant -H -s
 source /srv/homeassistant/bin/activate
-pip3 install ilock requests datetime numpy pytz matplotlib pillow pyunsplash
+pip3 install ilock requests datetime numpy pytz matplotlib pillow pyunsplash scipy
 exit
 ```
 
@@ -114,15 +116,18 @@ Brows to http://ip_address:8123, to see if you can access. Setup an account.
 
 Exit from the virtual environment to set some folder settings.
 I copy my yaml and python files through FileZilla, which requires to change the read/write settings.
-Maybe there are other solutions, but I don't know them.
+Maybe there are other solutions ... .
 
 ```
 sudo mkdir /home/homeassistant/.homeassistant/www
 sudo chmod -R 777 /home/homeassistant/.homeassistant/
 ```
-copy files with Filezilla in the .homeassistant folder
-
-run again `sudo chmod -R 777 /home/homeassistant/.homeassistant/`
+Copy files with Filezilla in the .homeassistant folder.
+Run again the chmod command on the directory and its subfolders
+```
+sudo chmod -R 777 /home/homeassistant/.homeassistant/
+sudo chmod -R 777 /home/homeassistant/.homeassistant/python_scripts/
+```
 
 # Static IP address
 

@@ -85,6 +85,7 @@ here_is_your_very_long_lived_token" \
 {{< figure src="/goosst/pictures/macrodroid_macro.png" title="Macrodroid macro" width="200">}}
 
 The end result is, I need two/three pushes on the screen to turn my heating on:
+
 * First push: start the macro
 * Second push: when the orbot screen launches, push the big onion to connect to the tor network
 * Optional third push: when the orbot screen launches for the second time, disconnect from the tor network

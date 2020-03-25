@@ -18,7 +18,11 @@ tags:
 
 # Intro
 Don't we all want to monitor our home remotely (i.e. when not connected to our local network), turn on the heating on or off if we change our plans, check if everything is going well with our created home automation, etc.
-Of course we want to do this in a secure way that has limited chance of being hacked.
+What we want:
+
+- a secure method that has limited chance of being hacked
+- no usage of a cloud service (it's my data :))
+- preferably free
 
 In this section we'll use tor to access home assistant remotely and connect to it from our mobile phone (through mobile internet).
 Read more about [Tor Hidden Services](https://2019.www.torproject.org/docs/onion-services).
