@@ -1,18 +1,22 @@
 ---
 author: "goosst"
 date: 2020-02-18
-title: Bluetooth speaker
+title: Time laps
 tags:
- - tinkberboard
- - armbian
- - debian
- - bluetooth
- - home assistant
+ - raspberry pi
+ - MotionEyeOs
 ---
 
 {{% toc %}}
 
+# MotioneyeOs
+
+Create time laps by installing  `https://github.com/ccrisan/motioneyeos`
+
 # Convert files in chronological order
+Glue files together to an animated gif:
+- by renaming them in chronological order (using linux command)
+- by using ffmpeg to convert into a movie and animated gif
 
 ```
 ls | cat -n | while read n f; do mv "$f" `printf "%04d.jpg" $n`; done

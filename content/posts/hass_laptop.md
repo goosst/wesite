@@ -19,7 +19,7 @@ tags:
 This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
 
 It starts with a fresh install of the debian based [crunchbangplusplus](https://www.crunchbangplusplus.org/), here installed on an (old) laptop with i386 processor.
-The same method has worked on other debian based systems (tested on armbian running on a singleboard computer).
+The same method has worked on other debian based systems (tested on armbian running on a tinkerboard).
 It is assumed the debian based distro is based on debian Buster.
 Quite some additional python and other packages are specific for my installation, they can be left out to suit your needs.
 
