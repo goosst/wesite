@@ -43,9 +43,9 @@ Add a line to your /etc/apt/sources.list: `deb http://ftp.de.debian.org/debian b
 
 ```
 sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install python3 python3-dev python3-venv python3-pip libffi-dev libssl-dev build-essential
-sudo useradd -rm homeassistant
+sudo apt-get upgrade -y
+sudo apt-get install -y python3 python3-dev python3-venv python3-pip libffi-dev libssl-dev build-essential autoconf 
+sudo useradd -rm homeassistant -G dialout
 cd /srv
 sudo mkdir homeassistant
 sudo chown homeassistant:homeassistant homeassistant
@@ -69,13 +69,31 @@ Due to some specific installation issues with the 0.100 version, this one had to
 additional python packages
 
 ```
-sudo apt-get install libfreetype6-dev pkg-config libjpeg-dev imagemagick mosquitto mosquitto-clients python3-scipy
+sudo apt-get -y install libfreetype6-dev pkg-config libjpeg-dev imagemagick mosquitto mosquitto-clients python3-scipy
 sudo apt-get -y install liblapack-dev libblas-dev gfortran
 sudo -u homeassistant -H -s
 source /srv/homeassistant/bin/activate
+pip3 install --upgrade setuptools
 pip3 install ilock requests datetime numpy pytz matplotlib pillow pyunsplash scipy
 exit
 ```
+
+# Setup mqtt
+Setup a username and password (or not if you don't want ...)
+
+```
+sudo mosquitto_passwd -c /etc/mosquitto/passwd username
+
+```
+This will prompt a line to enter your password. 
+Edit `sudo nano /etc/mosquitto/conf.d/default.conf`
+```
+allow_anonymous false
+password_file /etc/mosquitto/passwd
+```
+
+Test by sending and listening to a message: `mosquitto_pub -h localhost -t test -u "username" -P "password" -m "hello world"`.
+
 
 # Install ebusd
 
@@ -100,6 +118,8 @@ start at bootup:
  ```
   sudo systemctl enable ebusd
 ```
+
+
 
 # Launch homeassistant
 
@@ -135,7 +155,8 @@ Let the laptop bootup with a fixed ip address:
 run `sudo nmtui`, change the following in `edit connection` (to have a fixed address: 192.168.0.205)
 {{< figure src="/goosst/pictures/nmtui.png" title="network settings" width="550">}}
 
-Most likely requires a reboot (and access to a display instead of ssh).
+Afterwards go to `Activate connection`.
+Most likely requires a reboot (and access to a display instead of ssh if things go wrong).
 
 
 # Result
