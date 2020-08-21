@@ -66,7 +66,7 @@ exit
 ```
 Due to some specific installation issues with the 0.100 version, this one had to be installed manually: `https://pypi.org/project/home-assistant-frontend/`
 
-additional python packages
+additional python packages (you own judgement if you need them)
 
 ```
 sudo apt-get -y install libfreetype6-dev pkg-config libjpeg-dev imagemagick mosquitto mosquitto-clients python3-scipy
@@ -74,7 +74,7 @@ sudo apt-get -y install liblapack-dev libblas-dev gfortran
 sudo -u homeassistant -H -s
 source /srv/homeassistant/bin/activate
 pip3 install --upgrade setuptools
-pip3 install ilock requests datetime numpy pytz matplotlib pillow pyunsplash scipy
+pip3 install ilock requests datetime sh pexpect numpy pytz matplotlib pillow pyunsplash scipy
 exit
 ```
 

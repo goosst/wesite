@@ -1,7 +1,7 @@
 ---
 author: "goosst"
 date: 2020-07-25
-title: Mail detection
+title: Mail detection version two
 tags:
  - wemos d1 mini
  - home assistant
@@ -16,9 +16,9 @@ tags:
 
 # Goal
 
-Get notified when a letter / package is dropped in your mail box (the real mail, not e-mail). Notifications are implemented by integration in my home assistant but alternatives (sending an e-mail, text message, etc.), could be useful extensions.
+Get notified when a letter / package is dropped in your mail box (the real mail, not e-mail). Notifications are implemented by integration in my home assistant. Alternatives - sending an e-mail, text message, ... - could be useful extensions.
 
-This is an improvement over the [first version]({{< relref "postbox.md" >}}) to reduce the energy consumption significantly. This requires an additional component and some tinkering with the dc-converter.
+This is an improvement over the [first version]({{< relref "postbox.md" >}}) to reduce the energy consumption significantly. It requires an additional component and some tinkering with the dc-converter.
 
 # Concept
 A distance sensor senses upwards in the mailbox, if a package is on top of it, the distance will be small. If the box is empty a larger distance is sensed.
@@ -32,7 +32,7 @@ The design is made to work with two AA-batteries (most common type in EU).
 - There is a mismatch in voltage between two AA-batteries (2.4ish V) and the ESP (requires 3.3V). To avoid having a boost dc-converter turned on 24/7 and reduce battery life (significantly), the dc-converter and ESP will periodically get enabled/disabled by an Arduino pro mini. 
 - The status of the ESP8266 gets communicated to the pro mini in a simple way.
 - The Arduino pro mini can work up to 1.8V. It does require setting the fuses of the microcontroller to the appropriate values. This will be done by burning a specific bootloader.
-- compared to the first version of the mailbox detection, Tasmota will not be used. This to further minimize the time the ESP8266 is alive and connected to wifi.
+- Compared to the first version of the mailbox detection, Tasmota will not be used. This to further minimize the time the ESP8266 is alive and connected to wifi.
 
 
 ## Layout
@@ -40,8 +40,9 @@ The design is made to work with two AA-batteries (most common type in EU).
 {{< figure src="/goosst/pictures/mailboxdetection_bb.png" title="Wiring layout" width="1250">}}
 
 Notes: 
-* the choice of pins has been chosen taking, the internal pullup and pulldown resistors into consideration.
-* To avoid unnecessary power losses, the wemos is directly fed to its 3.3V pin and not through the regular 5V (see the schematic of the Wemos mini).
+
+* The pins has been selected taking the internal pullup and pulldown resistors into consideration. Consider this when making modifications.
+* To avoid unnecessary power losses, the wemos is directly fed to its 3.3V pin and not through the regular 5V (see the schematic of the Wemos mini). The same applies for the arduino pro mini (Vcc instead of Vraw)
 
 # Prerequisites
 
@@ -63,17 +64,14 @@ To reuse the [available sketches](https://github.com/goosst/MailboxDetection) fo
 
 
 
-
-
-
 # Step 1: Flash bootloader on arduino pro mini
 
 ## Why
 According to the [atmega328p datasheet](http://ww1.microchip.com/downloads/en/DeviceDoc/ATmega48A-PA-88A-PA-168A-PA-328-P-DS-DS40002061A.pdf), the frequency needs to be lower than 4MHz to be able to work at 1.8V. To achieve this we need to set the fuses of the chip, luckily this can be easily done in the arduino environment.
 
-{{< figure src="/goosst/pictures/Atmel_freq.png" title="MHz vs minimum voltage" width="450">}}
+{{< figure src="/goosst/pictures/Atmel_freq.png" title="MHz vs minimum voltage" width="500">}}
 
-The lower the frequency, the lower the current consumption. Since the arduino doesn't need to do anything fancy, there is no reason to not go as low as possible.
+The lower the frequency, the lower the current consumption. Since the arduino doesn't need to do anything fancy, there is no reason to choose a high frequency.
 
 ## Programming using Arduino IDE
 
@@ -122,7 +120,7 @@ Some notes on key items to verify / adapt:
     ```
 
 
-If everything is working, you should see periodic message of the distance beind broadcasted in your mqtt broker. (Example below put artificially fast.)
+If everything is working, you should see periodic message of the distance being broadcasted in your mqtt broker. (Example below with messages arriving artificially fast every three minutes.)
 
 ```
 xxx@tinkerboard:~$ mosquitto_sub -h localhost -t /sensor/ESP8266-6857171/# -u "username" -P "password" -v | ts
@@ -138,9 +136,10 @@ Jul 26 07:05:52 /sensor/ESP8266-6857171/data/distance 368
 
 # (Optional) Step 4: Integration in home assistant
 
-The following happens:
-- distance of the sensor gets broadcasted as an mqtt message
-- python script is called to convert this
+The following steps will be done in the home assistant environment:
+
+- distance of the sensor gets read through the mqtt message
+- python script is called to convert this distance to something meaningful
 - displayed in home assistant
 
 ## MQTT sensor
@@ -202,7 +201,7 @@ Adding both entities in ui-lovelace results in something like this:
 
 - 3d print a housing :)
 - using pin D8 on the wemos provides a more elegant way to communicate the status to the pro mini without additional software/interfaces.
-
+- custom pcb to get rid of modifications
 
 # Appendix
 
