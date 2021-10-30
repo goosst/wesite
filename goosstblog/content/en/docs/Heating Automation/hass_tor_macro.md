@@ -14,11 +14,11 @@ tags:
  - Orbot
  - Orfox
  - home automation
+weight: 10
 ---
 
-
 # Intro
-This is the continuation of. Here we'll create a macro to automatically turn our heating on/off from an Android phone. The end result is something which only requires two / three pushes on a button on your android phone to turn on my heating.
+This is the continuation of [HomeAssistant Tor]({{< ref "hass_tor.md" >}}). Here we'll create a macro to automatically turn our heating on/off from an Android phone. The end result is something which only requires two / three pushes on a button on your android phone to turn on my heating.
 It works when being connected to a mobile network as well as a wifi network.
 
 # Method and tools
