@@ -17,8 +17,8 @@ tags:
 
 This page is to document the steps starting from a fresh linux install and setting up homeassistant, mqtt and ebusd.
 
-It starts with a fresh install of a debian buster based OS. The guide works on [crunchbangplusplus](https://www.crunchbangplusplus.org/), installed on an (old) laptop with i386 processor; [armbian](https://www.armbian.com/) running on a tinkerboard
-).
+It starts with a fresh install of a debian buster based OS. The guide works on [crunchbangplusplus](https://www.crunchbangplusplus.org/), installed on an (old) laptop with i386 processor; works on [armbian](https://www.armbian.com/) running on a tinkerboard.
+
 Quite some additional python and other packages are specific for my installation, they can be left out to suit your needs.
 
 # Remote access
@@ -34,10 +34,10 @@ To make life easy and not be close to your machine running home assistant:
 
 # Install home assistant
 
-This one mainly follows the steps outlined on the home assistant website to install hass in a virtual environment.
+This one mainly follows the steps outlined on the home assistant website to install Home Assistant in a virtual environment.
 
 First prepare the list of repositories in crunchbangplusplus:
-Add a line to your /etc/apt/sources.list: `deb http://ftp.de.debian.org/debian buster main`
+add a line to your /etc/apt/sources.list: `deb http://ftp.de.debian.org/debian buster main`
 
 ```
 sudo apt-get update
@@ -151,11 +151,11 @@ sudo chmod -R 777 /home/homeassistant/.homeassistant/python_scripts/
 
 Let the laptop bootup with a fixed ip address:
 run `sudo nmtui`, change the following in `edit connection` (to have a fixed address: 192.168.0.205)
-{{< figure src="/goosst/pictures/nmtui.png" title="network settings" width="550">}}
+{{< figure src="/pictures/nmtui.png" title="network settings" width="550">}}
 
 Afterwards go to `Activate connection`.
 Most likely requires a reboot (and access to a display instead of ssh if things go wrong).
 
 
 # Result
-{{< figure src="/goosst/pictures/hass_ui.png" title="hass interface" width="750">}}
+{{< figure src="/pictures/hass_ui.png" title="hass interface" width="750">}}

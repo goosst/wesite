@@ -20,7 +20,7 @@ Don't we all want to monitor our home remotely (i.e. when not connected to our l
 What we want:
 
 - a secure method that has limited chance of being hacked
-- no usage of a cloud service (it's my data :))
+- no usage of a cloud service (it's my data :), it should still work if the company stops existing or a server is down)
 - preferably free
 
 In this section we'll use tor to access home assistant remotely and connect to it from our mobile phone (through mobile internet).

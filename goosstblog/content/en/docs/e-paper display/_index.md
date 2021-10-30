@@ -4,10 +4,12 @@ title: "e-paper display"
 linkTitle: "e-paper display"
 weight: 8
 date: 2017-01-04
+description: >
+  e-paper display linked with home assistant
 ---
 
 {{% pageinfo %}}
-Double e-paper display used to display various information and pictures
+Double e-paper display used to display various information and pictures, integrated with Home Assistant
 {{% /pageinfo %}}
 
 {{< figure src="/pictures/epaper_display1.jpg" title="E-paper display linked with Home Assistant" width="700">}}

@@ -2,10 +2,10 @@
 ---
 title: "Heating Automation"
 linkTitle: "Heating Automation"
-weight: 8
+weight: 7
 date: 2017-01-04
 description: >
-  House heating automation
+  House heating automation through home assistant and ebus
 ---
 
 {{% pageinfo %}}
