@@ -1,11 +1,12 @@
 ---
 author: "goosst"
 date: 2019-04-20
-title: Heating automation - set temperatures
+title: Set temperatures
 tags:
  - vaillant
  - ecotec plus
  - ebus
+ - Heating automation
  - home assistant
  - raspberry pi
 weight: 2
@@ -80,9 +81,9 @@ else:
 
 * check if the scripts are really working by running the command from the raspberry pi terminal `python3 -i set_temperature_on.py`
  * as an additional check, on the thermostat you will see the temperature setting change
-{{< figure src="/goosst/pictures/heating_on.jpg" title="Python script has set temperature to 21 degrees!" width="450">}}
+{{< figure src="/pictures/heating_on.jpg" title="Python script has set temperature to 21 degrees!" width="450">}}
 * do the same for the script `python3 -i set_temperature_off.py`
-{{< figure src="/goosst/pictures/heating_off.jpg" title="Python script has set temperature to 15 degrees!" width="450">}}
+{{< figure src="/pictures/heating_off.jpg" title="Python script has set temperature to 15 degrees!" width="450">}}
 Output in the terminal of the raspberry:
 
 ```
@@ -114,7 +115,7 @@ From the Home Assistant interface:
 * check the shell_command services
 * if you select the `set_temp_low` and `set_temp_high` and press "call service" the temperature will be set to 15 and 21 degrees :)
 
-{{< figure src="/goosst/pictures/HA_services2.png" title="Service becomes available in Home Assistant" width="500">}}
+{{< figure src="/pictures/HA_services2.png" title="Service becomes available in Home Assistant" width="500">}}
 
 
 # Clean up method

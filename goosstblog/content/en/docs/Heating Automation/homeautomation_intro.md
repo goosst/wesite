@@ -1,11 +1,12 @@
 ---
 author: "goosst"
 date: 2019-04-18
-title: Heating automation - intro
+title: intro
 tags:
  - vaillant
  - ecotec plus
  - ebus
+ - Heating automation
  - home assistant
  - raspberry pi
 weight: 1

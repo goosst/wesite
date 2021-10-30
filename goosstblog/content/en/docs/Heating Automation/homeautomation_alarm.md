@@ -1,7 +1,7 @@
 ---
 author: "goosst"
 date: 2019-05-10
-title: Heating automation - alarm
+title: Link with house alarm
 tags:
  - wemos D1
  - home assistant
@@ -11,7 +11,7 @@ tags:
 
 # Intro
 
-I've let a relay install during yearly maintenance of my alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
+I've let a relay install during yearly maintenance of my burglar alarm, this allows me to tell me when the alarm is turned on or off. This makes life for presence detection significantly more simple :).
 
 We'll use MQTT to send status of alarm to Home Assistant.
 

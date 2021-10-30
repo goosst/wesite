@@ -1,7 +1,7 @@
 ---
 author: "goosst"
 date: 2019-12-22
-title: Heating control from Android
+title: Remote control from Android
 tags:
  - Macrodroid
  - curl
@@ -73,7 +73,7 @@ here_is_your_very_long_lived_token" \
 -H "Content-Type: application/json" \
 -d '{"state": "off"}'
 ```
-{{< figure src="/goosst/pictures/macrodroid_shellscript.png" title="Macrodroid shell script" width="200">}}
+{{< figure src="/pictures/macrodroid_shellscript.png" title="Macrodroid shell script" width="200">}}
 * Start Orbot / Tor
 * Test your shell script and play with the "state" attribute, you should see the turn_heating_on change accordingly ("off"/"on")
 
@@ -81,7 +81,7 @@ here_is_your_very_long_lived_token" \
 
 * Create a larger macro which starts and stops Orbot automatically.
 * Since my home automation assumes a change from "off" to "on", the turn_heating_on will be first put "off" and then put to "on"
-{{< figure src="/goosst/pictures/macrodroid_macro.png" title="Macrodroid macro" width="200">}}
+{{< figure src="/pictures/macrodroid_macro.png" title="Macrodroid macro" width="200">}}
 
 The end result is, I need two/three pushes on the screen to turn my heating on:
 

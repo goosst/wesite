@@ -1,20 +1,21 @@
 ---
 author: "goosst"
 date: 2019-09-18
-title: e-paper - Home Assistant
+title: Link with home Assistant
 tags:
  - ESP32
  - TTGO
  - waveshare
  - 7.5 inch
  - home assistant
+ - e-paper
+weight: 4
 ---
 
-{{% toc %}}
 
 # Intro
 
-This is the part that will create the content out of home assistant and will get displayed on our e-paper.
+This is the part to generate the content out of home assistant and display it on our e-paper.
 As an example I will display the expected commute time to work.
 
 Python scripts being defined as a shell_command in configuration.yaml will be used. A simple automation to trigger the python script will be used.
@@ -136,7 +137,7 @@ fig.savefig('plot.png',bbox_inches='tight',dpi=dpi)
 
 Example, generated figure:
 
-{{< figure src="/goosst/pictures/commute_example.png" title="Example bitmap " width="350">}}
+{{< figure src="/pictures/commute_example.png" title="Example bitmap " width="600">}}
 
 # Testing the python script
 

@@ -1,11 +1,12 @@
 ---
 author: "goosst"
 date: 2019-04-27
-title: Heating automation - electric heater
+title: Additonal electric heater
 tags:
  - sonoff
  - home assistant
  - Tasmota
+weight: 10
 ---
 
 
@@ -31,7 +32,7 @@ First, flash the Tasmota software.
 
 Then browse to the ip-address of your sonoff device and click further to do some limited MQTT configuration. Here you can define the names / passwords / username of your MQTT topics (see screenshot below). The full name of the MQTT can be double checked in http://IP_ADDRESS_OF_YOUR_SONOFF/in.
 
-{{< figure src="/goosst/pictures/Tasmota.png" title="MQTT configuration in Tasmota" width="450">}}
+{{< figure src="/pictures/Tasmota.png" title="MQTT configuration in Tasmota" width="450">}}
 
 The MQTT methods in the Tasmota software are very well documented (a bit overwhelming at first):
 
@@ -45,7 +46,7 @@ Two MQTT topics will be used for this application:
 * one to send the commands (this one doesn't need additional configuration)
 
 To monitor the status of the device, the tele-messages - continuously broadcasted by Tasmota - will be used. The update rate of the tele-message can be set with the TelePeriod command (see screenshot below).
-{{< figure src="/goosst/pictures/Tasmota_console.png" title="Configure update rate of the tele-message to 60 seconds" width="500">}}
+{{< figure src="/pictures/Tasmota_console.png" title="Configure update rate of the tele-message to 60 seconds" width="500">}}
 
 
 
@@ -103,4 +104,4 @@ et voila, one can command and read the status of the sonoff device through Home 
 (of course there is a delay of maximum 60s in the status reporting due to the usage of the tele-message.)
 
 
-{{< figure src="/goosst/pictures/HA_sonoff.png" title="MQTT configuration in Tasmota" width="350">}}
+{{< figure src="/pictures/HA_sonoff.png" title="MQTT configuration in Tasmota" width="350">}}

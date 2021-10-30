@@ -1,13 +1,14 @@
 ---
 author: "goosst"
 date: 2019-09-17
-title: e-paper - Display ESP32
+title: Actuate display using ESP32
 tags:
  - ESP32
  - TTGO
  - waveshare
  - 7.5 inch
  - home assistant
+weight: 3
 ---
 
 
@@ -79,7 +80,7 @@ The resulting script can be found [here](https://github.com/goosst/HomeAutomatio
 const char* ssid     = "xxx";
 const char* password = "xxx";
 ```
-- You have to copy a small bitmap image (.bmp) in your xxx/www folder in home assistant ([Home Assistant: External files](https://www.home-assistant.io/components/http/#hosting-files)), or generate content through scripts ([Home assistant: content creation] ({{<relref "homeautomation_epaper_HASS">}}))
+- You have to copy a small bitmap image (.bmp) in your xxx/www folder in home assistant ([Home Assistant: External files](https://www.home-assistant.io/components/http/#hosting-files)), or generate content through scripts ([Home assistant: content creation]({{<relref "homeautomation_epaper_HASS.md">}}))
 - Pay attention to set the SleepDuration, WakeupTime, SleepTime, ... in the script when the system should remain awake
 - Of course, change 192.168.0.205:8123 to your own home assistant settings
 

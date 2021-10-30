@@ -1,14 +1,15 @@
 ---
 author: "goosst"
 date: 2019-04-21
-title: Heating automation - read information
+title: Read information
 tags:
  - vaillant
  - ecotec plus
  - ebus
+ - Heating automation 
  - home assistant
  - raspberry pi
-weight: 3 
+weight: 4
 ---
 
 
@@ -130,7 +131,7 @@ automation ebusreading:
 
 You can see the three sensor values defined and reading out its value :).
 
-{{< figure src="/goosst/pictures/sensorvalues2.png" title="Sensors from the thermostat and heater read through the ebus" width="760">}}
+{{< figure src="/pictures/sensorvalues2.png" title="Sensors from the thermostat and heater read through the ebus" width="760">}}
 
 
 To put it in some nice graphs so we can see data over a longer period we need to add this to `configuration.yaml`:
@@ -154,7 +155,7 @@ history_graph:
 ```
 
 This results in something like this (pending how you arrange it):
-{{< figure src="/goosst/pictures/historygraph.png" title="Sensor values in a graph" width="760">}}
+{{< figure src="/pictures/historygraph.png" title="Sensor values in a graph" width="760">}}
 
 ## Tip
 
@@ -193,6 +194,6 @@ views:
 ```
 
 Which results in:
-{{< figure src="/goosst/pictures/lovelace_ui.png" title="Interface define in ui-lovelace.yaml" width="760">}}
+{{< figure src="/pictures/lovelace_ui.png" title="Interface define in ui-lovelace.yaml" width="760">}}
 
 <!-- {{< ama3 >}} -->

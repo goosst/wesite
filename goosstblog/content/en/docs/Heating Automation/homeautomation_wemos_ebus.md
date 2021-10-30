@@ -1,14 +1,16 @@
 ---
 author: "goosst"
 date: 2019-12-21
-title: Heating automation - setup hardware and ebus
+title: Setup hardware and ebus
 tags:
  - vaillant
  - ecotec plus
  - ebus
+ - Heating automation
  - home assistant
  - Ebusd
  - wemos mini D1
+weight: 3
 ---
 
 
@@ -27,7 +29,7 @@ We need an ebus adapter for the raspberry to interface with our heater. I'm not 
 * Put it in a box so there is no chance on touching electrical connections etc. .
  * You could consider placing the adapter inside the heater (plenty of space), I just didn't want to put custom electronics inside ... .
 
-{{< figure src="/goosst/pictures/ebus_adapter.jpg" title="ebus adapter v2.2" width="250">}}
+{{< figure src="/pictures/ebus_adapter.jpg" title="ebus adapter v2.2" width="250">}}
 
 ## Attention!!
 
@@ -40,7 +42,7 @@ If you're running on a single board computer:
 
 ## My setup
 
-{{< figure src="/goosst/pictures/ebus_wemos.jpg" title="Wemos mini D1 and ebus adapter mounted on heater" width="350">}}
+{{< figure src="/pictures/ebus_wemos.jpg" title="Wemos mini D1 and ebus adapter mounted on heater" width="350">}}
 
 * [Wemos mini D1](https://www.banggood.com/Geekcreit-D1-Mini-V3_0_0-WIFI-Internet-Of-Things-Development-Board-Based-ESP8266-4MB-p-1264245.html?p=ET150713234951201708&custlinkid=734961) and ebus-adapter (without uart interface) are mounted against the heater by using velco strips
 * The white and purple wire are the ebus, they are connected inside the heater (ebus protocol has no polarity, so you can swap the wires)
@@ -60,7 +62,7 @@ First install the ebus related software on your system running your home automat
 If this is done, adapt your ebus configuration to match your wemos settings:
 
 * Check the settings in the interface of the wemos / ebus adapter, the ebusd device string is what you'll need in the next step.
-{{< figure src="/goosst/pictures/ebusd_adapter_wemos_sw.png" title="Interface when browsing to wemos D1 mini" width="350">}}
+{{< figure src="/pictures/ebusd_adapter_wemos_sw.png" title="Interface when browsing to wemos D1 mini" width="350">}}
 * adapt the ebus configuration on your host, as described in the following steps:
 ```
 cd /etc/default

@@ -1,7 +1,7 @@
 ---
 author: "goosst"
 date: 2019-09-16
-title: e-paper - Display concept
+title: Concept
 tags:
  - home assistant
  - display
@@ -9,6 +9,7 @@ tags:
  - TTGO
  - waveshare
  - 7.5 inch
+weight: 2
 ---
 
 # Intro
@@ -16,7 +17,7 @@ This part sketches the entire flow. I've changed my method a few times during th
 
 # Different steps
 
-{{< figure src="/goosst/pictures/epaper_hass.png" title="Sequence to get home assistant content on e-paper " width="350">}}
+{{< figure src="/pictures/epaper_hass.png" title="Sequence to get home assistant content on e-paper " width="350">}}
 
 Relevant references to documentation (I want to find it back myself ;):
 
@@ -25,5 +26,5 @@ Relevant references to documentation (I want to find it back myself ;):
 
 Remarks:
 
-- I'm using [hassbian](https://www.home-assistant.io/docs/installation/hassbian/installation/) on a raspberry pi 3, I have not checked if anything should change when using hassio and other variants
+- I'm using a debian version running home assistant (without docker etc.), I have not checked if anything should change when using hassio and other variants
 - the REST API, would allow to do everything on the esp32, but I didn't go that route ... .

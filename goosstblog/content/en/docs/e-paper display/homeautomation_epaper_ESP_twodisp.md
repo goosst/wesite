@@ -1,13 +1,15 @@
 ---
 author: "goosst"
 date: 2019-09-29
-title: e-paper - Extension to two displays
+title: Extension to two displays
 tags:
  - ESP32
  - TTGO
  - waveshare
  - 7.5 inch
  - home assistant
+ - e-paper
+weight: 5
 ---
 
 
@@ -21,7 +23,7 @@ When connecting it as intended - 3.3V of this [ESP32](https://www.banggood.com/L
 It becomes more unreliable when combining more than one e-paper to the display (or it can be my cognitive bias).  
 
 The solution is to bypass the voltage converter and directly connect the 3.3V from the ESP32 according the picture below (see [scematics](https://www.waveshare.com/w/upload/8/87/E-Paper-Driver-HAT-Schematic.pdf)):
-{{< figure src="/goosst/pictures/epaper_hat.png" title="Alternative 3.3V connection" width="300">}}
+{{< figure src="/pictures/epaper_hat.png" title="Alternative 3.3V connection" width="300">}}
 
 # Software ESP32
 
