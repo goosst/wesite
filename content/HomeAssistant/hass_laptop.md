@@ -16,11 +16,10 @@ tags:
 
 # Intro
 
-This page is mainly to document the steps starting from a fresh linux install and setting up homeassistant and ebusd.
+This page is to document the steps starting from a fresh linux install and setting up homeassistant, mqtt and ebusd.
 
-It starts with a fresh install of the debian based [crunchbangplusplus](https://www.crunchbangplusplus.org/), here installed on an (old) laptop with i386 processor.
-The same method has worked on other debian based systems (tested on armbian running on a tinkerboard).
-It is assumed the debian based distro is based on debian Buster.
+It starts with a fresh install of a debian buster based OS. The guide works on [crunchbangplusplus](https://www.crunchbangplusplus.org/), installed on an (old) laptop with i386 processor; [armbian](https://www.armbian.com/) running on a tinkerboard
+).
 Quite some additional python and other packages are specific for my installation, they can be left out to suit your needs.
 
 # Remote access
@@ -66,7 +65,7 @@ exit
 ```
 Due to some specific installation issues with the 0.100 version, this one had to be installed manually: `https://pypi.org/project/home-assistant-frontend/`
 
-additional python packages (you own judgement if you need them)
+additional python packages (your own judgement if you need them):
 
 ```
 sudo apt-get -y install libfreetype6-dev pkg-config libjpeg-dev imagemagick mosquitto mosquitto-clients python3-scipy

@@ -14,7 +14,7 @@ tags:
 {{% toc %}}
 
 # Intro
-In this part we'll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a raspberry pi (in general, the instructions below work with any computer using debian/ubuntu).
+In this part we'll connect to the communication bus of the heater and read / write some parameters by manually commanding them via a debian based system (tinkerboard, raspberry, laptop, ...).
 
 
 # Hardware

@@ -36,10 +36,12 @@ cd mjpg-streamer/
 cd mjpg-streamer-experimental
 make
 sudo make install
+sudo chmod 777 /dev/video0 (or whatever your device name is)
 ```
 
 command to startup mjpeg streamer with webcam and make it accessible over http port 8080:
-`mjpg_streamer -i "input_uvc.so -d /dev/video0" -o "output_http.so -p 8080 -w /usr/local/www"`
+
+`mjpg_streamer -i "input_uvc.so -d /dev/video0 -n" -o "output_http.so -p 8080 -w /usr/local/www"`
 
 
 ## installation of ffmpeg
