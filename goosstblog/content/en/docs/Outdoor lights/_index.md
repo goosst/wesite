@@ -1,7 +1,7 @@
 
 ---
 title: "Outdoor lighting"
-linkTitle: "Mail detection"
+linkTitle: "Outdoor lighting"
 weight: 10
 date: 2021-11-28
 description: >
@@ -19,7 +19,7 @@ Since the underground wiring cannot be easily fixed, a workaround was done by al
 
 # Concept
 
-{{< figure src="/pictures/Outdoorlight.drawio" title="Outdoor lighting switches" width="200">}}
+{{< figure src="/pictures/OutdoorLighting.png" title="Outdoor lighting switches" width="200">}}
 
 
 
