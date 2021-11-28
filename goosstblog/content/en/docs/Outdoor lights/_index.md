@@ -9,7 +9,7 @@ description: >
 ---
 
 {{% pageinfo %}}
-Detects mail and links it with homea assistant
+Switches outdoor light with sonoff flashed with tasmota
 {{% /pageinfo %}}
 
 # Goal
@@ -19,7 +19,12 @@ Since the underground wiring cannot be easily fixed, a workaround was done by al
 
 # Concept
 
-{{< figure src="/pictures/OutdoorLighting.png" title="Outdoor lighting switches" width="200">}}
+{{< figure src="/pictures/OutdoorLighting.png" title="Outdoor lighting switches" width="500">}}
+
+Tasmota settings:
+* PowerOnState 1
+* WifiConfig 5
+
 
 
 
