@@ -25,6 +25,10 @@ Tasmota settings:
 * PowerOnState 1
 * WifiConfig 5
 
+Since the module is hidden in an electic box, the button is disabled for certainty.
+
+{{< figure src="/pictures/terrasverlichting.png" title="Outdoor lighting switches" width="350">}}
+
 
 
 
