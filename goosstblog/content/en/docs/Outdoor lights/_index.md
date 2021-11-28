@@ -24,6 +24,8 @@ Since the underground wiring cannot be easily fixed, a workaround was done by al
 Tasmota settings:
 * PowerOnState 1
 * WifiConfig 5
+* SetOption1 1
+* SetOption13 1
 
 Since the module is hidden in an electic box, the button is disabled for certainty.
 
