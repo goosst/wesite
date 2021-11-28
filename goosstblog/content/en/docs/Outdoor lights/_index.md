@@ -19,7 +19,7 @@ Since the underground wiring cannot be easily fixed, a workaround was done by al
 
 # Concept
 
-{{< figure src="/pictures/OutdoorLighting.png" title="Outdoor lighting switches" width="500">}}
+{{< figure src="/pictures/OutdoorLighting.png" title="Double Sonoff switches" width="500">}}
 
 Tasmota settings:
 * PowerOnState 1
@@ -29,7 +29,7 @@ Tasmota settings:
 
 Since the module is hidden in an electic box, the button is disabled for certainty.
 
-{{< figure src="/pictures/terrasverlichting.png" title="Outdoor lighting switches" width="350">}}
+{{< figure src="/pictures/terrasverlichting.png" title="Tasmota config" width="350">}}
 
 
 
