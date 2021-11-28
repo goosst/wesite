@@ -27,7 +27,7 @@ Tasmota settings:
 * SetOption1 1
 * SetOption13 1
 
-Since the module is hidden in an electic box, the button is disabled for certainty.
+Since the module is hidden in an electric box, the button is disabled for certainty.
 
 {{< figure src="/pictures/terrasverlichting.png" title="Tasmota config" width="350">}}
 
