@@ -14,7 +14,7 @@ Switches outdoor light with sonoff flashed with tasmota
 
 # Goal
 
-My outdoor lights give power outages when it rains a lot, the differential switch triggers (even when not turned on). 
+My outdoor lights give power outages when it rains a lot, the differential switch triggers (also when ligbts are not turned on). 
 Since the underground wiring cannot be easily fixed, a workaround was done by also switching the neutral wire going to the lights when power down.
 
 # Concept
@@ -28,7 +28,7 @@ Tasmota settings:
 * SetOption1 1
 * SetOption13 1
 
-Since the module is hidden in an electric box, the button is disabled for certainty.
+Since the module is hidden in an electric box, the buttons on the tasmotas are disabled for certainty.
 
 {{< figure src="/pictures/terrasverlichting.png" title="Tasmota config" width="350">}}
 
