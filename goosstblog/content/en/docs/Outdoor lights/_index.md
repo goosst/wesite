@@ -14,8 +14,8 @@ Switches outdoor light with sonoff flashed with tasmota
 
 # Goal
 
-Outdoor lights give power outages, differential switches trigger when not turned on. 
-Since the underground wiring cannot be easily fixed, a workaround was done by also switching the Neutral while inactive.
+My outdoor lights give power outages when it rains a lot, the differential switch triggers (even when not turned on). 
+Since the underground wiring cannot be easily fixed, a workaround was done by also switching the neutral wire going to the lights when power down.
 
 # Concept
 
