@@ -49,10 +49,10 @@ Note: just wrapping it in a plastic bag will not be sufficient: if something pre
 In the 3d-printed enclosure a small hinge was designed so the horn is kept in place inside the box. Files for the enclosure can be found here: [stl file](https://www.goosst.com/others/C%20_fakepath_firstBox2.stl), [openscad file](https://www.goosst.com/others/C%20_fakepath_firstBox.scad).
 I just can't find the thingiverse source back where I modified this box from :(.
 
-{{< figure src="/pictures/EnclosureMoleHonk.png" title="Enclosure" width="550">}}
+{{< figure src="/pictures/EnclosureMoleHonk.png" title="Enclosure" width="350">}}
 
 Wiring with matching connectors and power supply was done, et voila: ready to honk. Just don't test it next to your ears ... .
-{{< figure src="/pictures/MoleHonking.jpg" title="The different components (power supply, horn, platic enclosure, connectors)" width="350">}}
+{{< figure src="/pictures/MoleHonking.jpg" title="The different components (power supply, horn, platic enclosure, connectors)" width="550">}}
 
 
 ## Ground works
