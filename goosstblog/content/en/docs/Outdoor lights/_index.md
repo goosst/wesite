@@ -30,7 +30,7 @@ Tasmota settings:
 
 Since the module is hidden in an electric box, the buttons on the tasmotas are disabled for certainty.
 
-{{< figure src="/pictures/terrasverlichting.png" title="Tasmota config" width="350">}}
+{{< figure src="/pictures/MoleHonking.jpg" title="The different components" width="350">}}
 
 
 
