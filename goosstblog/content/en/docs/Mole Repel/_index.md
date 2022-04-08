@@ -25,7 +25,7 @@ My garden got terrorized by moles over the winter. My mole traps were not effect
 
 # Concept
 
-It has been proven moles get repelled by sound. The typical sound of these repelling devices [exanple](https://amzn.to/3JJoisI) is in a frequency range of around 300-1000 Hz.
+It has been proven moles get repelled by sound. The typical sound of these repelling devices is in a frequency range of around 300-1000 Hz [- example](https://amzn.to/3JJoisI).
 These typical solar powered devices only produce a few watt of power, so I decided to take it up a notch ... .
 
 Burrying an audio speaker and tune the sound with an amplifier was an option, but that seemed a bit more costly and complex to automate (don't want to produce non stop 24/7 noise) and get the necessary equipment in the garden.
@@ -45,8 +45,8 @@ Used components:
 ## Putting it together
 
 An enclosure was 3d-printed so the claxon is protected and the steel disk remains free to vibrate (and hence produce sound), of course you can just use any other platic box. 
-Note: just wrapping it in a plastic bag will not be sufficient: if something prevents oscillation of the steel disk, no sound will be produced anymore (ask me how I now ...).
-In the 3d-printed enclosure a small hinge was designed so the horn is kept in place inside the box. Files for the enclosure can be found here: [stl file](https://www.goosst.com/others/C%20_fakepath_firstBox2.stl), [openscad file](https://www.goosst.com/others/C%20_fakepath_firstBox.scad).
+Note: just wrapping it in a plastic bag will not be sufficient: if something prevents oscillation of the steel disk, no sound will be produced anymore (ask me how I know ...).
+In the 3d-printed enclosure, a small hinge was designed to keep the horn in place inside the box. Files for the enclosure can be found here: [stl file](https://www.goosst.com/others/C%20_fakepath_firstBox2.stl), [openscad file](https://www.goosst.com/others/C%20_fakepath_firstBox.scad).
 I just can't find the thingiverse source back where I modified this box from :(.
 
 {{< figure src="/pictures/EnclosureMoleHonk.png" title="Enclosure" width="350">}}
