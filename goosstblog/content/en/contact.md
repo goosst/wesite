@@ -9,6 +9,8 @@ date: 2022-06-19
 
 # Contact me
 
+Please fill in the form below if you want to contact me:
+
 <form name="contact" method="POST" data-netlify="true">
   <p>
     <label>Your Name: <input type="text" name="name" /></label>
