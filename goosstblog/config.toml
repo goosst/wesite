@@ -177,7 +177,7 @@ enable = true
 # End user relevant links. These will show up on left side of footer and in the community page if you have one.
 [[params.links.user]]
 	name = "Contact form"
-	url = "https://github.com/contact"
+	url = "https://www.goosst.com/contact/"
 	icon = "fa fa-envelope"
         desc = "Discussion and help from your fellow users"
 # Developer relevant links. These will show up on right side of footer and in the community page if you have one.
