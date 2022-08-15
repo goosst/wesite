@@ -31,10 +31,9 @@ Used components:
 * [EU to US travel adapter](https://amzn.to/3dwTqR8), which will be dismantled and replaced by the 3d-printed part.
 * [US to EU travel adapter](https://amzn.to/3w5POMk)
 * 3d printed parts, [openscad file](https://www.goosst.com/others/NarrowElectricityPlug.scad):
-
-** a new housing for the EU to US adapter, internals are just transferred without modification
-** a counter piece for the above cover (the two pieces slide in each other)
-** an (option) drilling guide to have the four drilled holes (two for screws, two for the electricity pins) somewhat decently aligned
+  + a new housing for the EU to US adapter, internals are just transferred without modification
+  + a counter piece for the above cover (the two pieces slide in each other)
+  + an (option) drilling guide to have the four drilled holes (two for screws, two for the electricity pins) somewhat decently aligned
 * female flat electricity socket to connect the 230V to
 
 
