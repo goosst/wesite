@@ -5,13 +5,11 @@ linkTitle: "Small Electricity plug"
 weight: 6
 date: 2022-08-15
 description: >
-  Honking at the moles
+  Narrow electricity plug
 tags:
- - mole repelling
- - claxon
- - horn
- - honking
- - home assistant
+ - electricity plug
+ - EU plug
+ - Narrow
 ---
 
 {{% pageinfo %}}
