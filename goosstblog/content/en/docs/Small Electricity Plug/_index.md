@@ -31,6 +31,7 @@ Used components:
 * [EU to US travel adapter](https://amzn.to/3dwTqR8), which will be dismantled and replaced by the 3d-printed part.
 * [US to EU travel adapter](https://amzn.to/3w5POMk)
 * 3d printed parts, [openscad file](https://www.goosst.com/others/NarrowElectricityPlug.scad):
+
 ** a new housing for the EU to US adapter, internals are just transferred without modification
 ** a counter piece for the above cover (the two pieces slide in each other)
 ** an (option) drilling guide to have the four drilled holes (two for screws, two for the electricity pins) somewhat decently aligned
@@ -39,12 +40,12 @@ Used components:
 
 ## Putting it together
 
-* Move the internals from one [EU to US travel adapter](https://amzn.to/3dwTqR8) to the 3d printed part.
+* Move the internals from the [EU to US travel adapter](https://amzn.to/3dwTqR8) to the 3d printed part.
 * Drill two M4 holes for mounting, drilling two M6 holes for the guidance of the electricity pins
 
-{{< figure src="/pictures/ElectricityPlug.png" title="Enclosure" width="350">}}
+{{< figure src="/pictures/ElectricityPlug.png" title="Enclosure" width="500">}}
 
-{{< figure src="/pictures/ElectricityPlug2.png" title="Enclosure" width="350">}}
+{{< figure src="/pictures/ElectricityPlug2.png" title="Enclosure" width="200">}}
 
 Could you get rid of the second US-EU conversion, probably yes ... . But feel free to mod.
 
