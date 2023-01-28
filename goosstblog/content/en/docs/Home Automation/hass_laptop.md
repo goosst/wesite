@@ -42,7 +42,7 @@ add a line to your /etc/apt/sources.list: `deb http://ftp.de.debian.org/debian b
 ```
 sudo apt-get update
 sudo apt-get upgrade -y
-sudo apt-get install -y python3 python3-dev python3-venv python3-pip libffi-dev libssl-dev build-essential autoconf 
+sudo apt-get install -y python3 python3-dev python3-venv python3-pip libffi-dev libssl-dev build-essential autoconf cargo
 sudo useradd -rm homeassistant -G dialout
 cd /srv
 sudo mkdir homeassistant
