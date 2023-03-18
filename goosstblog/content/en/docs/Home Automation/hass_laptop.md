@@ -42,7 +42,7 @@ add a line to your /etc/apt/sources.list: `deb http://ftp.de.debian.org/debian b
 ```
 sudo apt-get update
 sudo apt-get upgrade -y
-sudo apt-get install -y python3 python3-dev python3-venv python3-pip libffi-dev libssl-dev build-essential autoconf cargo
+sudo apt-get install -y python3 python3-dev python3-venv python3-pip libffi-dev libssl-dev build-essential autoconf cargo libsqlite3-dev
 sudo useradd -rm homeassistant -G dialout
 cd /srv
 sudo mkdir homeassistant
@@ -80,14 +80,15 @@ exit
 Setup a username and password (or not if you don't want ...)
 
 ```
-sudo mosquitto_passwd -c /etc/mosquitto/passwd username
+sudo mosquitto_passwd -c /etc/mosquitto/.passwd your_username
 
 ```
 This will prompt a line to enter your password. 
-Edit `sudo nano /etc/mosquitto/conf.d/default.conf`
+Edit `sudo nano /etc/mosquitto/conf.d/auth.conf`
 ```
+listener 1883
 allow_anonymous false
-password_file /etc/mosquitto/passwd
+password_file /etc/mosquitto/.passwd
 ```
 
 Test by sending and listening to a message: `mosquitto_pub -h localhost -t test -u "username" -P "password" -m "hello world"`.
